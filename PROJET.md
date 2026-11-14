@@ -21,6 +21,9 @@ Conseils : une seule donnée suffit ; préférer des données mensuelles ou hebd
 Giovanni, AppEEARS (MODIS LST, NDVI, Landsat), Hydrology Time Series (GPM, GLDAS), KNMI Climate Explorer.
 Compte Earthdata gratuit. Toujours citer les sources dans l'appli.
 
+## Emplacement local
+Sur le PC de Ludovic : D:\NASA Space Apps Challenge 2026\zeros-team-earth-trend-detective (clone du dépôt). Tous les fichiers du projet (données, exports, captures) restent dans D:\NASA Space Apps Challenge 2026, jamais ailleurs.
+
 ## Format
 Appli web simple et rapide, FR + EN. Carte + courbe + résultat du test + recommandations d'aménagement.
 
