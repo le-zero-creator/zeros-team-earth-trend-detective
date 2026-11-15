@@ -46,6 +46,12 @@
   margin-bottom: 8px;
 }
 
+.hero-which {
+  margin: 0 0 4px;
+  font-size: 1.05rem;
+  color: #f4f7f1;
+}
+
 .hero-numline {
   margin: 8px 0 4px;
 }
