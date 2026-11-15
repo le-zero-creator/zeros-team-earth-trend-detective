@@ -53,6 +53,18 @@ export function Motion() {
     }
     scan()
     revealIfSeen()
+    const onScroll = () => {
+      const viewH = window.innerHeight || 800
+      document.querySelectorAll<HTMLElement>('.scene img, .ai-photo img').forEach((img) => {
+        const box = img.getBoundingClientRect()
+        const shift = Math.max(-16, Math.min(16, (box.top - viewH / 2) * -0.03))
+        img.style.setProperty('--py', `${shift.toFixed(1)}px`)
+      })
+    }
+    if (!reduce) {
+      window.addEventListener('scroll', onScroll, { passive: true })
+      onScroll()
+    }
     const fallback = window.setTimeout(showAll, 1200)
     const changes = new MutationObserver(() => {
       scan()
@@ -65,6 +77,7 @@ export function Motion() {
         changes.disconnect()
         window.clearTimeout(fallback)
         document.removeEventListener('visibilitychange', onVis)
+        window.removeEventListener('scroll', onScroll)
       }
     }
     const move = (event: PointerEvent) => {
@@ -82,6 +95,7 @@ export function Motion() {
       window.clearTimeout(fallback)
       document.removeEventListener('pointermove', move)
       document.removeEventListener('visibilitychange', onVis)
+      window.removeEventListener('scroll', onScroll)
     }
   }, [pathname])
   return null

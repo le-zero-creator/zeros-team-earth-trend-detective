@@ -707,17 +707,64 @@ main {
     overflow-x: hidden;
   }
   .ask--compact .ask-chips {
-    flex-wrap: nowrap;
-    overflow-x: auto;
+    flex-wrap: wrap;
+    overflow: visible;
     max-width: 100%;
-    padding-bottom: 4px;
   }
   .ask--compact .ask-chips button {
-    flex: 0 0 auto;
-    max-width: none;
-    white-space: nowrap;
+    flex: 1 1 100%;
+    max-width: 100%;
+    white-space: normal;
   }
   .ask--compact .ask-form textarea { height: 52px; min-height: 52px; padding: 8px 12px; }
   .ask--compact .chat { min-height: 64px; }
   .ask--compact .note { margin: 0; }
+}
+
+.scene, .ai-photo {
+  position: relative;
+  display: block;
+  margin: 0 0 16px;
+  border-radius: 20px;
+  overflow: hidden;
+}
+.scene img, .ai-photo img {
+  width: 100%;
+  height: clamp(180px, 34vh, 420px);
+  object-fit: cover;
+  display: block;
+  transform: translate3d(0, var(--py, 0px), 0) scale(1.04);
+}
+.scene__credit, .ai-photo__mark {
+  position: absolute;
+  z-index: 2;
+  max-width: calc(100% - 16px);
+}
+.scene__credit {
+  left: 8px;
+  bottom: 8px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: rgb(16 24 32 / 78%);
+  color: #fff;
+  font: 600 0.75rem/1.2 var(--font-text);
+}
+.journey-card .scene img, .globe-float .scene img, .how .scene img { height: clamp(140px, 24vh, 240px); }
+.scrolly__visual .scene { margin: 0; }
+.scrolly__visual .scene img { height: clamp(220px, 52vh, 68vh); }
+.means-layout .scene img { height: clamp(220px, 42vh, 460px); }
+@media (max-width: 900px) {
+  .scrolly__step { min-height: auto; padding: 8px 0 20px; }
+  .scrolly__visual { min-height: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .scene img, .ai-photo img { transform: none; }
+}
+@keyframes reveal-fallback {
+  to { opacity: 1; clip-path: inset(0 0 0 0); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .motion-line, .motion-media, .reveal {
+    animation: reveal-fallback 0.01s linear 1.3s forwards;
+  }
 }

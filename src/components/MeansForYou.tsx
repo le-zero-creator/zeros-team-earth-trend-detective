@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Building2, Compass, FlaskConical, HeartPulse, Landmark, Sprout } from 'lucide-react'
 import { CountUp } from './CountUp'
-import { Picture } from './Picture'
+import { Scene, type SceneName } from './Scene'
 import { Sparkline } from './Sparkline'
 import { useI18n, type Key } from '../i18n'
 import { SLOPE_DECIMALS, formatSigned, plainUnit } from '../lib/format'
@@ -66,7 +66,34 @@ export function MeansForYou({ data, page = false }: { data: AppData; page?: bool
           variable === 't2m_max' && !unsure ? t('home.story.yes') : t('plain.notSure')
         }`
 
-  const photo = region === 'earth' ? 'earth-hero' : region === 'congo' ? 'congo-forest' : 'satellite'
+  const photo: SceneName =
+    region === 'earth'
+      ? 'nasa-marble-east'
+      : region === 'congo'
+        ? 'nasa-congo-river'
+        : profile === 'farmer'
+          ? 'nasa-soil'
+          : profile === 'architect'
+            ? 'nasa-cameroon'
+            : profile === 'health'
+              ? 'nasa-clouds'
+              : profile === 'urban_planner'
+                ? 'nasa-gulf'
+                : 'nasa-africa-radar'
+  const photoAlt: Key =
+    photo === 'nasa-marble-east'
+      ? 'scene.marble'
+      : photo === 'nasa-congo-river'
+        ? 'scene.river'
+        : photo === 'nasa-soil'
+          ? 'scene.soil'
+          : photo === 'nasa-cameroon'
+            ? 'scene.cameroon'
+            : photo === 'nasa-clouds'
+              ? 'scene.clouds'
+              : photo === 'nasa-gulf'
+                ? 'scene.gulf'
+                : 'scene.radar'
   return (
     <section id="for-you" className={page ? 'means means-band means--page' : 'means means-band'} aria-labelledby="means-title">
       <p className="kicker">{t('means.kicker')}</p>
@@ -91,7 +118,7 @@ export function MeansForYou({ data, page = false }: { data: AppData; page?: bool
         })}
       </div>
       <div className="means-layout">
-        <Picture name={photo} alt={t(region === 'earth' ? 'story.caption.earth' : region === 'congo' ? 'story.caption.forest' : 'story.caption.sat')} />
+        <Scene name={photo} alt={t(photoAlt)} />
         <article className="means-result" data-halo="true">
           <h3>{t('means.see')}</h3>
           {region === 'congo' && (
@@ -146,7 +173,7 @@ export function MeansForYou({ data, page = false }: { data: AppData; page?: bool
       <p className="note">{t('means.disclaimer')}</p>
       <p className="note">{reading?.why}</p>
       {region !== 'earth' && (
-        <Link to={investigateLink(zoneId, variable, 'p2001_2025')}>Open {lang === 'fr' ? 'Yaoundé' : 'Yaoundé'}</Link>
+        <Link className="cta cta--sun" to={investigateLink(zoneId, variable, 'p2001_2025')}>{t('story.openYaounde')}</Link>
       )}
     </section>
   )

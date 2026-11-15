@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { BasinMap } from '../components/BasinMap'
+import { Scene, type SceneName } from '../components/Scene'
 import { EvidenceView } from '../components/EvidenceView'
 import { PersonaPanel } from '../components/PersonaPanel'
 import { SoonNote } from '../components/WorldStage'
@@ -10,6 +11,26 @@ import { formatSlope } from '../lib/format'
 import { STEP_IDS, investigateLink, safeParams, safeStep, type StepId } from '../lib/params'
 import { COMING_REGIONS, periodLabel } from '../lib/story'
 import type { Analysis, Source, Variable, Zone } from '../lib/types'
+
+function investigateScene(step: string, variable: string): SceneName {
+  if (step === 'place') return 'nasa-africa-radar'
+  if (step === 'clues') return 'nasa-gulf'
+  if (step === 'act') return 'nasa-soil'
+  if (variable === 'rh2m') return 'nasa-clouds'
+  if (variable === 'precip') return 'nasa-gpm'
+  if (variable === 't2m_max' || variable === 't2m' || variable === 'ts' || variable === 't2m_min') return 'nasa-cameroon'
+  return 'nasa-congo-river'
+}
+
+function investigateAlt(step: string, variable: string): Key {
+  if (step === 'place') return 'scene.radar'
+  if (step === 'clues') return 'scene.gulf'
+  if (step === 'act') return 'scene.soil'
+  if (variable === 'rh2m') return 'scene.clouds'
+  if (variable === 'precip') return 'scene.gpm'
+  if (variable === 't2m_max' || variable === 't2m' || variable === 'ts' || variable === 't2m_min') return 'scene.cameroon'
+  return 'scene.river'
+}
 
 export function Investigate() {
   const { t } = useI18n()
@@ -32,6 +53,7 @@ export function Investigate() {
 
   return (
     <div className="investigate">
+      <Scene name={investigateScene(step, safe.var)} alt={t(investigateAlt(step, safe.var))} />
       <nav className="stepper" aria-label={t('step.nav')}>
         {STEP_IDS.map((id) => (
           <button key={id} type="button" aria-current={id === step ? 'step' : undefined} onClick={() => go({ step: id })}>

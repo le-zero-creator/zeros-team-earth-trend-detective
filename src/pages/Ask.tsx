@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { AskChat } from '../components/AskChat'
+import { Scene } from '../components/Scene'
 import { useI18n, type Key } from '../i18n'
 import { useData } from '../lib/data'
 import { SLOPE_DECIMALS, formatSigned, plainUnit } from '../lib/format'
@@ -38,6 +39,7 @@ export function Ask() {
   return (
     <article className="ask-page">
       <header className="ask-page__intro">
+        <Scene name="nasa-gulf" alt={t('scene.gulf')} />
         <p className="kicker">{t('ask.kicker')}</p>
         <h1>{t('ask.title')}</h1>
         <p>{t('ask.lead')}</p>

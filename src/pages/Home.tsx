@@ -7,6 +7,7 @@ import { MeansForYou } from '../components/MeansForYou'
 import { Journey } from '../components/Journey'
 import { LivingEarth, type EarthHandle } from '../components/LivingEarth'
 import { Picture } from '../components/Picture'
+import { Scene, type SceneName } from '../components/Scene'
 import { useI18n, type Key } from '../i18n'
 import { useData } from '../lib/data'
 import { SLOPE_DECIMALS, formatSigned, plainUnit } from '../lib/format'
@@ -24,11 +25,11 @@ const FUTURES: { id: string; sourceId: string | null; label: Key }[] = [
   { id: 'world', sourceId: null, label: 'future.world' },
 ]
 
-const STEPS = [
-  { id: 'earth', image: 'earth-hero' as const, title: 'story.step.earth' as Key, caption: 'story.caption.earth' as Key },
-  { id: 'sat', image: 'satellite' as const, title: 'story.step.sat' as Key, caption: 'story.caption.sat' as Key },
-  { id: 'forest', image: 'congo-forest' as const, title: 'story.step.forest' as Key, caption: 'story.caption.forest' as Key },
-  { id: 'city', image: null, title: 'story.step.city' as Key, caption: 'story.caption.earth' as Key },
+const STEPS: { id: string; image: SceneName; title: Key; alt: Key }[] = [
+  { id: 'earth', image: 'nasa-marble-east', title: 'story.step.earth', alt: 'scene.marble' },
+  { id: 'sat', image: 'satellite', title: 'story.step.sat', alt: 'story.caption.sat' },
+  { id: 'forest', image: 'congo-forest', title: 'story.step.forest', alt: 'story.caption.forest' },
+  { id: 'city', image: 'nasa-cameroon', title: 'story.step.city', alt: 'scene.cameroon' },
 ]
 
 function findAnalysis(data: AppData, zone: string, variable: string) {
@@ -186,8 +187,7 @@ export function HomeStory({ data }: { data: AppData | null }) {
                   <p className="band__yes">{yes ? t('home.story.yes') : t('plain.notSure')}</p>
                   <p>{airPlain}</p>
                   <p className="note">{t('means.source')}</p>
-                  <CitySketch />
-                  <Link to={heatLink}>Open Yaoundé</Link>
+                  <Link className="cta cta--sun" to={heatLink}>{t('story.openYaounde')}</Link>
                 </>
               )}
               {item.id === 'city' && !hot && <p className="story-skeleton" role="status">{t('state.loading')}</p>}
@@ -195,8 +195,7 @@ export function HomeStory({ data }: { data: AppData | null }) {
           ))}
         </div>
         <figure className="scrolly__visual">
-          {frame.image ? <Picture name={frame.image} alt={t(frame.caption)} /> : <CitySketch />}
-          <figcaption className="glass-caption">{frame.image ? t(frame.caption) : t('home.story.question')}</figcaption>
+          <Scene name={frame.image} alt={t(frame.alt)} />
         </figure>
       </section>
 
@@ -207,15 +206,15 @@ export function HomeStory({ data }: { data: AppData | null }) {
           <circle cx="8" cy="14" r="4" />
         </svg>
         <ol>
-          <li><Picture name="satellite" alt={t('story.caption.sat')} /><span>{t('how.1')}</span></li>
-          <li><span>{t('how.2')}</span></li>
-          <li><span>{t('how.3')}</span></li>
-          <li><Picture name="congo-forest" alt={t('story.caption.forest')} /><span>{t('how.4')}</span></li>
+          <li><Scene name="nasa-gpm" alt={t('scene.gpm')} /><span>{t('how.1')}</span></li>
+          <li><Scene name="nasa-clouds" alt={t('scene.clouds')} /><span>{t('how.2')}</span></li>
+          <li><Scene name="nasa-soil" alt={t('scene.soil')} /><span>{t('how.3')}</span></li>
+          <li><Scene name="congo-forest" alt={t('story.caption.forest')} /><span>{t('how.4')}</span></li>
         </ol>
       </section>
 
       <p>
-        <Link to="/congo">{t('story.openCongo')}</Link>
+        <Link className="cta cta--sun" to="/congo">{t('story.openCongo')}</Link>
       </p>
       {yaounde && <p className="callout">{t('yaounde.short', { km: yaounde.distance_to_basin_km })}</p>}
 
@@ -257,14 +256,3 @@ export function HomeStory({ data }: { data: AppData | null }) {
   )
 }
 
-function CitySketch() {
-  return (
-    <svg className="city-sketch" viewBox="0 0 320 180" role="img" aria-label="Yaoundé">
-      <path className="draw-line" d="M20 140 H300" />
-      <path className="draw-line" d="M60 140 V70 H110 V140" />
-      <path className="draw-line" d="M140 140 V40 H210 V140" />
-      <path className="draw-line" d="M230 140 V90 H280 V140" />
-      <circle className="draw-line" cx="250" cy="36" r="16" />
-    </svg>
-  )
-}

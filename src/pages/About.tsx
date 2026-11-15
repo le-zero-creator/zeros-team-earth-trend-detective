@@ -1,9 +1,11 @@
+import { Scene } from '../components/Scene'
 import { useI18n } from '../i18n'
 
 export function About() {
   const { t } = useI18n()
   return (
     <article className="about">
+      <Scene name="nasa-congo-river" alt={t('scene.river')} />
       <h1>{t('about.title')}</h1>
       <p>{t('about.team')}</p>
       <ul>
