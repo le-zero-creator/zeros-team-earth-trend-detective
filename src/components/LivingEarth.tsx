@@ -149,9 +149,9 @@ export const LivingEarth = forwardRef<EarthHandle, Props>(function LivingEarth(
           const pivot = new THREE.Group()
           pivot.rotation.z = spec.tilt
           pivot.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(points), new THREE.LineBasicMaterial({ color: spec.color, transparent: true, opacity: 0.7 })))
-          const sat = new THREE.Mesh(new THREE.SphereGeometry(0.032, 12, 12), new THREE.MeshBasicMaterial({ color: 0xfff8ef }))
+          const sat = new THREE.Mesh(new THREE.SphereGeometry(0.018, 10, 10), new THREE.MeshBasicMaterial({ color: 0xfff8ef }))
           sat.position.set(spec.radius, 0, 0)
-          sat.add(new THREE.Mesh(new THREE.SphereGeometry(0.07, 10, 10), new THREE.MeshBasicMaterial({ color: spec.color, transparent: true, opacity: 0.45 })))
+          sat.add(new THREE.Mesh(new THREE.SphereGeometry(0.04, 8, 8), new THREE.MeshBasicMaterial({ color: spec.color, transparent: true, opacity: 0.35 })))
           pivot.add(sat)
           orbits.add(pivot)
           return { pivot, speed: spec.speed }
