@@ -1,11 +1,11 @@
+import { readFileSync } from 'node:fs'
+import { join } from 'node:path'
 import { streamText } from 'ai'
-import { allow, clientIp, json } from './guard'
-import { readPower } from './powerCore'
-import { buildFacts } from '../src/lib/askFacts'
-import { parseAsk } from '../src/lib/askRequest'
+import { allow, clientIp, json } from './guard.js'
+import { readPower } from './powerCore.js'
+import { buildFacts } from '../src/lib/askFacts.js'
+import { parseAsk } from '../src/lib/askRequest.js'
 import type { Results, Zone, ZoneProps } from '../src/lib/types'
-import resultsJson from '../public/data/results.json'
-import pointsJson from '../public/data/zones/congo_basin_points.geojson'
 
 export const maxDuration = 30
 
@@ -13,8 +13,14 @@ const MODEL = 'google/gemini-2.5-flash'
 
 let factsCache: string | null = null
 
+function readData<T>(path: string): T {
+  return JSON.parse(readFileSync(join(process.cwd(), path), 'utf8')) as T
+}
+
 function publishedZones(): Zone[] {
-  const file = pointsJson as { features: { properties: ZoneProps; geometry: { coordinates: number[] } }[] }
+  const file = readData<{ features: { properties: ZoneProps; geometry: { coordinates: number[] } }[] }>(
+    'public/data/zones/congo_basin_points.geojson',
+  )
   return file.features.map((feature) => ({
     ...feature.properties,
     lon: feature.geometry.coordinates[0],
@@ -23,7 +29,9 @@ function publishedZones(): Zone[] {
 }
 
 function facts(): string {
-  if (!factsCache) factsCache = buildFacts({ results: resultsJson as unknown as Results, zones: publishedZones() })
+  if (!factsCache) {
+    factsCache = buildFacts({ results: readData<Results>('public/data/results.json'), zones: publishedZones() })
+  }
   return factsCache
 }
 

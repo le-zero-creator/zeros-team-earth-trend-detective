@@ -1,5 +1,5 @@
-import { PROFILE_IDS, type ProfileId } from './profile'
-import { ZONE_IDS } from './params'
+import { PROFILE_IDS, type ProfileId } from './profile.js'
+import { ZONE_IDS } from './params.js'
 import type { Lang } from './types'
 
 export interface AskInput {

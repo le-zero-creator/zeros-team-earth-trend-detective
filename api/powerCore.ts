@@ -1,5 +1,5 @@
-import { cachedJson } from './guard'
-import { liveLines, parsePowerPayload, powerUrl, type PowerMonth } from '../src/lib/powerSeries'
+import { cachedJson } from './guard.js'
+import { liveLines, parsePowerPayload, powerUrl, type PowerMonth } from '../src/lib/powerSeries.js'
 
 export interface PowerReading {
   label: 'Live NASA data, not yet analysed by our tests'
