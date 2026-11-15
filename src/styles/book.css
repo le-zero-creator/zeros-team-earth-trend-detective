@@ -525,3 +525,21 @@ html { font-synthesis: none; }
 @media (prefers-reduced-motion: reduce) { .hero-rings__ring path { animation: none; stroke-dashoffset: 0; } }
 .intro { display: flex !important; align-items: center; justify-content: center; }
 .intro-logo.logo-mark { width: min(140px, 34vw); height: auto; }
+.legal-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: clamp(12px, 2vw, 20px); margin-top: clamp(24px, 4vw, 40px); }
+.legal-card { display: grid; gap: 8px; align-content: start; padding: clamp(16px, 2.4vw, 26px); border-radius: var(--r-lg); background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow); }
+.legal-card p { color: var(--grey-text); }
+.pg-hero--solo { grid-template-columns: auto 1fr; align-items: center; }
+.pg-hero--solo .terra { width: clamp(90px, 12vw, 150px); height: auto; }
+.space-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); gap: clamp(12px, 2vw, 24px); margin-top: clamp(20px, 3vw, 32px); align-items: start; }
+.space-form label { display: grid; gap: 6px; font-weight: 600; }
+.space-form input, .space-form select { min-height: 46px; padding: 10px 14px; border-radius: 14px; border: 1px solid var(--line); background: var(--bg); color: var(--text); font: 400 var(--fs-body) var(--font-text); }
+.space-label { font-weight: 600; margin-top: 4px; }
+.space-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.space-chips button { min-height: 40px; padding: 8px 14px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); color: var(--text); font: 600 var(--fs-small) var(--font-text); cursor: pointer; transition: transform 0.3s var(--ease-o); }
+.space-chips button[aria-pressed='true'] { background: var(--night); color: var(--bg); border-color: var(--night); }
+.space-chips button:hover { transform: translateY(-2px); }
+.space-form .bk-cta { justify-self: start; }
+.space-qs { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.space-qs a { display: block; padding: 12px 14px; border-radius: 14px; background: var(--bg); color: var(--text); text-decoration: none; font-weight: 600; transition: transform 0.3s var(--ease-o); }
+.space-qs a:hover { transform: translateX(4px); }
+@media (max-width: 560px) { .pg-hero--solo { grid-template-columns: 1fr; } }
