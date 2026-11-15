@@ -18,14 +18,14 @@ Statuts : ✅ fait · 🟡 en cours · ⬜ à faire
 | 5 | Le site se lit comme un LIVRE : Terre → bassin du Congo → Yaoundé → pour toi → demander à Terra (FR + EN) | 🟡 | Accueil réécrit comme un livre (8 chapitres : Terre → satellites → bassin → Yaoundé → chaleur → air → pluie → pour toi), FR + EN. Autres pages : à faire. |
 | 6 | Mise en page storytelling : une étape à la fois, en grand, on tourne la page ; clic pour détails si besoin | ✅ | `src/components/Book.tsx` : scène collante, une page à la fois, défilement = tourner la page, points + flèches, « En savoir plus » ouvre une fenêtre. |
 | 7 | Échelle typographique unique ; sections blanches décalées sur ordinateur à réaligner | ⬜ | |
-| 8 | Profils : plus de petites pastilles ; une carte par profil avec image, dépliable ; extensible (« Bientôt ») | ⬜ | |
-| 9 | Puces « Après-midi chauds / Air humide / Pluie » séparées du choix du profil (« Quelle trace regarder ? ») | ⬜ | |
-| 10 | « Pourquoi cela peut compter », « Questions à explorer », « Ce qu'il faudrait encore » : cartes visibles, cliquables, dépliables (« Bientôt » si vide) | ⬜ | |
+| 8 | Profils : plus de petites pastilles ; une carte par profil avec image, dépliable ; extensible (« Bientôt ») | ✅ | `MeansForYou.tsx` : une carte photo par métier dans un carrousel (on ne voit pas tout), panneau riche en dessous, 2 métiers « Bientôt » (enseignant, énergie). Lecture architecte avec dessin animé à points chauds : à faire. |
+| 9 | Puces « Après-midi chauds / Air humide / Pluie » séparées du choix du profil (« Quelle trace regarder ? ») | ✅ | Étape 2 séparée « Quelle trace veux-tu lire ? » avec icônes, après « Qui es-tu ? ». |
+| 10 | « Pourquoi cela peut compter », « Questions à explorer », « Ce qu'il faudrait encore » : cartes visibles, cliquables, dépliables (« Bientôt » si vide) | ✅ | Chaque point est une carte dépliable ; questions → « Demander à Terra » ; données manquantes → « Bientôt ». |
 | 11 | Chaque image correspond à son contexte (NASA domaine public ou image IA marquée) ; vérifier l'image satellite « Ouvrir Yaoundé » | ⬜ | |
-| 12 | Transitions entre bandes de couleur (vert → blanc) douces, pas de coupe nette | 🟡 | Héros : fondu doux vers la page. Bande verte « Pour toi » : à faire. |
-| 13 | Éléments du bas qui ressemblent à des boutons : cliquables ou vraies phrases animées ; « Tendance locale… » expliquée | ⬜ | |
+| 12 | Transitions entre bandes de couleur (vert → blanc) douces, pas de coupe nette | 🟡 | Héros : fondu doux. Bande verte : coins arrondis + fondu en bas (masque). Autres pages : à vérifier. |
+| 13 | Éléments du bas qui ressemblent à des boutons : cliquables ou vraies phrases animées ; « Tendance locale… » expliquée | 🟡 | Accueil : fin = grandes cartes cliquables (globe, lieux, Yaoundé, méthode) + chapitres « Bientôt » dépliables. Le chiffre est expliqué (« même chiffre que dans l'histoire »). |
 | 14 | UN seul design sur toutes les pages (accueil, globe, Yaoundé, Pour toi, Mon espace, Ask Terra) ; animations partout ; « Lieu », « Indice pour vous » renommés | ⬜ | |
-| 15 | Champ Ask Terra directement dans l'étude de cas (Yaoundé, « Pour toi ») via `/api/ask` | ⬜ | |
+| 15 | Champ Ask Terra directement dans l'étude de cas (Yaoundé, « Pour toi ») via `/api/ask` | 🟡 | Champ Ask Terra sur l'accueil et sur « Pour toi ». Page Yaoundé : à faire. |
 | 16 | « Montrer le guide » rejoue l'intro ; thème et langue en icônes avec infobulle + aria-label | ⬜ | |
 | 17 | Tutoriel d'intro storytelling : le détective suit les traces de la Terre depuis l'espace jusqu'à une ville puis jusqu'à toi ; Terra guide | ⬜ | |
 | 18 | « Mentions & crédits » simple : équipe, crédits données NASA, « site non officiel de la NASA », pas de pistage | ⬜ | |
