@@ -40,6 +40,12 @@ Voir DECISIONS.md (liste complète). Les règles détaillées sont dans CLAUDE.m
 - 14/11 : défi thème 2 confirmé. Angle Yaoundé + lecture métier d'architecte.
 - 15/11 : V1 = NASA POWER seulement, tout précalculé dans public/data/results.json ; aucun calcul statistique dans le navigateur.
 
+## Dernière reprise (15/11, 23 h 30 — Claude Code)
+- Backlog relu : tout est ✅ sauf la connexion Google (volontairement non faite, voir backlog).
+- Finitions poussées sur `main` : bande verte de « Pour vous » avec le même fondu que l'accueil (n° 12 ✅) ; étiquettes du globe jamais coupées ni sous le panneau ; note « Bientôt » de Comparer dans la colonne.
+- Vérifié en ligne, 12 pages, 375 et 1440 px (FR) : aucun débordement, 0 erreur console, aucun hôte tiers. `npm test` 42/42, `npm run build` OK.
+- Attention : un vieux `vite preview` occupe parfois le port 4174 et sert une ancienne version ; utiliser 4175.
+
 ## État actuel (15/11, 21 h — Terra Trace sur `main`, en ligne)
 - **La version de référence est Terra Trace sur `main`** (décision de Ludovic) : on l'améliore, on ne revient pas vers la V1 décrite dans CLAUDE.md. Les règles de science et de sécurité restent valables. Vercel publie `main` tout seul sur https://trend-detective-congo.vercel.app ; ce soir on pousse directement sur `main` (consigne de Ludovic).
 - Le suivi détaillé, demande par demande, est dans `docs/BACKLOG_LUDOVIC.md`.
