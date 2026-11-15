@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { Link, NavLink } from 'react-router-dom'
+import { Intro } from './Intro'
 import { useI18n } from '../i18n'
 import { useData } from '../lib/data'
 
@@ -36,6 +37,7 @@ export function AppShell({ children }: { children: ReactNode }) {
   const { t } = useI18n()
   return (
     <>
+      <Intro />
       <a className="skip" href="#main" onClick={(e) => { e.preventDefault(); document.getElementById('main')?.focus() }}>
         {t('nav.skip')}
       </a>

@@ -4,6 +4,7 @@ import type { ReactNode } from 'react'
 import { MemoryRouter } from 'react-router-dom'
 import { vi } from 'vitest'
 import { AppErrorBoundary } from '../components/AppErrorBoundary'
+import { Intro } from '../components/Intro'
 import { AppShell } from '../components/AppShell'
 import { EvidenceView } from '../components/EvidenceView'
 import { chartRows } from '../components/TrendChart'
@@ -173,6 +174,62 @@ describe('ailleurs sur Terre', () => {
   it('rejette une étape inconnue', () => {
     expect(safeStep('nope')).toBe('evidence')
     expect(safeStep('place')).toBe('place')
+  })
+})
+
+describe('écran d’ouverture', () => {
+  const saved = window.matchMedia
+
+  afterEach(() => {
+    window.matchMedia = saved
+    sessionStorage.clear()
+    document.documentElement.removeAttribute('data-intro')
+  })
+
+  it('ne s’affiche pas si le mouvement est réduit', () => {
+    window.matchMedia = ((query: string) => ({
+      matches: query.includes('reduce'),
+      media: query,
+      addEventListener() {},
+      removeEventListener() {},
+      dispatchEvent() { return false },
+      onchange: null,
+      addListener() {},
+      removeListener() {},
+    })) as typeof window.matchMedia
+    sessionStorage.removeItem('td.intro')
+    wrap(
+      <>
+        <Intro />
+        <p>under</p>
+      </>,
+    )
+    expect(screen.queryByRole('button', { name: 'Skip / Passer' })).toBeNull()
+    expect(document.documentElement.getAttribute('data-intro')).toBe('done')
+  })
+
+  it('se joue une fois, et Passer le ferme', () => {
+    window.matchMedia = ((query: string) => ({
+      matches: false,
+      media: query,
+      addEventListener() {},
+      removeEventListener() {},
+      dispatchEvent() { return false },
+      onchange: null,
+      addListener() {},
+      removeListener() {},
+    })) as typeof window.matchMedia
+    sessionStorage.removeItem('td.intro')
+    wrap(
+      <>
+        <Intro />
+        <p>under</p>
+      </>,
+    )
+    fireEvent.click(screen.getByRole('button', { name: 'Skip / Passer' }))
+    expect(sessionStorage.getItem('td.intro')).toBe('1')
+    expect(screen.queryByRole('button', { name: 'Skip / Passer' })).toBeNull()
+    expect(screen.getByText('under')).toBeTruthy()
   })
 })
 
