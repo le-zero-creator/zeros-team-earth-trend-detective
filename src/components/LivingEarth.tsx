@@ -3,6 +3,8 @@ import type { Zone } from '../lib/types'
 
 export type EarthHandle = {
   lookAt: (lat: number, lon: number, dist: number) => void
+  /** Zoom and rise for about one second, then resolve. Returns false if the globe is not ready. */
+  enter: () => boolean
 }
 
 type Props = {
@@ -12,6 +14,7 @@ type Props = {
   onPick?: (zoneId: string) => void
   onReady?: () => void
   onFallback?: () => void
+  onEnter?: () => void
 }
 
 /** Equirectangular point on a Three sphere, before any mesh rotation. */
@@ -26,21 +29,27 @@ function latLonToVector(lat: number, lon: number, radius: number) {
 }
 
 export const LivingEarth = forwardRef<EarthHandle, Props>(function LivingEarth(
-  { hero = false, zones = [], selected = null, onPick, onReady, onFallback },
+  { hero = false, zones = [], selected = null, onPick, onReady, onFallback, onEnter },
   ref,
 ) {
   const root = useRef<HTMLDivElement>(null)
   const look = useRef<(lat: number, lon: number, dist: number) => void>(() => {})
+  const enter = useRef<() => boolean>(() => false)
   const pick = useRef(onPick)
   const ready = useRef(onReady)
   const fallback = useRef(onFallback)
+  const entered = useRef(onEnter)
   pick.current = onPick
   ready.current = onReady
   fallback.current = onFallback
+  entered.current = onEnter
 
   useImperativeHandle(ref, () => ({
     lookAt(lat, lon, dist) {
       look.current(lat, lon, dist)
+    },
+    enter() {
+      return enter.current()
     },
   }))
 
@@ -80,8 +89,9 @@ export const LivingEarth = forwardRef<EarthHandle, Props>(function LivingEarth(
         const controls = new OrbitControls(camera, renderer.domElement)
         controls.enablePan = false
         controls.enableZoom = !hero
-        controls.autoRotate = true
-        controls.autoRotateSpeed = 0.35
+        controls.enableRotate = !hero
+        controls.autoRotate = !hero
+        controls.autoRotateSpeed = hero ? 0.15 : 0.35
         controls.enableDamping = true
         controls.dampingFactor = 0.08
         controls.minDistance = 1.55
@@ -125,9 +135,19 @@ export const LivingEarth = forwardRef<EarthHandle, Props>(function LivingEarth(
         scene.add(glow)
 
         let goal: { x: number; y: number; z: number } | null = null
+        let flight: { origin: InstanceType<typeof THREE.Vector3>; dest: InstanceType<typeof THREE.Vector3>; t0: number } | null = null
         look.current = (lat, lon, dist) => {
           goal = latLonToVector(lat, lon, dist)
           controls.autoRotate = false
+        }
+        enter.current = () => {
+          if (flight) return true
+          const dest = camera.position.clone().multiplyScalar(0.62)
+          dest.y += 0.4
+          flight = { origin: camera.position.clone(), dest, t0: performance.now() }
+          controls.autoRotate = false
+          controls.enabled = false
+          return true
         }
         controls.addEventListener('start', () => {
           goal = null
@@ -182,12 +202,21 @@ export const LivingEarth = forwardRef<EarthHandle, Props>(function LivingEarth(
             return
           }
           raf = window.requestAnimationFrame(loop)
-          if (goal) {
+          if (hero && !flight) earth.rotation.y += 0.0011
+          if (flight) {
+            const k = Math.min(1, (performance.now() - flight.t0) / 1000)
+            const eased = 1 - (1 - k) ** 3
+            camera.position.lerpVectors(flight.origin, flight.dest, eased)
+            if (k >= 1) {
+              flight = null
+              entered.current?.()
+            }
+          } else if (goal) {
             camera.position.lerp(new THREE.Vector3(goal.x, goal.y, goal.z), 0.08)
             if (camera.position.distanceTo(new THREE.Vector3(goal.x, goal.y, goal.z)) < 0.02) {
               camera.position.set(goal.x, goal.y, goal.z)
               goal = null
-              if (hero) controls.autoRotate = true
+              if (!hero) controls.autoRotate = true
             }
           }
           controls.update()
@@ -220,6 +249,7 @@ export const LivingEarth = forwardRef<EarthHandle, Props>(function LivingEarth(
       stopped = true
       window.cancelAnimationFrame(raf)
       look.current = () => {}
+      enter.current = () => false
       cleanups.forEach((fn) => fn())
     }
   }, [hero])
