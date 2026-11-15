@@ -223,6 +223,34 @@ function InvestigateStep({
           <h1 id="evidence-title" className="sr-only">
             {t('step.evidence')}
           </h1>
+          <div className="chart-controls">
+            <label>
+              {t('ask.place')}
+              <select value={zone.zone_id} onChange={(event) => onGo({ zone: event.target.value })}>
+                {dataZones.map((item) => (
+                  <option key={item.zone_id} value={item.zone_id}>
+                    {lang === 'fr' ? item.name_fr : item.name_en}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <fieldset className="segmented">
+              <legend>{t('science.period')}</legend>
+              {(['p2001_2025', 'p1981_2025'] as const).map((id) => (
+                <label key={id} className={periodId === id ? 'is-on' : undefined}>
+                  <input type="radio" name="evidence-period" checked={periodId === id} onChange={() => onGo({ period: id })} />
+                  {id.slice(1).replace('_', '–')}
+                </label>
+              ))}
+            </fieldset>
+            <div className="globe-layers" role="group" aria-label={t('globe.layers')}>
+              {variables.map((item) => (
+                <button key={item.variable_id} type="button" aria-pressed={item.variable_id === variable.variable_id} onClick={() => onGo({ var: item.variable_id })}>
+                  {t(`plain.var.${item.variable_id}` as Key)}
+                </button>
+              ))}
+            </div>
+          </div>
           <EvidenceView
             analysis={analysis}
             variable={variable}

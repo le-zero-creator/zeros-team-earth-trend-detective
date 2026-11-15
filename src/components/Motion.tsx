@@ -22,21 +22,37 @@ export function Motion() {
         { threshold: 0.08 },
       )
     }
-    const scan = () => {
-      document.querySelectorAll('.reveal').forEach((node) => {
-        if (seen.has(node)) return
-        seen.add(node)
-        if (io) io.observe(node)
-        else node.classList.add('is-in')
-      })
+    const mark = (node: Element, kind: string) => {
+      if (seen.has(node) || node.closest('.story-hero, .explore-screen, .intro')) return
+      seen.add(node)
+      const index = node.parentElement ? Array.prototype.indexOf.call(node.parentElement.children, node) : 0
+      ;(node as HTMLElement).style.setProperty('--motion-delay', `${Math.min(Math.max(index, 0), 5) * 80}ms`)
+      node.classList.add('motion-item', kind)
+      if (io) io.observe(node)
+      else node.classList.add('is-in')
     }
+    const scan = () => {
+      document.querySelectorAll('.reveal, .means-card, .card, .glass, .journey-card, .ask-panel, .chart-box').forEach((node) => mark(node, 'motion-card'))
+      document.querySelectorAll('main h1, main h2, main h3, main p').forEach((node) => mark(node, 'motion-line'))
+      document.querySelectorAll('main img, .ai-photo').forEach((node) => mark(node, 'motion-media'))
+      document.querySelectorAll('main svg.icon, main .means-people svg, main .accent-icon').forEach((node) => mark(node, 'motion-icon'))
+    }
+    const onVis = () => document.documentElement.toggleAttribute('data-paused', document.hidden)
+    document.addEventListener('visibilitychange', onVis)
+    onVis()
     scan()
     const changes = new MutationObserver(scan)
     changes.observe(document.body, { childList: true, subtree: true })
-    if (reduce || !fine) return () => { io?.disconnect(); changes.disconnect() }
+    if (reduce || !fine) {
+      return () => {
+        io?.disconnect()
+        changes.disconnect()
+        document.removeEventListener('visibilitychange', onVis)
+      }
+    }
     const move = (event: PointerEvent) => {
       if (event.pointerType === 'touch') return
-      const card = (event.target as Element | null)?.closest?.('[data-halo]')
+      const card = (event.target as Element | null)?.closest?.('.motion-card, [data-halo]')
       if (!card) return
       const box = card.getBoundingClientRect()
       ;(card as HTMLElement).style.setProperty('--gx', `${event.clientX - box.left}px`)
@@ -47,6 +63,7 @@ export function Motion() {
       io?.disconnect()
       changes.disconnect()
       document.removeEventListener('pointermove', move)
+      document.removeEventListener('visibilitychange', onVis)
     }
   }, [pathname])
   return null

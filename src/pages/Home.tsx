@@ -4,6 +4,7 @@ import { SourceStrip } from '../components/Banners'
 import { CountUp } from '../components/CountUp'
 import { LocationsTable } from '../components/LocationsTable'
 import { MeansForYou } from '../components/MeansForYou'
+import { Journey } from '../components/Journey'
 import { LivingEarth, type EarthHandle } from '../components/LivingEarth'
 import { Picture } from '../components/Picture'
 import { useI18n, type Key } from '../i18n'
@@ -152,12 +153,19 @@ export function HomeStory({ data }: { data: AppData | null }) {
           <p>{t('story.lead')}</p>
           <p>{t(`means.hero.${profile}` as Key)}</p>
           <p>
-            <Link className="cta cta--sun" to="/explore">{t('story.openGlobe')}</Link>
+            <button
+              type="button"
+              className="cta cta--sun"
+              onClick={() => document.getElementById('journey')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+            >
+              {t('story.openGlobe')}
+            </button>
           </p>
         </div>
         <p className="glass-caption">{globe ? t('globe.credit') : `${t('story.caption.earth')} ${t('photo.credit')}`}</p>
       </section>
 
+      <Journey data={data} />
       <nav className="scale-nav" aria-label={t('story.kicker')}>
         <a href="#step-earth">{t('means.earth')}</a>
         <a href="#step-forest">{t('means.congo')}</a>

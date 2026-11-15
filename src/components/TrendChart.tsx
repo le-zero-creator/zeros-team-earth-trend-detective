@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react'
 import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import { EvidenceBadge } from './EvidenceBadge'
 import { senY } from '../lib/senLine'
@@ -25,12 +26,38 @@ export function TrendChart({ analysis, alt, valueName, lineName }: { analysis: A
   const low = Math.min(...span)
   const high = Math.max(...span)
   const pad = (high - low) * 0.25 || 1
+  const plot = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    const root = plot.current
+    if (!root) return
+    const reduce = typeof window.matchMedia === 'function' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (reduce) return
+    const timer = window.setTimeout(() => {
+      root.querySelectorAll<SVGPathElement>('.recharts-line-curve').forEach((path, index) => {
+        let length = 0
+        try { length = path.getTotalLength() } catch { return }
+        if (!length) return
+        path.style.transition = 'none'
+        path.style.strokeDasharray = `${length}`
+        path.style.strokeDashoffset = `${length}`
+        path.getBoundingClientRect()
+        path.style.transition = `stroke-dashoffset 1.1s cubic-bezier(.16,.84,.24,1) ${index * 0.12}s`
+        path.style.strokeDashoffset = '0'
+        path.addEventListener('transitionend', () => {
+          path.style.strokeDasharray = ''
+          path.style.strokeDashoffset = ''
+          path.style.transition = ''
+        }, { once: true })
+      })
+    }, 60)
+    return () => window.clearTimeout(timer)
+  }, [analysis])
   return (
     <div className="chart-box" role="img" aria-label={alt}>
       <div className="chart-badge">
         <EvidenceBadge level={analysis.evidence_level} direction={analysis.direction} />
       </div>
-      <div aria-hidden="true" className="chart-plot">
+      <div aria-hidden="true" className="chart-plot" ref={plot}>
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={rows} margin={{ top: 16, right: 12, left: 0, bottom: 0 }}>
             <CartesianGrid stroke="#d3e4d4" vertical={false} />

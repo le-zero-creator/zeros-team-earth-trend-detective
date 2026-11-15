@@ -65,6 +65,15 @@ export function EvidenceView({
         lineName={t('chart.sen')}
         alt={t('science.chartAlt', { what, place, period, level: t(`evidence.${analysis.evidence_level}`) })}
       />
+      <p className="note">
+        {source?.name ?? t('ask.source')} · {variable.name[lang]} · {period}
+        {source?.url && (
+          <>
+            {' '}
+            · <a href={source.url} target="_blank" rel="noopener noreferrer">{t('science.source')}</a>
+          </>
+        )}
+      </p>
 
       <details className="science-fold">
         <summary>{t('science.title')}</summary>

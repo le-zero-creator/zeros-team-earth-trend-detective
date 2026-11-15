@@ -94,8 +94,9 @@ export function AppShell({ children }: { children: ReactNode }) {
         <motion.div
           key={pathname}
           className="page-in"
-          initial={{ opacity: 0, y: 8 }}
+          initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.55, ease: [0.16, 0.84, 0.24, 1] }}
         >
           {children}
         </motion.div>
