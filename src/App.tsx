@@ -9,6 +9,7 @@ const Investigate = lazy(() => import('./pages/Investigate').then((m) => ({ defa
 const Method = lazy(() => import('./pages/Method').then((m) => ({ default: m.Method })))
 const About = lazy(() => import('./pages/About').then((m) => ({ default: m.About })))
 const Compare = lazy(() => import('./pages/Compare').then((m) => ({ default: m.Compare })))
+const Ask = lazy(() => import('./pages/Ask').then((m) => ({ default: m.Ask })))
 
 function ScreenFallback() {
   const { t } = useI18n()
@@ -29,6 +30,7 @@ export function App() {
           <Route path="/method" element={<Method />} />
           <Route path="/about" element={<About />} />
           <Route path="/compare" element={<Compare />} />
+          <Route path="/ask" element={<Ask />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>

@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { Link, NavLink } from 'react-router-dom'
+import { AskDock } from './AskDock'
 import { Intro } from './Intro'
 import { useI18n } from '../i18n'
 import { useData } from '../lib/data'
@@ -25,7 +26,7 @@ function Footer() {
     <footer className="footer">
       <p>
         {t('footer.copyright')} · {t('footer.data')} · {t('footer.basin')} · {t('footer.map')} · {t('footer.license')}{' '}
-        · <Link to="/method">{t('nav.method')}</Link> · <Link to="/about">{t('footer.credits')}</Link> ·{' '}
+        · <Link to="/ask">{t('nav.ask')}</Link> · <Link to="/method">{t('nav.method')}</Link> · <Link to="/about">{t('footer.credits')}</Link> ·{' '}
         {t('footer.notracking')}
         {accessed && <> · {t('footer.version', { date: accessed })}</>}
       </p>
@@ -55,6 +56,9 @@ export function AppShell({ children }: { children: ReactNode }) {
           <NavLink to="/compare" className="topnav__wide">
             {t('nav.compare')}
           </NavLink>
+          <NavLink to="/ask" className="topnav__wide">
+            {t('nav.ask')}
+          </NavLink>
           <NavLink to="/about">{t('nav.about')}</NavLink>
           <LangToggle />
         </nav>
@@ -63,6 +67,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         {children}
       </main>
       <Footer />
+      <AskDock />
       <nav className="bottomnav" aria-label={t('nav.main')}>
         <NavLink to="/" end>
           <span aria-hidden="true">⌂</span>
