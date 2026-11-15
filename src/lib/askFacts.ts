@@ -1,4 +1,4 @@
-import { formatP, formatSlope } from './format'
+import { formatP, formatSlope } from './format.js'
 import type { Results, Zone } from './types'
 
 /**

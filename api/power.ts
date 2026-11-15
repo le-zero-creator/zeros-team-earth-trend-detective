@@ -1,6 +1,6 @@
-import { allow, clientIp, json } from './guard'
-import { readPower } from './powerCore'
-import { readCoord, readYear } from '../src/lib/powerSeries'
+import { allow, clientIp, json } from './guard.js'
+import { readPower } from './powerCore.js'
+import { readCoord, readYear } from '../src/lib/powerSeries.js'
 
 export const maxDuration = 15
 
