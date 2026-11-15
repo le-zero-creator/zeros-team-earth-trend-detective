@@ -1,20 +1,78 @@
-# Earth Trend Detective — Zero's team
+# Trend Detective — Congo Basin
 
-**NASA Space Apps Challenge 2026 · Yaoundé, Cameroun**
-Défi : [Be An Earth System Trend Detective!](https://www.spaceappschallenge.org/2026/challenges/earth-system-trend-detective/) · Équipe : [Zero's team](https://www.spaceappschallenge.org/2026/find-a-team/zeros-team/)
+**NASA Space Apps Challenge 2026 · Yaoundé, Cameroon**
+Challenge: [Be An Earth System Trend Detective!](https://www.spaceappschallenge.org/2026/challenges/earth-system-trend-detective/) · Team: [Zero's team](https://www.spaceappschallenge.org/2026/find-a-team/zeros-team/)
 
-## Le problème
-Les villes africaines comme Yaoundé changent vite (chaleur, végétation, pluies), mais ces tendances restent invisibles pour les habitants et les décideurs.
+Subtitle: **A comparison of selected locations across the Congo Basin region.** Eleven places are not a basin average.
 
-## Notre solution
-Une appli web qui permet de choisir une variable, une zone et une période, de tracer la série temporelle à partir de données NASA,
-de tester si la tendance est significative (Mann-Kendall, p < 0,05), puis de la traduire en recommandations d'aménagement.
+## Problem
 
-## Données utilisées
-À compléter (Giovanni, AppEEARS, GPM, MODIS…).
+People who live and work around the Congo Basin — farmers, builders, health workers, city planners — hear that the climate is changing, but a scientific table does not tell them what the record actually supports.
 
-## Lancer le projet
-À compléter.
+## Solution
+
+A website that starts with one plain question, then opens the real test. The numbers are not calculated in the browser. They are read from `public/data/results.json` (schema 2.1), produced with pymannkendall 1.4.3 from NASA POWER.
+
+What a visitor can do today:
+
+- Read one local result first: Yaoundé, hottest air temperature, 2001–2025.
+- Open the full analysis in one click: yearly series, Sen's slope line, 95% range as numbers, Mann-Kendall, seasonal Mann-Kendall, Hamed-Rao, Benjamini-Hochberg q, and the evidence level.
+- Switch among 11 places, 9 variables, and 2 periods (2001–2025 and 1981–2025).
+- Compare those 11 places for the same clue.
+- Ask job-specific questions (farmer, architect, health, city planning, exploring, research). The numbers do not change.
+- See the rest of the Earth, vegetation, satellite rain, and forest loss as **Coming soon** or **Pending**, with no stand-in numbers.
+
+## Data
+
+| Source | Role | Status |
+| --- | --- | --- |
+| [NASA POWER](https://power.larc.nasa.gov/) (MERRA-2, CERES) | The series used in the tests | Available |
+| [HydroSHEDS](https://www.hydrosheds.org/) | Congo river-basin outline | Reference layer |
+| MODIS LST, MODIS NDVI, GPM IMERG | Named on screen | Pending — not in the numbers |
+| OpenStreetMap | Base map | © OpenStreetMap contributors |
+
+These data were obtained from the NASA Langley Research Center (LaRC) POWER Project funded through the NASA Earth Science/Applied Science Program. Accessed 2026-11-15.
+
+## Run it
+
+```bash
+npm ci
+npm test
+npm run build
+npm run preview -- --port 4174
+```
+
+Open `http://127.0.0.1:4174/zeros-team-earth-trend-detective/#/`.
+
+Direct link to the Yaoundé case: `#/investigate?zone=cmr_yaounde&var=t2m_max&period=p2001_2025`
+
+Check the statistics file (does not change the website):
+
+```bash
+python data/validate.py data/raw/nasa_power public/data/results.json /tmp/td-validate
+```
+
+## In this version / not in this version
+
+In: Home, Investigate (Place → Clues → Evidence → For you), Method, About, Compare (the worldwide tool is marked coming soon; the 11-place table works), English default and French, GitHub Pages workflow.
+
+Not live: MODIS, GPM, forest loss, any place outside the 11 Congo Basin points, a side-by-side tool for the whole Earth. They are visible and labelled. They have no figures.
+
+## GitHub Pages
+
+The workflow `.github/workflows/pages.yml` builds and deploys **when `main` is updated**. It does not deploy from a pull request.
+
+To turn the public URL on:
+
+1. Merge this pull request into `main`.
+2. On GitHub, open the repository **Settings → Pages**.
+3. Under **Build and deployment**, set **Source** to **GitHub Actions** (not “Deploy from a branch”).
+4. Open the **Actions** tab and wait until “Deploy to GitHub Pages” is green.
+5. If the job waits for approval, open **Settings → Environments → github-pages** and approve it.
+6. The site is then `https://le-zero-creator.github.io/zeros-team-earth-trend-detective/`
+
+The address must keep the folder name `zeros-team-earth-trend-detective`. That is the Vite `base` path.
 
 ## Licence
-MIT — voir [LICENSE](LICENSE).
+
+MIT — see [LICENSE](LICENSE). Credits: [CREDITS.md](CREDITS.md).

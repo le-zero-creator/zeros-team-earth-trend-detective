@@ -1,9 +1,9 @@
 # PROJET.md — mémoire du projet (à lire en premier, à mettre à jour après chaque tâche)
 
 ## Projet en 3 lignes
-Appli web « Earth Trend Detective » de Zero's team (NASA Space Apps 2026, Yaoundé).
-Elle détecte une tendance réelle à Yaoundé / au Cameroun (chaleur urbaine, perte de verdure ou pluies) à partir de données NASA,
-teste si elle est significative, puis la traduit en recommandations d'architecte.
+Appli web « Trend Detective — Congo Basin » de Zero's team (NASA Space Apps 2026, Yaoundé).
+Elle compare 11 lieux de la région du Bassin du Congo (dont Yaoundé, étude de cas locale) sur 9 variables NASA POWER et 2 périodes,
+affiche si la tendance est significative (Mann-Kendall), puis propose des questions à explorer selon le métier (architecte, etc.).
 
 ## Défi choisi
 « Be An Earth System Trend Detective! » — https://www.spaceappschallenge.org/2026/challenges/earth-system-trend-detective/
@@ -36,10 +36,27 @@ Appli web simple et rapide, FR + EN. Carte + courbe + résultat du test + recomm
 - Expliquer simplement les termes techniques. Réponses courtes, économie de tokens.
 
 ## Décisions
-- 14/11 : défi thème 2 confirmé. Angle Yaoundé + recommandations d'architecte.
+Voir DECISIONS.md (liste complète). Les règles détaillées sont dans CLAUDE.md et docs/claude/PROMPT_MAITRE.md.
+- 14/11 : défi thème 2 confirmé. Angle Yaoundé + lecture métier d'architecte.
+- 15/11 : V1 = NASA POWER seulement, tout précalculé dans public/data/results.json ; aucun calcul statistique dans le navigateur.
 
-## État actuel
-- Dépôt créé (README, licence, règles). Aucun code encore.
+## État actuel (15/11, accueil grand public + preuves)
+- Branche : `feat/home-grand-public` (à partir de `feature/v1-explorer`). Pull request vers `main`. Pas de merge.
+- Accueil : question, chiffre géant (T2M_MAX Yaoundé), trois cartes, globe (le bassin en vert), recherche mondiale, indices bientôt / en attente, métiers, tableau des 11 lieux.
+- Enquête : Lieu → Indices → Preuves → Pour vous. Le lien direct ouvre les Preuves. Graphique annuel, droite de Sen, IC en chiffres, trois tests, q, niveau de preuve, 5 étapes Acker, comparaison des 11 lieux, deux périodes.
+- Méthode, À propos, Comparer (monde = bientôt), 404.
+- Vérifié ici : `npm test` 30/30 · `npm run build` OK · `npm audit` 0 · captures dans `docs/captures/` · console sans erreur · hôtes : le site et `tile.openstreetmap.org`.
+- Pages GitHub : le workflow est dans le dépôt et part de `main`. L'URL publique n'est pas encore en ligne tant que la PR n'est pas mergée et que Pages n'est pas réglé sur « GitHub Actions ». Les étapes sont dans le README.
+- **Non vérifié dans cette session** : `python data/validate.py` (le script relance tous les calculs et un Monte-Carlo ; il n'a pas été exécuté jusqu'au bout ici). Lighthouse.
+
+## Questions ouvertes
+- Format des valeurs p : la règle écrite dit « < 0.001 » sous 0,001 et 3 chiffres significatifs ; les critères d'acceptation montrent « 0.00014 », « 0.0048 », « 0.097 » (2 chiffres). La règle écrite est appliquée pour l'instant.
+- slope_unit reste en anglais en mode FR (règle : afficher slope_unit tel que dans results.json).
+
+## Commandes utiles
+- npm run build · npm test · npm run preview -- --port 4174 --strictPort
+- Captures : CAPTURE_BASE=http://localhost:4174/zeros-team-earth-trend-detective/ node scripts/capture.mjs home=/   (sous Git Bash, préfixer par MSYS_NO_PATHCONV=1)
+- Un ancien serveur du 14/11 occupe parfois le port 4173 : utiliser 4174.
 
 ## Prochaine étape
-- Proposer l'architecture de la V1 en 10 lignes (pages, librairies, source des données, calcul Mann-Kendall), puis attendre l'OK avant de coder.
+- Ludovic : relire les phrases, merger la PR, activer GitHub Pages (README, section GitHub Pages), puis partager l'URL.
