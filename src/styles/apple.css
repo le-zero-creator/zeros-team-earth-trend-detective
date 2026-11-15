@@ -378,7 +378,52 @@ html[data-theme='dark'] .ask-chips button { color: #e6eef3; }
 }
 
 :root { --ease: cubic-bezier(.16, .84, .24, 1); }
-.means .means-stage { grid-template-columns: 1fr; }
+.means-band {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  padding: 72px max(20px, calc((100vw - var(--maxw)) / 2)) 80px;
+  background: #143832;
+  color: #f4f7f4;
+}
+.means-band .kicker, .means-band h1, .means-band h2, .means-band h3, .means-band p, .means-band li, .means-band a { color: #f4f7f4; }
+.means-band .means-lead { max-width: 38rem; font-size: 1.2rem; }
+.means-band .means-people button, .means-band .means-regions button, .means-band .means-vars button {
+  background: rgb(255 255 255 / 10%);
+  color: #f4f7f4;
+  border-color: rgb(255 255 255 / 28%);
+  min-height: 52px;
+  font-size: 1.05rem;
+}
+.means-layout { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 28px; align-items: stretch; margin-top: 28px; }
+.means-layout .ai-photo, .means-layout img { width: 100%; height: 460px; object-fit: cover; border-radius: 24px; }
+.means-result {
+  background: #f6f1e7;
+  color: #1a2330;
+  border-radius: 24px;
+  padding: 32px 28px;
+  display: grid;
+  align-content: center;
+  gap: 8px;
+}
+.means-result h3, .means-result p, .means-result .note { color: #1a2330; }
+.means-result .means-secondary { font-size: 1rem; color: #3e4c59; margin: 0; }
+.means-result .means-num {
+  font-size: clamp(3.4rem, 6vw, 5.4rem);
+  line-height: 0.95;
+  margin: 8px 0;
+  color: #8c3418;
+}
+.means-result .means-num span { display: block; margin-top: 8px; font-size: 1.15rem; font-weight: 600; color: #3e4c59; }
+.means-result .spark { width: 100%; height: 140px; }
+.means-secondary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 20px; }
+.means-secondary-grid .means-card { background: rgb(255 255 255 / 8%); color: #f4f7f4; }
+.means-secondary-grid h3, .means-secondary-grid p, .means-secondary-grid li, .means-secondary-grid a, .means-secondary-grid span { color: #f4f7f4; font-size: 0.98rem; }
+@media (max-width: 800px) {
+  .means-layout, .means-secondary-grid { grid-template-columns: 1fr; }
+  .means-layout .ai-photo, .means-layout img { height: 280px; }
+  .means-band { padding-top: 48px; padding-bottom: 56px; }
+}
 .means-card, .card, .glass, .journey-card, .chart-box, .ai-photo, .welcome-card, .tour-card, .profile-reading, .space-page form {
   border-radius: 20px;
 }
