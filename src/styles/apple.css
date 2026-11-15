@@ -202,11 +202,49 @@ button:active, .cta:active, .topnav a:active {
   transition: background 0.2s ease, color 0.2s ease, transform 0.1s ease-out;
 }
 
-.ask-page__grid { grid-template-columns: minmax(0, 42rem); }
-.ask-here { margin: 0 0 8px; font-weight: 600; }
-.ask-form { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: end; margin-top: 12px; }
-.ask-form textarea { min-height: 52px; }
-.chat { display: grid; gap: 14px; margin: 12px 0; }
+.ask-page__grid { grid-template-columns: minmax(0, 46rem); }
+.ask { display: grid; gap: 12px; }
+.ask-form { display: grid; gap: 8px; margin: 0; }
+.ask-form label { font-weight: 600; font-size: 1.05rem; }
+.ask-form textarea {
+  min-height: 120px;
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 18px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--text);
+  font: 500 1.15rem/1.45 var(--font-text);
+}
+.ask-form .cta { justify-self: start; min-width: 180px; }
+.chat {
+  display: grid;
+  align-content: start;
+  gap: 14px;
+  min-height: 280px;
+  max-height: 52vh;
+  margin: 0;
+  padding: 16px;
+  overflow: auto;
+  border-radius: 24px;
+  background: rgb(255 255 255 / 72%);
+  box-shadow: 0 18px 50px rgb(16 24 32 / 8%), inset 0 0 0 1px rgb(26 35 48 / 8%);
+}
+html[data-theme='dark'] .chat { background: rgb(16 24 32 / 72%); }
+.ask--compact .ask-form textarea { min-height: 88px; font-size: 1rem; }
+.ask--compact .chat { min-height: 180px; max-height: 38vh; }
+.ask-chips { flex-wrap: nowrap; overflow-x: auto; margin: 0; gap: 6px; }
+.ask-chips button {
+  flex: 0 0 auto;
+  min-height: 32px;
+  padding: 4px 10px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  border-radius: 999px;
+  color: #243140;
+  background: transparent;
+}
+html[data-theme='dark'] .ask-chips button { color: #e6eef3; }
 .chat-turn { display: grid; gap: 8px; }
 .bubble { max-width: 38rem; margin: 0; padding: 12px 14px; }
 .bubble--you {
