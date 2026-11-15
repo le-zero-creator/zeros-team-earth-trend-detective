@@ -24,11 +24,13 @@
     "leaflet": "^1.9.4",
     "lucide-react": "^1.73.0",
     "maplibre-gl": "^6.18.0",
+    "motion": "^11.18.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-leaflet": "^4.2.1",
     "react-router-dom": "^7.18.5",
-    "recharts": "^2.15.0"
+    "recharts": "^2.15.0",
+    "three": "^0.170.0"
   },
   "devDependencies": {
     "@testing-library/react": "^16.1.0",
@@ -36,6 +38,7 @@
     "@types/node": "^22.10.0",
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
+    "@types/three": "^0.170.0",
     "@vitejs/plugin-react": "^5.2.0",
     "jsdom": "^25.0.1",
     "typescript": "^5.7.3",

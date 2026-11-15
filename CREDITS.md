@@ -20,7 +20,7 @@ Zero's team — NASA Space Apps Challenge 2026 (Yaoundé, Cameroon).
 
 ## Pictures
 - earth-hero, satellite, congo-forest: AI-generated. Each one is labelled on the page, “AI-generated image”.
-- Globe imagery: Esri, Maxar, Earthstar Geographics, via Esri World Imagery. No NASA logo, flag, or mission insignia.
+- The turning Earth uses NASA Visible Earth Blue Marble (land, ocean and ice), a public-domain image. No NASA logo, flag, or mission insignia.
 
 ## Licence
 MIT — see [LICENSE](LICENSE).

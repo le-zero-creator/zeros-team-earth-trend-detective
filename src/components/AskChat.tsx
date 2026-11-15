@@ -1,10 +1,17 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useI18n } from '../i18n'
 import type { ProfileId } from '../lib/profile'
 import type { PowerMonth } from '../lib/powerSeries'
 
-type Status = 'idle' | 'wait' | 'talk' | 'done' | 'down' | 'rate' | 'late'
+type Status = 'wait' | 'talk' | 'done' | 'down' | 'rate' | 'late'
+
+type Turn = {
+  id: number
+  question: string
+  answer: string
+  status: Status
+}
 
 export function AskChat({
   suggestions,
@@ -25,14 +32,20 @@ export function AskChat({
 }) {
   const { t, lang } = useI18n()
   const [question, setQuestion] = useState(initialQuestion)
-  const [answer, setAnswer] = useState('')
-  const [status, setStatus] = useState<Status>('idle')
+  const [turns, setTurns] = useState<Turn[]>([])
+  const [busy, setBusy] = useState(false)
   const [months, setMonths] = useState<PowerMonth[] | null>(null)
   const [liveDown, setLiveDown] = useState(false)
+  const last = useRef<HTMLDivElement>(null)
+  const field = compact ? 'ask-q-dock' : 'ask-q'
 
   useEffect(() => {
     setQuestion(initialQuestion)
   }, [initialQuestion])
+
+  useEffect(() => {
+    last.current?.scrollIntoView?.({ block: 'nearest' })
+  }, [turns])
 
   useEffect(() => {
     if (lat === undefined || lon === undefined) return
@@ -56,10 +69,11 @@ export function AskChat({
 
   async function send(text: string) {
     const next = text.trim()
-    if (next.length < 2 || status === 'wait' || status === 'talk') return
+    if (next.length < 2 || busy) return
+    const id = Date.now()
     setQuestion(next)
-    setAnswer('')
-    setStatus('wait')
+    setBusy(true)
+    setTurns((list) => [...list, { id, question: next, answer: '', status: 'wait' }])
     try {
       const res = await fetch('/api/ask', {
         method: 'POST',
@@ -68,63 +82,81 @@ export function AskChat({
       })
       if (!res.ok || !res.body) {
         const code = await res.json().catch(() => ({ error: 'down' }))
-        setStatus(code.error === 'rate' ? 'rate' : code.error === 'late' ? 'late' : 'down')
+        const status: Status = code.error === 'rate' ? 'rate' : code.error === 'late' ? 'late' : 'down'
+        setTurns((list) => list.map((turn) => (turn.id === id ? { ...turn, status } : turn)))
         return
       }
       const reader = res.body.getReader()
       const decoder = new TextDecoder()
       let all = ''
-      setStatus('talk')
+      setTurns((list) => list.map((turn) => (turn.id === id ? { ...turn, status: 'talk' } : turn)))
       while (true) {
         const step = await reader.read()
         if (step.done) break
         all += decoder.decode(step.value, { stream: true })
-        setAnswer(all)
+        const shown = all
+        setTurns((list) => list.map((turn) => (turn.id === id ? { ...turn, answer: shown, status: 'talk' } : turn)))
       }
-      setStatus(all.trim() ? 'done' : 'down')
+      const final = all.trim()
+      setTurns((list) => list.map((turn) => (turn.id === id ? { ...turn, answer: final, status: final ? 'done' : 'down' } : turn)))
     } catch {
-      setStatus('down')
+      setTurns((list) => list.map((turn) => (turn.id === id ? { ...turn, status: 'down' } : turn)))
+    } finally {
+      setBusy(false)
     }
   }
 
   return (
     <div className={compact ? 'ask ask--compact' : 'ask'}>
+      <p className="ask-here">{t('ask.here')}</p>
+      {suggestions.length > 0 && (
+        <div className="ask-chips" aria-label={t('ask.suggestions')}>
+          {suggestions.map((item) => (
+            <button key={item} type="button" onClick={() => void send(item)}>
+              {item}
+            </button>
+          ))}
+        </div>
+      )}
+      <div className="chat" data-ask="thread">
+        {turns.map((turn, index) => (
+          <div key={turn.id} className="chat-turn" ref={index === turns.length - 1 ? last : undefined} data-ask="answer">
+            <p className="bubble bubble--you">{turn.question}</p>
+            <div className="bubble bubble--terra">
+              {!turn.answer && (turn.status === 'wait' || turn.status === 'talk') && (
+                <span className="dots" aria-label={t('ask.waiting')}>
+                  <i />
+                  <i />
+                  <i />
+                </span>
+              )}
+              {turn.answer && <p>{turn.answer}</p>}
+              {turn.status === 'down' && <p>{t('ask.down')}</p>}
+              {turn.status === 'rate' && <p>{t('ask.slow')}</p>}
+              {turn.status === 'late' && <p>{t('ask.late')}</p>}
+            </div>
+          </div>
+        ))}
+      </div>
       <form
+        className="ask-form"
         onSubmit={(event) => {
           event.preventDefault()
           void send(question)
         }}
       >
-        <label htmlFor={compact ? 'ask-q-dock' : 'ask-q'}>{t('ask.label')}</label>
-        <textarea
-          id={compact ? 'ask-q-dock' : 'ask-q'}
-          value={question}
-          maxLength={400}
-          rows={compact ? 3 : 4}
-          onChange={(event) => setQuestion(event.target.value)}
-        />
-        <button className="cta cta--sun" type="submit" disabled={status === 'wait' || status === 'talk'}>
+        <label className="visually-hidden" htmlFor={field}>
+          {t('ask.label')}
+        </label>
+        <textarea id={field} value={question} maxLength={400} rows={2} onChange={(event) => setQuestion(event.target.value)} />
+        <button className="cta cta--sun" type="submit" disabled={busy}>
           {t('ask.send')}
         </button>
       </form>
-      <div className="ask-chips" aria-label={t('ask.suggestions')}>
-        {suggestions.map((item) => (
-          <button key={item} type="button" onClick={() => void send(item)}>
-            {item}
-          </button>
-        ))}
-      </div>
-      <div className="ask-answer" data-ask="answer" aria-live="polite">
-        {status === 'wait' && <p>{t('ask.waiting')}</p>}
-        {answer && <p>{answer}</p>}
-        {status === 'down' && <p>{t('ask.down')}</p>}
-        {status === 'rate' && <p>{t('ask.slow')}</p>}
-        {status === 'late' && <p>{t('ask.late')}</p>}
-      </div>
       <p className="note">{t('ask.note')}</p>
       {(months || liveDown) && (
-        <section className="ask-live" aria-labelledby={compact ? 'live-dock' : 'live-page'}>
-          <h2 id={compact ? 'live-dock' : 'live-page'}>{t('ask.liveTitle')}</h2>
+        <details className="ask-live">
+          <summary>{t('ask.liveTitle')}</summary>
           <p className="note">{t('ask.liveNote')}</p>
           {liveDown && <p>{t('ask.liveDown')}</p>}
           {months && months.length > 0 && (
@@ -150,11 +182,9 @@ export function AskChat({
               </tbody>
             </table>
           )}
-        </section>
+        </details>
       )}
-      {compact && (
-        <Link to="/ask">{t('ask.full')}</Link>
-      )}
+      {compact && <Link to="/ask">{t('ask.full')}</Link>}
     </div>
   )
 }

@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { SourceStrip } from '../components/Banners'
 import { CountUp } from '../components/CountUp'
 import { LocationsTable } from '../components/LocationsTable'
 import { MeansForYou } from '../components/MeansForYou'
+import { LivingEarth, type EarthHandle } from '../components/LivingEarth'
 import { Picture } from '../components/Picture'
-import { WireField } from '../components/WireField'
 import { useI18n, type Key } from '../i18n'
 import { useData } from '../lib/data'
 import { SLOPE_DECIMALS, formatSigned, plainUnit } from '../lib/format'
@@ -59,6 +59,28 @@ export function HomeStory({ data }: { data: AppData | null }) {
     (data?.results.analyses ?? []).filter((item) => item.variable_id === 't2m_max' && item.period_id === 'p2001_2025').map((item) => [item.zone_id, item]),
   )
   const frame = STEPS[step]
+  const earth = useRef<EarthHandle>(null)
+  const [globe, setGlobe] = useState(false)
+
+  useEffect(() => {
+    const reduce = typeof window.matchMedia === 'function' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (reduce) return
+    let frameId = 0
+    const onScroll = () => {
+      window.cancelAnimationFrame(frameId)
+      frameId = window.requestAnimationFrame(() => {
+        const t = Math.min(1, window.scrollY / (window.innerHeight * 1.8))
+        if (t < 0.34) earth.current?.lookAt(12, 18, 2.9)
+        else if (t < 0.68) earth.current?.lookAt(1, 20, 2.15)
+        else earth.current?.lookAt(3.87, 11.52, 1.72)
+      })
+    }
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => {
+      window.cancelAnimationFrame(frameId)
+      window.removeEventListener('scroll', onScroll)
+    }
+  }, [])
 
   useEffect(() => {
     try {
@@ -90,7 +112,6 @@ export function HomeStory({ data }: { data: AppData | null }) {
           <div className="welcome-card">
             {welcome === 0 ? (
               <>
-                <p className="welcome-emoji" aria-hidden="true">🌍</p>
                 <h2>{t('welcome.lang')}</h2>
                 <p>{t('story.lead')}</p>
                 <div className="welcome-actions">
@@ -100,7 +121,6 @@ export function HomeStory({ data }: { data: AppData | null }) {
               </>
             ) : (
               <>
-                <p className="welcome-emoji" aria-hidden="true">{['🌍', '🛰️', '📈', '❓'][welcome - 1]}</p>
                 <h2>{t(`welcome.${welcome}` as Key)}</h2>
                 <div className="welcome-actions">
                   <button
@@ -115,6 +135,15 @@ export function HomeStory({ data }: { data: AppData | null }) {
                   >
                     {welcome === 4 ? t('welcome.done') : t('welcome.next')}
                   </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setWelcome(5)
+                      try { sessionStorage.setItem('td.welcome', '1') } catch { /* reste ouvert cette fois */ }
+                    }}
+                  >
+                    {t('tour.skip')}
+                  </button>
                 </div>
               </>
             )}
@@ -123,12 +152,8 @@ export function HomeStory({ data }: { data: AppData | null }) {
       )}
 
       <section className="story-hero">
-        <Picture name="earth-hero" alt={t('story.caption.earth')} />
-        <WireField />
-        <svg className="sat-orbit" viewBox="0 0 200 200" aria-hidden="true">
-          <ellipse cx="100" cy="100" rx="78" ry="28" fill="none" stroke="#C4512C" strokeWidth="1" strokeDasharray="3 5" />
-          <circle cx="178" cy="100" r="3.2" fill="#C4512C" />
-        </svg>
+        {!globe && <Picture name="earth-hero" alt={t('story.caption.earth')} />}
+        <LivingEarth ref={earth} hero onReady={() => setGlobe(true)} onFallback={() => setGlobe(false)} />
         <div className="story-hero__copy">
           <p className="kicker">{t('story.kicker')}</p>
           {name && <p>{t('space.hello', { name })}</p>}
@@ -139,7 +164,7 @@ export function HomeStory({ data }: { data: AppData | null }) {
             <Link className="cta cta--sun" to="/explore">{t('story.openGlobe')}</Link>
           </p>
         </div>
-        <p className="glass-caption">{t('story.caption.earth')} {t('photo.credit')}</p>
+        <p className="glass-caption">{globe ? t('globe.credit') : `${t('story.caption.earth')} ${t('photo.credit')}`}</p>
       </section>
 
       <nav className="scale-nav" aria-label={t('story.kicker')}>

@@ -1,5 +1,6 @@
 import { useState, type ReactNode } from 'react'
-import { Link, NavLink } from 'react-router-dom'
+import { motion, MotionConfig } from 'motion/react'
+import { Link, NavLink, useLocation } from 'react-router-dom'
 import { AskDock } from './AskDock'
 import { Intro } from './Intro'
 import { Motion } from './Motion'
@@ -49,10 +50,11 @@ function ThemeToggle() {
 
 export function AppShell({ children }: { children: ReactNode }) {
   const { t } = useI18n()
+  const { pathname } = useLocation()
   const [menu, setMenu] = useState(false)
   const close = () => setMenu(false)
   return (
-    <>
+    <MotionConfig reducedMotion="user" transition={{ type: 'spring', bounce: 0, duration: 0.28 }}>
       <Intro />
       <a className="skip" href="#main" onClick={(e) => { e.preventDefault(); document.getElementById('main')?.focus() }}>
         {t('nav.skip')}
@@ -89,10 +91,17 @@ export function AppShell({ children }: { children: ReactNode }) {
         </div>
       )}
       <main id="main" tabIndex={-1}>
-        {children}
+        <motion.div
+          key={pathname}
+          className="page-in"
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
+          {children}
+        </motion.div>
       </main>
       <Footer />
       <AskDock />
-    </>
+    </MotionConfig>
   )
 }
