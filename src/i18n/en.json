@@ -640,5 +640,20 @@
   "ev.verdict.b": "In {place}, the slope of the line is this much every 10 years. The test says it is not luck.",
   "ev.verdict.bUnsure": "We do not conclude. A trend may exist, but these years are not enough to prove it.",
   "ev.verdict.note": "Source: NASA POWER, {period}. Computed in advance, never in your browser.",
-  "ev.details": "All the details"
+  "ev.details": "All the details",
+  "globe.yaoundeHint": "Our city sits just outside the river basin (about {km} km), in the forest region. It is the case study.",
+  "globe.goYaounde": "Fly to Yaoundé",
+  "globe.openYaounde": "Yaoundé in detail",
+  "globe.compare": "Compare the places on a map",
+  "globe.investigate": "Investigate this place",
+  "globe.backBasin": "Back to the basin",
+  "place.k": "Case study · Chapter 4",
+  "place.t": "{place}, trace by trace",
+  "place.b": "Three traces left by 25 years of NASA records. Two are proven, one is not: here is each one, with its proof.",
+  "place.traces": "What the satellites recorded",
+  "place.traceN": "Trace {n}",
+  "place.notProven": "Not proven",
+  "place.proof": "See the proof step by step",
+  "place.toYou": "What it means for you",
+  "place.bAny": "Three traces from 25 years of NASA records, each with its proof."
 }

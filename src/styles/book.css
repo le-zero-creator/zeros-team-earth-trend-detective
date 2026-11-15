@@ -404,3 +404,40 @@ html { font-synthesis: none; }
 .ev-body .bk-num { font-size: var(--fs-num); color: var(--orange); }
 .ev { scroll-margin-top: calc(var(--bar, 64px) + 12px); }
 @media (max-width: 760px) { .ev-stage { min-height: 0; } }
+
+/* ---------- Globe: hidden pins really hide; Yaoundé is easy to find ---------- */
+[data-pin][hidden] { display: none !important; }
+.yao-card { display: grid; gap: 8px; padding: 14px; border-radius: 16px; background: rgb(255 183 3 / 14%); border: 1px solid rgb(255 183 3 / 45%); }
+.yao-card__k { font: 700 var(--fs-small)/1.2 var(--font-text); letter-spacing: 0.08em; text-transform: uppercase; color: #ffb703; }
+.yao-card__b { font-size: var(--fs-small); line-height: 1.45; }
+.yao-card__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; margin-top: 6px; }
+.yao-card__link { border: 0; background: none; padding: 0; color: inherit; font: 600 var(--fs-small)/1.3 var(--font-text); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.globe-sheet .yao-card__link { color: var(--text); }
+.globe-float .scene img { object-fit: cover; }
+
+/* ---------- Shared page header + Yaoundé page ---------- */
+.place-page, .space-page, .ask-page, .about, .method-page, .region-page { width: min(1240px, 100%); max-width: none; margin-inline: auto; }
+.place-page { display: block; }
+.pg-hero { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(16px, 3vw, 48px); align-items: center; padding: clamp(16px, 3vw, 32px); border-radius: var(--r-lg); background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow); overflow: hidden; }
+.pg-hero .scene { margin: 0; height: clamp(200px, 36vh, 380px); border-radius: var(--r-md); overflow: hidden; }
+.pg-hero .scene picture, .pg-hero .scene img { width: 100%; height: 100%; object-fit: cover; }
+.pg-hero .scene img { animation: bk-reveal 1.1s var(--ease-o) both; }
+.pg-hero__copy { display: grid; gap: 12px; }
+.pg-hero__copy > * { animation: bk-up 0.8s var(--ease-o) both; }
+.pg-hero__copy > *:nth-child(2) { animation-delay: 0.08s; }
+.pg-hero__copy > *:nth-child(3) { animation-delay: 0.16s; }
+.pg-hero__copy > *:nth-child(4) { animation-delay: 0.24s; }
+.pg-chip { justify-self: start; padding: 8px 14px; border-radius: 999px; background: var(--bg); border: 1px dashed var(--line); font-size: var(--fs-small) !important; }
+.pg-h2 { margin: clamp(36px, 5vw, 64px) 0 16px; }
+.pg-traces { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: clamp(12px, 2vw, 24px); }
+.pg-trace { display: grid; gap: 10px; align-content: start; padding: clamp(16px, 2.4vw, 28px); border-radius: var(--r-lg); background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow); transition: transform 0.45s var(--ease-o), box-shadow 0.45s var(--ease-o); }
+.pg-trace:hover { transform: translateY(-4px); box-shadow: 0 24px 50px -24px rgb(15 35 60 / 40%); }
+.pg-trace__k { display: flex; align-items: center; gap: 8px; font: 700 var(--fs-small)/1.2 var(--font-text); letter-spacing: 0.1em; text-transform: uppercase; color: var(--orange-text); }
+.pg-trace__k svg { width: 20px; height: 20px; }
+.pg-trace .bk-num { font-size: clamp(2.2rem, 1.6rem + 2vw, 3.4rem); }
+.pg-trace__unsure { font: 600 clamp(1.8rem, 1.4rem + 1.6vw, 2.6rem)/1.1 var(--font-title); color: var(--grey-text); }
+.pg-trace .trace-chart { max-height: 150px; }
+.pg-trace__link { color: var(--orange-text); font-weight: 600; text-underline-offset: 3px; }
+.place-page .hx-ask { margin-top: clamp(36px, 5vw, 64px); }
+.pg-actions { display: flex; flex-wrap: wrap; gap: 10px; margin: clamp(24px, 4vw, 40px) 0; }
+@media (max-width: 760px) { .pg-hero { grid-template-columns: 1fr; } .pg-hero .scene { height: 200px; } }

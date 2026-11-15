@@ -76,6 +76,7 @@ export function Explore() {
   }, [zones, lang])
 
   const zone = zones.find((item) => item.zone_id === selected)
+  const yaoundeZone = zones.find((item) => item.zone_id === 'cmr_yaounde')
   const analysis =
     state.status === 'ready' && zone
       ? state.data.results.analyses.find(
@@ -121,7 +122,7 @@ export function Explore() {
         )}
       </LivingEarth>
       <aside className="globe-float glass">
-        <Scene name="nasa-africa-radar" alt={t('scene.radar')} />
+        <Scene name="nasa-congo-river" alt={t('scene.river')} />
         {!inside ? (
           <>
             <p className="study-note">{t('globe.study')}</p>
@@ -129,6 +130,16 @@ export function Explore() {
           </>
         ) : (
           <>
+            {yaoundeZone && (
+              <div className="yao-card">
+                <p className="yao-card__k">{t('globe.groupLocal')}</p>
+                <p className="yao-card__b">{t('globe.yaoundeHint', { km: yaoundeZone.distance_to_basin_km })}</p>
+                <div className="yao-card__actions">
+                  <button type="button" className="cta cta--sun" onClick={() => fly(yaoundeZone)}>{t('globe.goYaounde')}</button>
+                  <Link className="yao-card__link" to="/place/cmr_yaounde">{t('globe.openYaounde')} →</Link>
+                </div>
+              </div>
+            )}
             <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder={t('globe.places')} aria-label={t('globe.places')} />
             <div className="globe-layers" role="group" aria-label={t('globe.layers')}>
               {LAYERS.map((id) => (
@@ -172,7 +183,13 @@ export function Explore() {
         <aside className="globe-sheet glass" aria-live="polite">
           <h2>{selected === 'basin' ? t('globe.flyCongo') : lang === 'fr' ? zone?.name_fr : zone?.name_en}</h2>
           {selected === 'basin' ? (
-            <p>{t('globe.basinNote')}</p>
+            <>
+              <p>{t('globe.basinNote')}</p>
+              <div className="yao-card__actions">
+                {yaoundeZone && <button type="button" className="cta cta--sun" onClick={() => fly(yaoundeZone)}>{t('globe.goYaounde')}</button>}
+                <Link className="yao-card__link" to="/congo">{t('globe.compare')} →</Link>
+              </div>
+            </>
           ) : (
             <>
               <p className="big">{figure}</p>
@@ -183,9 +200,13 @@ export function Explore() {
                 . {t('ask.source')} 2001–2025.
               </p>
               {zone && (
-                <Link className="cta cta--sun" to={investigateLink(zone.zone_id, layer, 'p2001_2025')}>
-                  {t('nav.investigate')}
-                </Link>
+                <div className="yao-card__actions">
+                  <Link className="cta cta--sun" to={investigateLink(zone.zone_id, layer, 'p2001_2025')}>
+                    {t('globe.investigate')} →
+                  </Link>
+                  {zone.zone_id === 'cmr_yaounde' && <Link className="yao-card__link" to="/place/cmr_yaounde">{t('globe.openYaounde')} →</Link>}
+                  <button type="button" className="yao-card__link" onClick={enterBasin}>{t('globe.backBasin')}</button>
+                </div>
               )}
             </>
           )}

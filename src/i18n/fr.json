@@ -640,5 +640,20 @@
   "ev.verdict.b": "À {place}, la pente de la ligne vaut ceci tous les 10 ans. Le test dit que ce n'est pas le hasard.",
   "ev.verdict.bUnsure": "Nous ne concluons pas. Une tendance existe peut-être, mais ces années ne suffisent pas à la prouver.",
   "ev.verdict.note": "Source : NASA POWER, {period}. Calculé à l'avance, jamais dans ton navigateur.",
-  "ev.details": "Tous les détails"
+  "ev.details": "Tous les détails",
+  "globe.yaoundeHint": "Notre ville est juste à côté du bassin du fleuve (environ {km} km), dans la région forestière. C'est le cas d'étude.",
+  "globe.goYaounde": "Aller à Yaoundé",
+  "globe.openYaounde": "Yaoundé en détail",
+  "globe.compare": "Comparer les lieux sur une carte",
+  "globe.investigate": "Enquêter sur ce lieu",
+  "globe.backBasin": "Retour au bassin",
+  "place.k": "Cas d'étude · Chapitre 4",
+  "place.t": "{place}, trace par trace",
+  "place.b": "Trois traces laissées par 25 ans de registres NASA. Deux sont prouvées, une ne l'est pas : voici chacune, avec sa preuve.",
+  "place.traces": "Ce que les satellites ont enregistré",
+  "place.traceN": "Trace {n}",
+  "place.notProven": "Pas prouvé",
+  "place.proof": "Voir la preuve pas à pas",
+  "place.toYou": "Ce que ça change pour toi",
+  "place.bAny": "Trois traces issues de 25 ans de registres NASA, chacune avec sa preuve."
 }
