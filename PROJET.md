@@ -40,6 +40,12 @@ Voir DECISIONS.md (liste complète). Les règles détaillées sont dans CLAUDE.m
 - 14/11 : défi thème 2 confirmé. Angle Yaoundé + lecture métier d'architecte.
 - 15/11 : V1 = NASA POWER seulement, tout précalculé dans public/data/results.json ; aucun calcul statistique dans le navigateur.
 
+## État actuel (15/11, images et mouvement)
+- Chaque grand écran a une photo large aux coins arrondis : questions du récit, étapes d'enquête, profils, globe, méthode, à propos, Ask Terra.
+- Photos NASA domaine public (bibliothèque images.nasa.gov) plus les trois images IA déjà filigranées. Crédits dans CREDITS.md.
+- Le globe d'accueil tourne avec trois anneaux et de petits satellites, dont un en sens inverse. Les photos glissent un peu au défilement. Un filet réaffiche le texte au bout de 1,3 s. Le mouvement réduit reste immobile.
+- La bulle de Terra disparaît toute seule au bout de 5 s, une fois par page. « Ouvrir Yaoundé » est un bouton, en français sur la page française. Le croquis orange des immeubles est retiré.
+
 ## État actuel (15/11, toutes les largeurs)
 - L'accueil tient dans la fenêtre de 360 à 1920 px, et sur un portable bas (1366×768). Le premier écran fait exactement la hauteur sous la barre. Le bouton « Open the globe », le crédit de la photo et Terra restent visibles. Pas de défilement horizontal.
 - Le panneau Ask Terra reste dans la fenêtre, y compris à 1440. Sur téléphone il ne couvre pas le titre. Les puces de variable de l'écran Preuves sont lisibles (texte foncé sur fond clair).

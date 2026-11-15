@@ -1,3 +1,4 @@
+import { Scene } from '../components/Scene'
 import { useData } from '../lib/data'
 import { useI18n, type Key } from '../i18n'
 import { Link } from 'react-router-dom'
@@ -38,6 +39,7 @@ export function Method() {
   const base = import.meta.env.BASE_URL
   return (
     <article className="method">
+      <Scene name="nasa-marble-east" alt={t('scene.marble')} />
       <h1>{t('method.title')}</h1>
       <p>{t('method.intro')}</p>
       <h2>{t('ai.title')}</h2>

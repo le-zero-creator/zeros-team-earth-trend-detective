@@ -134,6 +134,29 @@ export const LivingEarth = forwardRef<EarthHandle, Props>(function LivingEarth(
         )
         scene.add(glow)
 
+        const orbits = new THREE.Group()
+        if (hero) scene.add(orbits)
+        const ringSpecs = hero ? [
+          { radius: 1.36, tilt: 0.5, speed: 0.42, color: 0xb7d4ea },
+          { radius: 1.55, tilt: -0.82, speed: -0.28, color: 0xe7c4a8 },
+          { radius: 1.76, tilt: 1.15, speed: 0.55, color: 0x9fd0c8 },
+        ] : []
+        const satellites = ringSpecs.map((spec) => {
+          const points = Array.from({ length: 160 }, (_, index) => {
+            const angle = (index / 160) * Math.PI * 2
+            return new THREE.Vector3(Math.cos(angle) * spec.radius, 0, Math.sin(angle) * spec.radius)
+          })
+          const pivot = new THREE.Group()
+          pivot.rotation.z = spec.tilt
+          pivot.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(points), new THREE.LineBasicMaterial({ color: spec.color, transparent: true, opacity: 0.7 })))
+          const sat = new THREE.Mesh(new THREE.SphereGeometry(0.032, 12, 12), new THREE.MeshBasicMaterial({ color: 0xfff8ef }))
+          sat.position.set(spec.radius, 0, 0)
+          sat.add(new THREE.Mesh(new THREE.SphereGeometry(0.07, 10, 10), new THREE.MeshBasicMaterial({ color: spec.color, transparent: true, opacity: 0.45 })))
+          pivot.add(sat)
+          orbits.add(pivot)
+          return { pivot, speed: spec.speed }
+        })
+
         let goal: { x: number; y: number; z: number } | null = null
         let flight: { origin: InstanceType<typeof THREE.Vector3>; dest: InstanceType<typeof THREE.Vector3>; t0: number } | null = null
         look.current = (lat, lon, dist) => {
@@ -221,6 +244,8 @@ export const LivingEarth = forwardRef<EarthHandle, Props>(function LivingEarth(
           }
           raf = window.requestAnimationFrame(loop)
           if (hero && !flight) earth.rotation.y += 0.0011
+          orbits.position.copy(earth.position)
+          for (const sat of satellites) sat.pivot.rotation.y += sat.speed * 0.012
           if (flight) {
             const k = Math.min(1, (performance.now() - flight.t0) / 1000)
             const eased = 1 - (1 - k) ** 3

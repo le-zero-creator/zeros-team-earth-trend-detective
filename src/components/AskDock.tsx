@@ -40,8 +40,15 @@ export function AskDock() {
   const [showHint, setShowHint] = useState(false)
 
   useEffect(() => {
-    setShowHint(!muted() && !seen(pathname))
+    const show = !muted() && !seen(pathname)
+    setShowHint(show)
     setOpen(false)
+    if (!show) return
+    const timer = window.setTimeout(() => {
+      try { sessionStorage.setItem(SEEN, pathname) } catch { /* une seule bulle cette visite */ }
+      setShowHint(false)
+    }, 5000)
+    return () => window.clearTimeout(timer)
   }, [pathname])
 
   useEffect(() => {

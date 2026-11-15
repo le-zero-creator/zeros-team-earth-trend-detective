@@ -2,6 +2,7 @@ import { useMemo, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { Link } from 'react-router-dom'
 import { LivingEarth, type EarthHandle } from '../components/LivingEarth'
+import { Scene } from '../components/Scene'
 import { useI18n, type Key } from '../i18n'
 import { useData } from '../lib/data'
 import { SLOPE_DECIMALS, formatSigned, plainUnit } from '../lib/format'
@@ -60,6 +61,7 @@ export function Explore() {
         }}
       />
       <aside className="globe-float glass">
+        <Scene name="nasa-africa-radar" alt={t('scene.radar')} />
         <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder={t('globe.places')} aria-label={t('globe.places')} />
         <div className="globe-layers" role="group" aria-label={t('globe.layers')}>
           {LAYERS.map((id) => (
