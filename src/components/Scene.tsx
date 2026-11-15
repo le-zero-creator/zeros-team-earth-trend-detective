@@ -1,6 +1,6 @@
 import { useI18n } from '../i18n'
 
-const AI = new Set(['earth-hero', 'satellite', 'congo-forest'])
+const AI = new Set(['earth-hero', 'satellite', 'congo-forest', 'profile-farmer', 'profile-architect', 'profile-health', 'profile-city'])
 
 export type SceneName =
   | 'earth-hero'
@@ -14,6 +14,10 @@ export type SceneName =
   | 'nasa-soil'
   | 'nasa-clouds'
   | 'nasa-gpm'
+  | 'profile-farmer'
+  | 'profile-architect'
+  | 'profile-health'
+  | 'profile-city'
 
 /** Large rounded photo. AI pictures keep their watermark. NASA pictures are public domain. */
 export function Scene({ name, alt }: { name: SceneName; alt: string }) {

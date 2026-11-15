@@ -60,7 +60,7 @@ describe('accueil grand public', () => {
     wrap(<HomeStory data={data} />)
     const text = document.body.textContent ?? ''
     expect(text).toContain('Hot afternoons in Yaoundé')
-    expect(text).toContain('Sure: yes')
+    expect(text).toContain('Statistically robust')
     expect(text).toContain('°C every 10 years')
     expect(text).not.toContain('decisions for every field')
     expect(document.querySelector('[data-figure="final"]')?.textContent).toBe('+0.78')
