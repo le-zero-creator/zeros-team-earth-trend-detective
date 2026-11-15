@@ -578,3 +578,21 @@ html[data-theme='dark'] .pg-turn__k { color: var(--sun) !important; }
 .future-list .pill { justify-self: start; }
 .compare-page { display: block; }
 .compare-page .soon-panel { margin-top: clamp(20px, 3vw, 32px); }
+
+/* ---------- Hero: Terra points at "Explore the study areas"; on a phone the tag sits above the title ---------- */
+.enter-earth__guide { position: absolute; left: -6px; bottom: calc(100% + 4px); display: flex; align-items: flex-end; gap: 2px; pointer-events: none; font-weight: 400; }
+.enter-earth__guide .terra { width: 62px; height: 62px; margin-bottom: -6px; }
+.enter-earth__arrow { width: 34px; height: 34px; margin-bottom: -4px; fill: none; stroke: #ffd29c; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; animation: hx-point 1.6s var(--ease-o) infinite; }
+@keyframes hx-point { 50% { transform: translate(2px, 5px); } }
+@media (max-width: 760px) {
+  .enter-earth span { right: 16px; bottom: auto; top: clamp(64px, calc(88vh - 600px), 200px); }
+}
+/* Short phones: the title climbs higher, so the tag goes to the very top, without the mascot. */
+@media (max-width: 760px) and (max-height: 700px) {
+  .enter-earth span { top: 10px; }
+  .enter-earth__guide { display: none; }
+}
+@media (max-width: 760px) and (max-height: 600px) {
+  .enter-earth span { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { .enter-earth__arrow { animation: none; } }

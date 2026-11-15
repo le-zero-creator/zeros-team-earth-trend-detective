@@ -7,6 +7,7 @@ import { Book } from '../components/Book'
 import { GoFurther, HomeAsk } from '../components/HomeExtras'
 import { LivingEarth, type EarthHandle } from '../components/LivingEarth'
 import { Picture } from '../components/Picture'
+import { TerraMascot } from '../components/TerraMascot'
 import { useI18n } from '../i18n'
 import { useData } from '../lib/data'
 import { useSpace } from '../lib/space'
@@ -55,7 +56,16 @@ export function HomeStory({ data }: { data: AppData | null }) {
             if (!earth.current?.enter()) goExplore()
           }}
         >
-          <span>{t('home.explore')}</span>
+          <span>
+            <b className="enter-earth__guide" aria-hidden="true">
+              <TerraMascot mood="happy" />
+              <svg className="enter-earth__arrow" viewBox="0 0 40 40">
+                <path d="M5 8 C 20 6, 31 14, 31 31" />
+                <path d="M24 25 L31 32 L37 24" />
+              </svg>
+            </b>
+            {t('home.explore')}
+          </span>
         </button>
         <div className="story-hero__copy">
           <p className="kicker">{t('story.kicker')}</p>
