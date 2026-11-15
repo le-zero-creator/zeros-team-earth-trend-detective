@@ -523,12 +523,29 @@ html { font-size: clamp(16px, 0.2vw + 15.2px, 18px); }
 h1, .story-hero__copy h1 { font-size: clamp(1.75rem, 1.4rem + 2.4vw, 4.4rem); }
 h2 { font-size: clamp(1.45rem, 1.2rem + 1.2vw, 2.6rem); }
 html, body, #root { overflow-x: clip; max-width: 100%; }
-.home.home--story > .story-hero,
-.means-band {
+.home.home--story > .story-hero {
   width: 100dvw;
   max-width: 100dvw;
   margin-left: calc(50% - 50dvw);
   margin-right: calc(50% - 50dvw);
+}
+.means-band {
+  position: relative;
+  width: auto;
+  max-width: none;
+  margin-left: 0;
+  margin-right: 0;
+  background: transparent;
+}
+.means-band::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  bottom: 0;
+  left: -100vw;
+  right: -100vw;
+  background: #143832;
 }
 .ask-dock {
   right: max(12px, env(safe-area-inset-right));
