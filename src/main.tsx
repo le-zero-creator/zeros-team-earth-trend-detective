@@ -9,21 +9,31 @@ import '@fontsource/jetbrains-mono/latin-500.css'
 import './styles/tokens.css'
 import './styles/app.css'
 import './styles/public.css'
+import { AppErrorBoundary } from './components/AppErrorBoundary'
 import { App } from './App'
 import { I18nProvider } from './i18n'
 import { DataProvider } from './lib/data'
 import { ProfileProvider } from './lib/profile'
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <I18nProvider>
-      <ProfileProvider>
-        <DataProvider>
-          <HashRouter>
-            <App />
-          </HashRouter>
-        </DataProvider>
-      </ProfileProvider>
-    </I18nProvider>
-  </StrictMode>,
-)
+const rootEl = document.getElementById('root')
+document.documentElement.setAttribute('data-app', 'up')
+
+if (!rootEl) {
+  document.body.textContent = 'Trend Detective could not start. Reload the page.'
+} else {
+  createRoot(rootEl).render(
+    <StrictMode>
+      <AppErrorBoundary>
+        <I18nProvider>
+          <ProfileProvider>
+            <DataProvider>
+              <HashRouter>
+                <App />
+              </HashRouter>
+            </DataProvider>
+          </ProfileProvider>
+        </I18nProvider>
+      </AppErrorBoundary>
+    </StrictMode>,
+  )
+}

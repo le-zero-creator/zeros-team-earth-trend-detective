@@ -654,10 +654,17 @@ select {
 
 /* ---------- États ---------- */
 .skeleton {
-  min-height: 320px;
+  min-height: 180px;
   background: linear-gradient(90deg, #e9eef4 25%, #f4f7fa 50%, #e9eef4 75%);
   background-size: 200% 100%;
   animation: shimmer 1.4s linear infinite;
+}
+
+.skeleton__text {
+  margin: 0;
+  color: var(--text);
+  font-size: 1.35rem;
+  font-weight: 600;
 }
 
 @keyframes shimmer {

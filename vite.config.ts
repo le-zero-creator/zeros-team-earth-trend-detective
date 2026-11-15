@@ -32,6 +32,8 @@ function cspMeta(): Plugin {
 export default defineConfig({
   plugins: [react(), cspMeta()],
   base: '/zeros-team-earth-trend-detective/',
+  // Chrome 80 (beaucoup de téléphones Android) comprend ce niveau. Pas plus récent.
+  build: { target: 'chrome80' },
   test: {
     environment: 'jsdom',
     globals: true,
