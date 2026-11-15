@@ -177,7 +177,7 @@ export function HomeStory({ data }: { data: AppData | null }) {
           {STEPS.map((item) => (
             <article key={item.id} className="scrolly__step" id={`step-${item.id}`}>
               <h2>{item.id === 'city' ? t('home.story.question') : t(item.title)}</h2>
-              <p>{t(item.title)}</p>
+              <p>{t(`story.body.${item.id}` as Key)}</p>
               {item.id === 'city' && hot && (
                 <>
                   <p className="story-num">
