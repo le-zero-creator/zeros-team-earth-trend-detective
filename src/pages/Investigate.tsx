@@ -53,7 +53,7 @@ export function Investigate() {
       </nav>
       {state.status === 'loading' && (
         <div className="card skeleton" role="status">
-          <span className="sr-only">{t('state.loading')}</span>
+          <p className="skeleton__text">{t('state.loading')}</p>
         </div>
       )}
       {state.status === 'error' && (

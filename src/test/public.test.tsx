@@ -1,7 +1,9 @@
+import { readFileSync } from 'node:fs'
 import { fireEvent, render, screen } from '@testing-library/react'
 import type { ReactNode } from 'react'
 import { MemoryRouter } from 'react-router-dom'
 import { vi } from 'vitest'
+import { AppErrorBoundary } from '../components/AppErrorBoundary'
 import { AppShell } from '../components/AppShell'
 import { EvidenceView } from '../components/EvidenceView'
 import { chartRows } from '../components/TrendChart'
@@ -167,6 +169,29 @@ describe('ailleurs sur Terre', () => {
   it('rejette une étape inconnue', () => {
     expect(safeStep('nope')).toBe('evidence')
     expect(safeStep('place')).toBe('place')
+  })
+})
+
+describe('démarrage sur un téléphone', () => {
+  it('affiche un texte de chargement dans la page, avant le JavaScript', () => {
+    const html = readFileSync('index.html', 'utf8')
+    expect(html).toContain('Loading Trend Detective')
+    expect(html).toContain('boot.js')
+  })
+
+  it('remplace un plantage par une phrase lisible, sans détail interne', () => {
+    function Boom(): ReactNode {
+      throw new Error('secret stack trace')
+    }
+    const spy = vi.spyOn(console, 'error').mockImplementation(() => {})
+    render(
+      <AppErrorBoundary>
+        <Boom />
+      </AppErrorBoundary>,
+    )
+    expect(screen.getByRole('alert').textContent).toContain('hit a problem')
+    expect(document.body.textContent).not.toContain('secret stack')
+    spy.mockRestore()
   })
 })
 

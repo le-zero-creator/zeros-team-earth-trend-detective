@@ -8,17 +8,17 @@ const DataContext = createContext<{ state: State; retry: () => void }>({
   retry: () => {},
 })
 
-async function getJson<T>(path: string): Promise<T> {
-  const res = await fetch(`${import.meta.env.BASE_URL}data/${path}`)
+async function getJson<T>(path: string, signal: AbortSignal): Promise<T> {
+  const res = await fetch(`${import.meta.env.BASE_URL}data/${path}`, { signal })
   if (!res.ok) throw new Error('fetch failed')
   return res.json() as Promise<T>
 }
 
-export async function loadData(): Promise<AppData> {
+export async function loadData(signal: AbortSignal = new AbortController().signal): Promise<AppData> {
   const [results, points, boundary] = await Promise.all([
-    getJson<Results>('results.json'),
-    getJson<GeoJSON.FeatureCollection<GeoJSON.Point, ZoneProps>>('zones/congo_basin_points.geojson'),
-    getJson<GeoJSON.FeatureCollection>('zones/congo_basin_boundary.geojson'),
+    getJson<Results>('results.json', signal),
+    getJson<GeoJSON.FeatureCollection<GeoJSON.Point, ZoneProps>>('zones/congo_basin_points.geojson', signal),
+    getJson<GeoJSON.FeatureCollection>('zones/congo_basin_boundary.geojson', signal),
   ])
   const zones: Zone[] = points.features.map((f) => ({
     ...f.properties,
@@ -34,12 +34,16 @@ export function DataProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     let alive = true
+    const ctrl = new AbortController()
+    const timer = window.setTimeout(() => ctrl.abort(), 25000)
     setState({ status: 'loading' })
-    loadData()
+    loadData(ctrl.signal)
       .then((data) => alive && setState({ status: 'ready', data }))
       .catch(() => alive && setState({ status: 'error' }))
     return () => {
       alive = false
+      window.clearTimeout(timer)
+      ctrl.abort()
     }
   }, [attempt])
 
