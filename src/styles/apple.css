@@ -433,6 +433,64 @@ html[data-theme='dark'] .ask-chips button { color: #e6eef3; }
 .chart-box, .ai-photo, .ai-photo img { overflow: hidden; }
 .story-hero, .story-hero .earth-view, .explore-screen, .earth-pin::before { border-radius: 0; }
 .ask-fab { border-radius: 999px; }
+.ask-dock { align-items: flex-end; max-width: min(260px, calc(100vw - 24px)); }
+.terra-launcher {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 4px 12px 4px 4px;
+  border: 0;
+  border-radius: 999px;
+  background: rgb(16 24 32 / 88%);
+  color: #f4f7f4;
+  cursor: pointer;
+  box-shadow: 0 10px 28px rgb(0 0 0 / 22%);
+}
+.terra-name { font: 700 0.95rem/1 var(--font-text); }
+.terra { width: 46px; height: 46px; display: block; overflow: visible; }
+.terra__glow { fill: rgb(126 182 212 / 28%); }
+.terra__face { fill: #1d4e89; stroke: #9fd0ea; stroke-width: 1.4; }
+.terra__eye { fill: #f7f4ef; transform-origin: center; }
+.terra__smile { fill: none; stroke: #f7f4ef; stroke-width: 1.4; stroke-linecap: round; }
+.terra__moon { fill: #f3c7a5; }
+.terra__body { transform-origin: 32px 34px; animation: terra-float 3.2s ease-in-out infinite; }
+.terra__spin { transform-origin: 32px 34px; animation: terra-orbit 7s linear infinite; }
+.terra__eye { animation: terra-blink 4.2s ease-in-out infinite; }
+.terra--think .terra__spin { animation-duration: 1.6s; }
+.terra--think .terra__eye { transform: translateY(-1px); }
+.terra--happy .terra__body { animation: terra-happy 0.6s cubic-bezier(.16,.84,.24,1); }
+.terra-hint {
+  width: min(220px, calc(100vw - 80px));
+  margin-bottom: 8px;
+  padding: 10px 12px;
+  border-radius: 16px;
+  background: rgb(255 255 255 / 92%);
+  color: #1a2330;
+  box-shadow: 0 10px 28px rgb(0 0 0 / 16%);
+}
+.terra-hint p { margin: 0 0 6px; font-size: 0.92rem; line-height: 1.35; }
+.terra-hint div { display: flex; gap: 8px; }
+.terra-hint button {
+  min-height: 32px;
+  padding: 0 8px;
+  border: 0;
+  background: transparent;
+  color: #243140;
+  font: 600 0.78rem/1 var(--font-text);
+  cursor: pointer;
+}
+@keyframes terra-float { 50% { transform: translateY(-2px); } }
+@keyframes terra-orbit { to { transform: rotate(360deg); } }
+@keyframes terra-blink { 0%, 42%, 48%, 100% { transform: scaleY(1); } 45% { transform: scaleY(0.15); } }
+@keyframes terra-happy { 40% { transform: translateY(-3px) scale(1.05); } }
+@media (max-width: 800px) {
+  .ask-dock { right: 10px; bottom: 10px; }
+  .terra-hint { width: min(200px, calc(100vw - 72px)); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .terra__body, .terra__spin, .terra__eye, .terra--happy .terra__body { animation: none; }
+}
 html[data-paused] * { animation-play-state: paused !important; }
 .motion-line {
   opacity: 0;

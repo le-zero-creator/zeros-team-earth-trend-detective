@@ -21,6 +21,7 @@ export function AskChat({
   lon,
   initialQuestion = '',
   compact = false,
+  onStatus,
 }: {
   suggestions: string[]
   profile: ProfileId
@@ -29,6 +30,7 @@ export function AskChat({
   lon?: number
   initialQuestion?: string
   compact?: boolean
+  onStatus?: (status: 'idle' | 'think' | 'happy') => void
 }) {
   const { t, lang } = useI18n()
   const [question, setQuestion] = useState(initialQuestion)
@@ -76,6 +78,7 @@ export function AskChat({
     const id = Date.now()
     setQuestion('')
     setBusy(true)
+    onStatus?.('think')
     setTurns((list) => [...list, { id, question: next, answer: '', status: 'wait' }])
     try {
       const res = await fetch('/api/ask', {
@@ -87,6 +90,7 @@ export function AskChat({
         const code = await res.json().catch(() => ({ error: 'down' }))
         const status: Status = code.error === 'rate' ? 'rate' : code.error === 'late' ? 'late' : 'down'
         setTurns((list) => list.map((turn) => (turn.id === id ? { ...turn, status } : turn)))
+        onStatus?.('idle')
         return
       }
       const reader = res.body.getReader()
@@ -102,8 +106,10 @@ export function AskChat({
       }
       const final = all.trim()
       setTurns((list) => list.map((turn) => (turn.id === id ? { ...turn, answer: final, status: final ? 'done' : 'down' } : turn)))
+      onStatus?.(final ? 'happy' : 'idle')
     } catch {
       setTurns((list) => list.map((turn) => (turn.id === id ? { ...turn, status: 'down' } : turn)))
+      onStatus?.('idle')
     } finally {
       setBusy(false)
     }
