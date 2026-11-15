@@ -1,4 +1,4 @@
-# Trend Detective — Congo Basin
+# Terra Trace
 
 **NASA Space Apps Challenge 2026 · Yaoundé, Cameroon**
 Challenge: [Be An Earth System Trend Detective!](https://www.spaceappschallenge.org/2026/challenges/earth-system-trend-detective/) · Team: [Zero's team](https://www.spaceappschallenge.org/2026/find-a-team/zeros-team/)

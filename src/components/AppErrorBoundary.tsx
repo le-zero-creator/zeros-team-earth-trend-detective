@@ -16,7 +16,7 @@ export class AppErrorBoundary extends Component<{ children: ReactNode }, State> 
     if (!this.state.failed) return this.props.children
     return (
       <main id="main" className="boot-fail" role="alert">
-        <h1>This page hit a problem.</h1>
+        <h1>Terra Trace hit a problem.</h1>
         <p>Cette page a rencontré un problème.</p>
         <p>Reload the page. Rechargez la page.</p>
         <button type="button" className="cta" onClick={() => window.location.reload()}>

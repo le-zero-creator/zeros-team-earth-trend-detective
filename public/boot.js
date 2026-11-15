@@ -11,7 +11,7 @@
     p.style.cssText =
       'font-family:system-ui,sans-serif;margin:24px 16px;color:#14261c;font-size:1.25rem;line-height:1.45'
     p.textContent =
-      'Trend Detective could not start. Check your connection and reload. — L’application n’a pas démarré. Vérifiez la connexion, puis rechargez.'
+      'Terra Trace could not start. Check your connection and reload. — Terra Trace n’a pas démarré. Vérifiez la connexion, puis rechargez.'
     root.appendChild(p)
   })
 })()

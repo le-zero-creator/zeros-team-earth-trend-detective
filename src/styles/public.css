@@ -302,6 +302,18 @@
 .source-list { list-style: none; padding: 0; display: grid; gap: 8px; }
 .textlink { font-weight: 700; }
 
+.science-fold {
+  background: var(--surface);
+  border-radius: 16px;
+  padding: 12px 16px;
+}
+
+.science-fold summary {
+  cursor: pointer;
+  font-weight: 600;
+  min-height: 44px;
+}
+
 @media (min-width: 800px) {
   .story-cards { grid-template-columns: repeat(3, 1fr); }
   .clue-grid { grid-template-columns: repeat(2, 1fr); }

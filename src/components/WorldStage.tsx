@@ -156,7 +156,6 @@ export function WorldStage({
     <section className="world" aria-labelledby="world-title">
       <div className="world__head">
         <h2 id="world-title">{t('home.promise')}</h2>
-        <p>{t('app.subtitle')}</p>
         <div className="world__switch">
           <button type="button" aria-pressed={mode.kind === 'earth'} onClick={() => setMode({ kind: 'earth' })}>
             {t('home.earth')}

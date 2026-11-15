@@ -39,6 +39,20 @@ export function formatSlope(value: number, variableId: string, slopeUnit: string
   return `${formatSigned(value, SLOPE_DECIMALS[variableId] ?? 2, lang)} ${slopeUnit}`
 }
 
+/** Mots simples pour le même slope_unit. Le nombre ne change pas. */
+const PLAIN_UNIT: Record<string, Record<Lang, string>> = {
+  '°C per decade': { en: '°C every 10 years', fr: '°C tous les 10 ans' },
+  'percentage points per decade': { en: 'points every 10 years', fr: 'points tous les 10 ans' },
+  'mm per decade (annual total)': { en: 'mm every 10 years', fr: 'mm tous les 10 ans' },
+  'MJ/m²/day per decade': { en: 'sun units every 10 years', fr: 'unités de soleil tous les 10 ans' },
+  'm/s per decade': { en: 'm/s every 10 years', fr: 'm/s tous les 10 ans' },
+  'fraction per decade': { en: 'steps every 10 years', fr: 'parts tous les 10 ans' },
+}
+
+export function plainUnit(slopeUnit: string, lang: Lang): string {
+  return PLAIN_UNIT[slopeUnit]?.[lang] ?? slopeUnit
+}
+
 /** Nombre déjà publié, sans signe forcé. Aucun calcul : seulement l'affichage. */
 export function formatNumber(value: number, decimals: number, lang: Lang): string {
   return new Intl.NumberFormat(lang, {
