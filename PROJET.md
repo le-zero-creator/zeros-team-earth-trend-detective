@@ -49,6 +49,7 @@ Voir DECISIONS.md (liste complète). Les règles détaillées sont dans CLAUDE.m
 - Pages GitHub : le workflow est dans le dépôt et part de `main`. L'URL publique n'est pas encore en ligne tant que la PR n'est pas mergée et que Pages n'est pas réglé sur « GitHub Actions ». Les étapes sont dans le README.
 - **Non vérifié dans cette session** : `python data/validate.py` (le script relance tous les calculs et un Monte-Carlo ; il n'a pas été exécuté jusqu'au bout ici). Lighthouse.
 - 15/11, correctif site en ligne : la courbe était cachée par l'animation de tracé de Recharts ; le grand chiffre affiche tout de suite +0,78 (température max de l'après-midi) ; le slogan dit « questions », pas « décisions ». Branche `fix/live-site`.
+- 15/11, site public : https://trend-detective-congo.vercel.app . Filigrane sur les trois images IA, section « Use of AI », Ask Terra répond en production avec les pentes publiées (+0,78 °C / décennie et +0,50 °C / décennie pour la chaleur de l'après-midi à Yaoundé). Pas de logo NASA.
 
 ## Questions ouvertes
 - Format des valeurs p : la règle écrite dit « < 0.001 » sous 0,001 et 3 chiffres significatifs ; les critères d'acceptation montrent « 0.00014 », « 0.0048 », « 0.097 » (2 chiffres). La règle écrite est appliquée pour l'instant.
