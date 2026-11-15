@@ -275,7 +275,7 @@
   "about.noel": "Noël — design.",
   "about.kevin": "Kevin.",
   "about.privacy": "No tracking. No cookies. No personal data.",
-  "about.licenseBody": "The code is MIT. Map tiles are © OpenStreetMap contributors. Fonts are self-hosted (Space Grotesk, Inter, JetBrains Mono, SIL Open Font License).",
+  "about.licenseBody": "The code is MIT. Map tiles are © OpenStreetMap contributors. Fonts are self-hosted (Newsreader and Source Sans 3, SIL Open Font License).",
   "chart.values": "Yearly value",
   "chart.sen": "Sen's slope",
   "chart.verdict": "The badge on the chart is the verdict. The dashed line is Sen's slope. The 95% range is the pair of numbers above, not a shaded band.",

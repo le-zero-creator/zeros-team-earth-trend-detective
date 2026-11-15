@@ -12,13 +12,15 @@ Zero's team — NASA Space Apps Challenge 2026 (Yaoundé, Cameroon).
 ## Software
 - React, React Router, Vite, Vitest (MIT) · Leaflet (BSD-2-Clause) · react-leaflet (Hippocratic-2.1) · Recharts (MIT).
 - Statistics precomputed with Python, numpy, pandas and pymannkendall 1.4.3 (MIT).
-- Ask Terra uses the Vercel AI SDK and AI Gateway (OIDC on the server, no key in the repository). Live months are read from the public NASA POWER API and are not a trend test.
+- Ask Terra calls Gemini on the server. The key stays on the server. It repeats numbers from the published file. Live months are read from the public NASA POWER API and are not a trend test.
 
 ## Fonts (self-hosted via @fontsource, SIL Open Font License 1.1)
 - Newsreader — story titles.
 - Source Sans 3 — reading text, buttons, and climate figures (tabular numbers).
-- earth-hero, satellite, congo-forest: Illustration (AI-generated).
-- Globe imagery: Esri, Maxar, Earthstar Geographics, via Esri World Imagery.
+
+## Pictures
+- earth-hero, satellite, congo-forest: AI-generated. Each one is labelled on the page, “AI-generated image”.
+- Globe imagery: Esri, Maxar, Earthstar Geographics, via Esri World Imagery. No NASA logo, flag, or mission insignia.
 
 ## Licence
 MIT — see [LICENSE](LICENSE).
