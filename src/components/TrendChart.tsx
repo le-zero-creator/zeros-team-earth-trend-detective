@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react'
 import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import { EvidenceBadge } from './EvidenceBadge'
 import { senY } from '../lib/senLine'
@@ -13,19 +12,13 @@ export function chartRows(a: Analysis) {
   }))
 }
 
-function reducedMotion(): boolean {
-  return typeof window.matchMedia === 'function' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
-}
-
 /**
  * Série annuelle + droite de Sen. Pas de bande autour des points :
  * l'intervalle de confiance reste en chiffres, à côté du graphique.
+ * L'animation de tracé de Recharts laisse un stroke-dasharray qui cache
+ * la courbe (vu sur le site publié, Chrome headless). Les lignes sont donc dessinées d'un coup.
  */
 export function TrendChart({ analysis, alt, valueName, lineName }: { analysis: Analysis; alt: string; valueName: string; lineName: string }) {
-  const [animate, setAnimate] = useState(false)
-  useEffect(() => {
-    setAnimate(!reducedMotion())
-  }, [])
   const rows = chartRows(analysis)
   const grey = analysis.evidence_level === 'not_enough_evidence_yet'
   const span = rows.flatMap((row) => [row.value, row.sen])
@@ -59,9 +52,7 @@ export function TrendChart({ analysis, alt, valueName, lineName }: { analysis: A
               stroke="#10281c"
               strokeWidth={2.4}
               dot={{ r: 3, fill: '#10281c' }}
-              isAnimationActive={animate}
-              animationDuration={900}
-              animationEasing="ease-out"
+              isAnimationActive={false}
             />
             <Line
               type="linear"
@@ -71,9 +62,7 @@ export function TrendChart({ analysis, alt, valueName, lineName }: { analysis: A
               strokeWidth={2.2}
               strokeDasharray="6 5"
               dot={false}
-              isAnimationActive={animate}
-              animationDuration={900}
-              animationEasing="ease-out"
+              isAnimationActive={false}
             />
           </LineChart>
         </ResponsiveContainer>
