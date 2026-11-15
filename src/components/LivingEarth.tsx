@@ -355,7 +355,7 @@ export const LivingEarth = forwardRef<EarthHandle, Props>(function LivingEarth(
             aria-pressed={selected === zone.zone_id}
             onClick={() => pick.current?.(zone.zone_id)}
           >
-            <span>{labels?.[zone.zone_id] ?? zone.name_en.split(/[–—-]/)[0]}</span>
+            <span>{labels?.[zone.zone_id] ?? zone.name_en.split(/\s[–—-]\s/)[0]}</span>
           </button>
         ))}
       {hero && (

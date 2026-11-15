@@ -70,7 +70,7 @@ export function Explore() {
     const map: Record<string, string> = {}
     for (const item of zones) {
       const name = lang === 'fr' ? item.name_fr : item.name_en
-      map[item.zone_id] = name.split(/[–—-]/)[0].trim()
+      map[item.zone_id] = name.split(/\s[–—-]\s/)[0].trim()
     }
     return map
   }, [zones, lang])
@@ -194,9 +194,10 @@ export function Explore() {
             <>
               <p className="big">{figure}</p>
               <p>
-                {analysis && (analysis.evidence_level === 'not_enough_evidence_yet' || !analysis.significatif)
-                  ? t('evidence.plain.not_enough_evidence_yet')
-                  : t('evidence.plain.robust')}
+                {/* The level comes from results.json as is: robust, exploratory or not enough evidence yet. */}
+                {analysis && analysis.significatif
+                  ? t(`evidence.plain.${analysis.evidence_level}` as Key)
+                  : t('evidence.plain.not_enough_evidence_yet')}
                 . {t('ask.source')} 2001–2025.
               </p>
               {zone && (
@@ -215,5 +216,6 @@ export function Explore() {
     </div>
   )
 
-  return createPortal(screen, document.body)
+  // Inside #root (not <body>): the header and its menu stay above the globe.
+  return createPortal(screen, document.getElementById('root') ?? document.body)
 }
