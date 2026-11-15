@@ -37,6 +37,7 @@ export function AskChat({
   const [months, setMonths] = useState<PowerMonth[] | null>(null)
   const [liveDown, setLiveDown] = useState(false)
   const last = useRef<HTMLDivElement>(null)
+  const thread = useRef<HTMLDivElement>(null)
   const field = compact ? 'ask-q-dock' : 'ask-q'
 
   useEffect(() => {
@@ -44,6 +45,8 @@ export function AskChat({
   }, [initialQuestion])
 
   useEffect(() => {
+    const box = thread.current
+    if (box) box.scrollTop = box.scrollHeight
     last.current?.scrollIntoView?.({ block: 'nearest' })
   }, [turns])
 
@@ -71,7 +74,7 @@ export function AskChat({
     const next = text.trim()
     if (next.length < 2 || busy) return
     const id = Date.now()
-    setQuestion(next)
+    setQuestion('')
     setBusy(true)
     setTurns((list) => [...list, { id, question: next, answer: '', status: 'wait' }])
     try {
@@ -108,17 +111,21 @@ export function AskChat({
 
   return (
     <div className={compact ? 'ask ask--compact' : 'ask'}>
-      <p className="ask-here">{t('ask.here')}</p>
-      {suggestions.length > 0 && (
-        <div className="ask-chips" aria-label={t('ask.suggestions')}>
-          {suggestions.map((item) => (
-            <button key={item} type="button" onClick={() => void send(item)}>
-              {item}
-            </button>
-          ))}
-        </div>
-      )}
-      <div className="chat" data-ask="thread">
+      <form
+        className="ask-form"
+        onSubmit={(event) => {
+          event.preventDefault()
+          void send(question)
+        }}
+      >
+        <label htmlFor={field}>{t('ask.label')}</label>
+        <textarea id={field} value={question} maxLength={400} rows={compact ? 3 : 4} placeholder={t('ask.here')} onChange={(event) => setQuestion(event.target.value)} />
+        <button className="cta cta--sun" type="submit" disabled={busy}>
+          {t('ask.send')}
+        </button>
+      </form>
+      <div className="chat" data-ask="thread" ref={thread}>
+        {turns.length === 0 && <p className="ask-here">{t('ask.here')}</p>}
         {turns.map((turn, index) => (
           <div key={turn.id} className="chat-turn" ref={index === turns.length - 1 ? last : undefined} data-ask="answer">
             <p className="bubble bubble--you">{turn.question}</p>
@@ -138,21 +145,15 @@ export function AskChat({
           </div>
         ))}
       </div>
-      <form
-        className="ask-form"
-        onSubmit={(event) => {
-          event.preventDefault()
-          void send(question)
-        }}
-      >
-        <label className="visually-hidden" htmlFor={field}>
-          {t('ask.label')}
-        </label>
-        <textarea id={field} value={question} maxLength={400} rows={2} onChange={(event) => setQuestion(event.target.value)} />
-        <button className="cta cta--sun" type="submit" disabled={busy}>
-          {t('ask.send')}
-        </button>
-      </form>
+      {suggestions.length > 0 && (
+        <div className="ask-chips" aria-label={t('ask.suggestions')}>
+          {suggestions.map((item) => (
+            <button key={item} type="button" onClick={() => void send(item)}>
+              {item}
+            </button>
+          ))}
+        </div>
+      )}
       <p className="note">{t('ask.note')}</p>
       {(months || liveDown) && (
         <details className="ask-live">
