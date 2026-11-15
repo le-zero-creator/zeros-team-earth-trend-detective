@@ -583,7 +583,16 @@ html[data-theme='dark'] .pg-turn__k { color: var(--sun) !important; }
 .future-list { list-style: none; padding: 0; margin-bottom: 0; }
 .future-list .pill { justify-self: start; }
 .compare-page { display: block; }
-.compare-page .soon-panel { margin-top: clamp(20px, 3vw, 32px); }
+/* The map's "soon" note sits in the page column here, as a legal-card, not floating full width. */
+.compare-page .soon-panel {
+  position: static; z-index: auto; display: grid; gap: 8px; align-content: start;
+  margin-top: clamp(20px, 3vw, 32px); padding: clamp(16px, 2.4vw, 26px);
+  border-radius: var(--r-lg); background: var(--surface); color: var(--text);
+  border: 1px solid var(--line); box-shadow: var(--shadow);
+}
+.compare-page .soon-panel h3 { margin: 0; }
+.compare-page .soon-panel p:last-child { margin: 0; color: var(--grey-text); }
+.compare-page .soon-panel .soon-badge { justify-self: start; margin: 0; }
 
 /* ---------- Hero: Terra points at "Explore the study areas"; on a phone the tag sits above the title ---------- */
 .enter-earth__guide { position: absolute; left: -6px; bottom: calc(100% + 4px); display: flex; align-items: flex-end; gap: 2px; pointer-events: none; font-weight: 400; }
