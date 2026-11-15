@@ -82,6 +82,7 @@ export function HomeStory({ data }: { data: AppData }) {
           <p className="band__lead">{t('home.lead')}</p>
           <h1 id="hero-title">{t('home.story.question')}</h1>
           <p className="band__yes">{yes ? t('home.story.yes') : t('home.story.careful')}</p>
+          <p className="hero-which">{t('home.story.which')}</p>
           <p className="hero-numline">
             <span className="hero-num">
               <CountUp value={hot.pente_decennie} decimals={SLOPE_DECIMALS.t2m_max} lang={lang} />

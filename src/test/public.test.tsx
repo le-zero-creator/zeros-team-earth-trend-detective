@@ -60,6 +60,10 @@ describe('accueil grand public', () => {
     const text = document.body.textContent ?? ''
     expect(text).toContain('Is Yaoundé getting hotter?')
     expect(text).toContain('NASA data says yes.')
+    expect(text).toContain('Afternoon (daily max) temperature')
+    expect(text).toContain('questions for every field')
+    expect(text).not.toContain('decisions for every field')
+    expect(document.querySelector('[data-figure="final"]')?.textContent).toBe('+0.78')
     expect(text).toContain(formatSlope(pick('cmr_yaounde', 't2m_max').pente_decennie, 't2m_max', pick('cmr_yaounde', 't2m_max').slope_unit, 'en'))
     expect(text).toContain(formatSlope(pick('cmr_yaounde', 'rh2m').pente_decennie, 'rh2m', pick('cmr_yaounde', 'rh2m').slope_unit, 'en'))
     expect(text).not.toContain(formatSlope(pick('cmr_yaounde', 'precip').pente_decennie, 'precip', pick('cmr_yaounde', 'precip').slope_unit, 'en'))
