@@ -125,13 +125,13 @@ export function AskChat({
         }}
       >
         <label htmlFor={field}>{t('ask.label')}</label>
-        <textarea id={field} value={question} maxLength={400} rows={compact ? 3 : 4} placeholder={t('ask.here')} onChange={(event) => setQuestion(event.target.value)} />
+        <textarea id={field} value={question} maxLength={400} rows={compact ? 3 : 4} placeholder={t('ask.placeholder')} onChange={(event) => setQuestion(event.target.value)} />
         <button className="cta cta--sun" type="submit" disabled={busy}>
           {t('ask.send')}
         </button>
       </form>
       <div className="chat" data-ask="thread" ref={thread}>
-        {turns.length === 0 && <p className="ask-here">{t('ask.here')}</p>}
+        {turns.length === 0 && <p className="ask-here">{t('ask.empty')}</p>}
         {turns.map((turn, index) => (
           <div key={turn.id} className="chat-turn" ref={index === turns.length - 1 ? last : undefined} data-ask="answer">
             <p className="bubble bubble--you">{turn.question}</p>

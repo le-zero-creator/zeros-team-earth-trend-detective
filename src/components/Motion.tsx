@@ -40,13 +40,30 @@ export function Motion() {
     const onVis = () => document.documentElement.toggleAttribute('data-paused', document.hidden)
     document.addEventListener('visibilitychange', onVis)
     onVis()
+    const showAll = () => {
+      document.querySelectorAll('.motion-line, .motion-media, .reveal, .motion-card').forEach((node) => node.classList.add('is-in'))
+    }
+    const revealIfSeen = () => {
+      const viewH = window.innerHeight || 800
+      document.querySelectorAll('.motion-line, .motion-media, .reveal').forEach((node) => {
+        if (node.classList.contains('is-in')) return
+        const box = node.getBoundingClientRect()
+        if (box.bottom > 0 && box.top < viewH) node.classList.add('is-in')
+      })
+    }
     scan()
-    const changes = new MutationObserver(scan)
+    revealIfSeen()
+    const fallback = window.setTimeout(showAll, 1200)
+    const changes = new MutationObserver(() => {
+      scan()
+      revealIfSeen()
+    })
     changes.observe(document.body, { childList: true, subtree: true })
     if (reduce || !fine) {
       return () => {
         io?.disconnect()
         changes.disconnect()
+        window.clearTimeout(fallback)
         document.removeEventListener('visibilitychange', onVis)
       }
     }
@@ -62,6 +79,7 @@ export function Motion() {
     return () => {
       io?.disconnect()
       changes.disconnect()
+      window.clearTimeout(fallback)
       document.removeEventListener('pointermove', move)
       document.removeEventListener('visibilitychange', onVis)
     }
