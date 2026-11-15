@@ -14,7 +14,8 @@ Zero's team — NASA Space Apps Challenge 2026 (Yaoundé, Cameroon).
 - Statistics precomputed with Python, numpy, pandas and pymannkendall 1.4.3 (MIT).
 
 ## Fonts (self-hosted via @fontsource, SIL Open Font License 1.1)
-- Space Grotesk · Inter · JetBrains Mono.
+- Manrope — headings and short titles.
+- IBM Plex Sans — reading text, buttons, and climate figures (tabular numbers).
 
 ## Licence
 MIT — see [LICENSE](LICENSE).
