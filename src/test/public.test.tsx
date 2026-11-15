@@ -1,6 +1,6 @@
 import { pickReading } from '../lib/reading'
 import { readFileSync } from 'node:fs'
-import { fireEvent, render, screen } from '@testing-library/react'
+import { waitFor, fireEvent, render, screen } from '@testing-library/react'
 import type { ReactNode } from 'react'
 import { MemoryRouter } from 'react-router-dom'
 import { vi } from 'vitest'
@@ -104,7 +104,7 @@ describe('personas et langue', () => {
         <HomeStory data={data} />
       </AppShell>,
     )
-    fireEvent.click(screen.getByRole('button', { name: 'FR' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Passer en français' }))
     expect(screen.getByRole('heading', { level: 1 }).textContent).toMatch(/Qu'est-ce qui change sur notre planète/)
     expect(document.documentElement.lang).toBe('fr')
   })
@@ -189,7 +189,7 @@ describe('écran d’ouverture', () => {
     document.documentElement.removeAttribute('data-intro')
   })
 
-  it('ne s’affiche pas si le mouvement est réduit', () => {
+  it('s’affiche aussi si le mouvement est réduit (fondus seulement)', () => {
     window.matchMedia = ((query: string) => ({
       matches: query.includes('reduce'),
       media: query,
@@ -207,11 +207,10 @@ describe('écran d’ouverture', () => {
         <p>under</p>
       </>,
     )
-    expect(screen.queryByRole('button', { name: 'Skip / Passer' })).toBeNull()
-    expect(document.documentElement.getAttribute('data-intro')).toBe('done')
+    expect(screen.getByRole('button', { name: 'Skip' })).toBeTruthy()
   })
 
-  it('se joue une fois, et Passer le ferme', () => {
+  it('se joue une fois, et Passer le ferme', async () => {
     window.matchMedia = ((query: string) => ({
       matches: false,
       media: query,
@@ -229,9 +228,9 @@ describe('écran d’ouverture', () => {
         <p>under</p>
       </>,
     )
-    fireEvent.click(screen.getByRole('button', { name: 'Skip / Passer' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Skip' }))
     expect(sessionStorage.getItem('td.intro')).toBe('1')
-    expect(screen.queryByRole('button', { name: 'Skip / Passer' })).toBeNull()
+    await waitFor(() => expect(screen.queryByRole('button', { name: 'Skip' })).toBeNull(), { timeout: 3000 })
     expect(screen.getByText('under')).toBeTruthy()
   })
 })

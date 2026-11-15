@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { SourceStrip } from '../components/Banners'
 import { LocationsTable } from '../components/LocationsTable'
@@ -7,7 +7,7 @@ import { Book } from '../components/Book'
 import { GoFurther, HomeAsk } from '../components/HomeExtras'
 import { LivingEarth, type EarthHandle } from '../components/LivingEarth'
 import { Picture } from '../components/Picture'
-import { useI18n, type Key } from '../i18n'
+import { useI18n } from '../i18n'
 import { useData } from '../lib/data'
 import { useSpace } from '../lib/space'
 import { periodLabel } from '../lib/story'
@@ -29,9 +29,8 @@ export function Home() {
 }
 
 export function HomeStory({ data }: { data: AppData | null }) {
-  const { t, setLang } = useI18n()
+  const { t } = useI18n()
   const { name } = useSpace()
-  const [welcome, setWelcome] = useState(0)
   const hot = data ? findAnalysis(data, 'cmr_yaounde', 't2m_max') : undefined
   const yaounde = data?.zones.find((zone) => zone.zone_id === 'cmr_yaounde')
   const mapAnalyses = new Map<string, Analysis>(
@@ -42,60 +41,9 @@ export function HomeStory({ data }: { data: AppData | null }) {
   const navigate = useNavigate()
   const goExplore = () => navigate('/explore')
 
-  useEffect(() => {
-    try {
-      if (sessionStorage.getItem('td.welcome') === '1') setWelcome(5)
-    } catch {
-      setWelcome(5)
-    }
-  }, [])
 
   return (
     <>
-      {welcome < 5 && (
-        <div className="welcome" role="dialog" aria-label={t('welcome.lang')}>
-          <div className="welcome-card">
-            {welcome === 0 ? (
-              <>
-                <h2>{t('welcome.lang')}</h2>
-                <p>{t('story.lead')}</p>
-                <div className="welcome-actions">
-                  <button type="button" onClick={() => { setLang('en'); setWelcome(1) }}>English</button>
-                  <button type="button" onClick={() => { setLang('fr'); setWelcome(1) }}>Français</button>
-                </div>
-              </>
-            ) : (
-              <>
-                <h2>{t(`welcome.${welcome}` as Key)}</h2>
-                <div className="welcome-actions">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      const next = welcome + 1
-                      setWelcome(next)
-                      if (next >= 5) {
-                        try { sessionStorage.setItem('td.welcome', '1') } catch { /* reste ouvert cette fois */ }
-                      }
-                    }}
-                  >
-                    {welcome === 4 ? t('welcome.done') : t('welcome.next')}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setWelcome(5)
-                      try { sessionStorage.setItem('td.welcome', '1') } catch { /* reste ouvert cette fois */ }
-                    }}
-                  >
-                    {t('tour.skip')}
-                  </button>
-                </div>
-              </>
-            )}
-          </div>
-        </div>
-      )}
-
       <section className="story-hero">
         {globe === false && <Picture name="earth-hero" alt={t('story.caption.earth')} />}
         <LivingEarth ref={earth} hero onReady={() => setGlobe(true)} onFallback={() => setGlobe(false)} onEnter={goExplore} />

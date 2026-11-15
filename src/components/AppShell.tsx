@@ -2,23 +2,33 @@ import { useLayoutEffect, useState, type ReactNode } from 'react'
 import { motion, MotionConfig } from 'motion/react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { AskDock } from './AskDock'
-import { Intro } from './Intro'
+import { Intro, replayIntro } from './Intro'
+import { LogoMark, Wordmark } from './Logo'
+import { Compass, Languages, Moon, Sun } from 'lucide-react'
 import { Motion } from './Motion'
-import { Tour } from './Tour'
 import { useTheme } from '../lib/theme'
 import { useI18n } from '../i18n'
 import { useData } from '../lib/data'
 
 function LangToggle() {
   const { lang, setLang, t } = useI18n()
+  const next = lang === 'fr' ? 'en' : 'fr'
+  const label = next === 'fr' ? 'Passer en français' : 'Switch to English'
   return (
-    <div className="lang" role="group" aria-label={t('lang.label')}>
-      {(['en', 'fr'] as const).map((l) => (
-        <button key={l} type="button" aria-pressed={lang === l} onClick={() => setLang(l)} lang={l}>
-          {l.toUpperCase()}
-        </button>
-      ))}
-    </div>
+    <button type="button" className="icon-btn icon-btn--lang" aria-label={label} title={label} lang={next} onClick={() => setLang(next)} data-tip={label}>
+      <Languages aria-hidden="true" />
+      <span aria-hidden="true">{lang.toUpperCase()}</span>
+      <span className="sr-only">{t('lang.label')}</span>
+    </button>
+  )
+}
+
+function GuideButton() {
+  const { t } = useI18n()
+  return (
+    <button type="button" className="icon-btn" aria-label={t('tour.button')} title={t('tour.button')} data-tip={t('tour.button')} onClick={replayIntro}>
+      <Compass aria-hidden="true" />
+    </button>
   )
 }
 
@@ -41,9 +51,10 @@ function Footer() {
 function ThemeToggle() {
   const { t } = useI18n()
   const { theme, toggle } = useTheme()
+  const label = theme === 'dark' ? t('theme.light') : t('theme.dark')
   return (
-    <button type="button" className="theme-toggle" aria-pressed={theme === 'dark'} onClick={toggle}>
-      {theme === 'dark' ? t('theme.light') : t('theme.dark')}
+    <button type="button" className="icon-btn theme-toggle" aria-pressed={theme === 'dark'} aria-label={label} title={label} data-tip={label} onClick={toggle}>
+      {theme === 'dark' ? <Sun aria-hidden="true" /> : <Moon aria-hidden="true" />}
     </button>
   )
 }
@@ -73,8 +84,12 @@ export function AppShell({ children }: { children: ReactNode }) {
       </a>
       <Motion />
       <header className="topbar">
-        <Link to="/" className="brand" onClick={close}>
-          <span className="brand__name">{t('app.name')}</span>
+        <Link to="/" className="brand" onClick={close} aria-label={t('app.name')}>
+          <LogoMark />
+          <span className="brand__text">
+            <Wordmark />
+            <span className="brand__tag">{t('brand.tag')}</span>
+          </span>
         </Link>
         <button type="button" className="nav-burger" aria-expanded={menu} aria-controls="nav-panel" onClick={() => setMenu((open) => !open)}>
           {menu ? t('nav.close') : t('nav.menu')}
@@ -85,9 +100,11 @@ export function AppShell({ children }: { children: ReactNode }) {
           <NavLink to="/you">{t('nav.you')}</NavLink>
           <NavLink to="/ask">{t('nav.ask')}</NavLink>
           <NavLink to="/me">{t('nav.me')}</NavLink>
-          <Tour />
-          <ThemeToggle />
-          <LangToggle />
+          <span className="topnav__tools">
+            <GuideButton />
+            <ThemeToggle />
+            <LangToggle />
+          </span>
         </nav>
       </header>
       {menu && (
@@ -98,8 +115,11 @@ export function AppShell({ children }: { children: ReactNode }) {
           <NavLink to="/you" onClick={close}>{t('nav.you')}</NavLink>
           <NavLink to="/ask" onClick={close}>{t('nav.ask')}</NavLink>
           <NavLink to="/me" onClick={close}>{t('nav.me')}</NavLink>
-          <ThemeToggle />
-          <LangToggle />
+          <span className="topnav__tools">
+            <GuideButton />
+            <ThemeToggle />
+            <LangToggle />
+          </span>
         </div>
       )}
       <main id="main" tabIndex={-1}>

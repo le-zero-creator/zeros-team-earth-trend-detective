@@ -1,3 +1,4 @@
+import { HeroRings } from './HeroRings'
 import { forwardRef, useEffect, useImperativeHandle, useRef, type ReactNode } from 'react'
 import type { Zone } from '../lib/types'
 
@@ -64,7 +65,7 @@ export const LivingEarth = forwardRef<EarthHandle, Props>(function LivingEarth(
     const node = root.current
     if (!node) return
     const reduce = typeof window.matchMedia === 'function' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    if (reduce || typeof WebGLRenderingContext === 'undefined') {
+    if (typeof WebGLRenderingContext === 'undefined') {
       fallback.current?.()
       return
     }
@@ -275,7 +276,7 @@ export const LivingEarth = forwardRef<EarthHandle, Props>(function LivingEarth(
             return
           }
           raf = window.requestAnimationFrame(loop)
-          if (hero && !flight) earth.rotation.y += 0.0011
+          if (hero && !flight && !reduce) earth.rotation.y += 0.0011
           placeHalo()
           if (flight) {
             const k = Math.min(1, (performance.now() - flight.t0) / 1000)
@@ -359,9 +360,7 @@ export const LivingEarth = forwardRef<EarthHandle, Props>(function LivingEarth(
         ))}
       {hero && (
         <>
-          <span className="halo halo--a" aria-hidden="true"><i /></span>
-          <span className="halo halo--b" aria-hidden="true"><i /></span>
-          <span className="halo halo--c" aria-hidden="true"><i /></span>
+          <HeroRings />
         </>
       )}
       {children}

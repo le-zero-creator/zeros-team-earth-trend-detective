@@ -11,9 +11,9 @@ Statuts : ✅ fait · 🟡 en cours · ⬜ à faire
 
 | # | Demande | Statut | Notes |
 |---|---------|--------|-------|
-| 1 | Animation d'intro/chargement identique sur ordinateur et téléphone (storytelling) | ⬜ | |
-| 2 | Anneaux du héros comme l'image de référence : fins, élégants, proches de la planète, petits satellites (certains en sens inverse) | ⬜ | |
-| 3 | En-tête : petit logo animé + titre plus intéressant (comme le portfolio) | ⬜ | |
+| 1 | Animation d'intro/chargement identique sur ordinateur et téléphone (storytelling) | ✅ | `Intro.tsx` : même intro partout (logo qui se dessine + barre de chargement, puis 4 cartes racontées par Terra). Cause probable sur PC : Windows avec animations réduites → l'intro était sautée. Elle s'affiche maintenant aussi dans ce cas (fondus). |
+| 2 | Anneaux du héros comme l'image de référence : fins, élégants, proches de la planète, petits satellites (certains en sens inverse) | ✅ | `HeroRings.tsx` : 3 anneaux fins collés à la planète, moitié arrière cachée derrière la Terre, 5 petits satellites lumineux dont 2 en sens inverse, cachés quand ils passent derrière. |
+| 3 | En-tête : petit logo animé + titre plus intéressant (comme le portfolio) | ✅ | `Logo.tsx` : logo animé (planète, trace, orbite, satellite qui tourne) + « Terra Trace » + « Détective des traces de la Terre ». |
 | 4 | Héros : garder « Qu'est-ce qui change sur notre planète ? », retirer/réécrire « Depuis la Terre entière » | ✅ | Kicker réécrit : « Une enquête sur les traces de la Terre ». Titre conservé. |
 | 5 | Le site se lit comme un LIVRE : Terre → bassin du Congo → Yaoundé → pour toi → demander à Terra (FR + EN) | 🟡 | Accueil réécrit comme un livre (8 chapitres : Terre → satellites → bassin → Yaoundé → chaleur → air → pluie → pour toi), FR + EN. Autres pages : à faire. |
 | 6 | Mise en page storytelling : une étape à la fois, en grand, on tourne la page ; clic pour détails si besoin | ✅ | `src/components/Book.tsx` : scène collante, une page à la fois, défilement = tourner la page, points + flèches, « En savoir plus » ouvre une fenêtre. |
@@ -26,8 +26,8 @@ Statuts : ✅ fait · 🟡 en cours · ⬜ à faire
 | 13 | Éléments du bas qui ressemblent à des boutons : cliquables ou vraies phrases animées ; « Tendance locale… » expliquée | 🟡 | Accueil : fin = grandes cartes cliquables (globe, lieux, Yaoundé, méthode) + chapitres « Bientôt » dépliables. Le chiffre est expliqué (« même chiffre que dans l'histoire »). |
 | 14 | UN seul design sur toutes les pages (accueil, globe, Yaoundé, Pour toi, Mon espace, Ask Terra) ; animations partout ; « Lieu », « Indice pour vous » renommés | 🟡 | Étapes Enquêter renommées en mots simples. Pages Yaoundé, Mon espace, Ask : à unifier. |
 | 15 | Champ Ask Terra directement dans l'étude de cas (Yaoundé, « Pour toi ») via `/api/ask` | ✅ | Ask Terra intégré : accueil, « Pour toi », page Yaoundé (avec les mois NASA POWER en direct via `api/power`). |
-| 16 | « Montrer le guide » rejoue l'intro ; thème et langue en icônes avec infobulle + aria-label | ⬜ | |
-| 17 | Tutoriel d'intro storytelling : le détective suit les traces de la Terre depuis l'espace jusqu'à une ville puis jusqu'à toi ; Terra guide | ⬜ | |
+| 16 | « Montrer le guide » rejoue l'intro ; thème et langue en icônes avec infobulle + aria-label | ✅ | « Revoir le guide » (boussole) rejoue l'intro ; thème (lune/soleil) et langue (icône + FR/EN) en icônes avec infobulle et aria-label. |
+| 17 | Tutoriel d'intro storytelling : le détective suit les traces de la Terre depuis l'espace jusqu'à une ville puis jusqu'à toi ; Terra guide | ✅ | Tutoriel raconté : « Bonjour, détective » → « La NASA observe. Nous lisons les traces. » → « De l'espace jusqu'à une ville » → « Une Terre. Des regards différents. Des décisions éclairées. » Choix de langue dans la 1re carte. Les questions sans sens sont retirées. |
 | 18 | « Mentions & crédits » simple : équipe, crédits données NASA, « site non officiel de la NASA », pas de pistage | ⬜ | |
 | A | Polices trop grandes sur petit portable (1280-1366) et téléphone : échelle fluide `clamp` | 🟡 | `src/styles/book.css` : variables `--fs-*` (titres, sous-titres, texte). À étendre aux autres pages. |
 | B | Le bouton/demi-globe vers les zones d'étude est trop caché : CTA clair « Explorer les zones d'étude », pastille qui pulse | ✅ | Bouton verre + point pulsant sur le globe, et 2e bouton sous le titre. Terra qui pointe : à faire. |
