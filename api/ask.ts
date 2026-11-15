@@ -318,8 +318,11 @@ export default async function handler(req: NodeReq, res: ServerResponse) {
       temperature: 0.2,
       maxRetries: 0,
       abortSignal: abort.signal,
+      onError({ error }) {
+        console.error('ask-stream', error instanceof Error ? `${error.name}: ${error.message}` : 'error')
+      },
       providerOptions: {
-        google: { thinkingConfig: { thinkingLevel: 'minimal', thinkingBudget: 0, includeThoughts: false } },
+        google: { thinkingConfig: { thinkingBudget: 0, includeThoughts: false } },
       },
     })
     const reader = result.textStream.getReader()
