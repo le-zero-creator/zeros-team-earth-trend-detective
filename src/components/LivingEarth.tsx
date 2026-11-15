@@ -241,6 +241,7 @@ export const LivingEarth = forwardRef<EarthHandle, Props>(function LivingEarth(
           const height = node.clientHeight
           const cam = camera.position.clone().normalize()
           const pins = [...node.querySelectorAll<HTMLElement>('[data-pin]')]
+          const panel = node.parentElement?.querySelector<HTMLElement>('.globe-float') ?? null
           for (const pin of pins) {
             const lat = Number(pin.dataset.lat)
             const lon = Number(pin.dataset.lon)
@@ -248,8 +249,37 @@ export const LivingEarth = forwardRef<EarthHandle, Props>(function LivingEarth(
             const world = new THREE.Vector3(local.x, local.y, local.z).applyMatrix4(earth.matrixWorld)
             const facing = world.clone().normalize().dot(cam) > 0.08
             const projected = world.project(camera)
-            pin.style.transform = `translate(-50%, -50%) translate(${(projected.x * 0.5 + 0.5) * width}px, ${(-projected.y * 0.5 + 0.5) * height}px)`
-            pin.hidden = !facing || projected.z > 1
+            let x = (projected.x * 0.5 + 0.5) * width
+            const y = (-projected.y * 0.5 + 0.5) * height
+            // Text tags (not the place dots) stay whole on screen instead of being cut at the edge.
+            const tag = !pin.classList.contains('earth-pin')
+            // Size remembered while visible, so a hidden tag is measured the same way (no flicker at the panel edge).
+            if (tag && pin.offsetWidth) {
+              pin.dataset.w = String(pin.offsetWidth)
+              pin.dataset.h = String(pin.offsetHeight)
+            }
+            const tw = Number(pin.dataset.w ?? 0)
+            const th = Number(pin.dataset.h ?? 0)
+            if (tag && tw) {
+              const half = tw / 2 + 8
+              x = Math.min(Math.max(x, half), Math.max(half, width - half))
+            }
+            pin.style.transform = `translate(-50%, -50%) translate(${x}px, ${y}px)`
+            let under = false
+            if (tag && panel && facing) {
+              // A tag never sits half under the floating panel: it waits until it comes out.
+              const a = panel.getBoundingClientRect()
+              const origin = node.getBoundingClientRect()
+              const px = origin.left + x
+              const py = origin.top + y
+              const hw = tw / 2
+              const hh = th / 2
+              under = px + hw > a.left && px - hw < a.right && py + hh > a.top && py - hh < a.bottom
+            }
+            // A tag whose place is off screen is hidden, never pulled onto another region.
+            const raw = (projected.x * 0.5 + 0.5) * width
+            const off = tag && (raw < 0 || raw > width || y < 0 || y > height)
+            pin.hidden = !facing || projected.z > 1 || under || off
           }
           const gap = camera.position.length() > 2.3 ? 46 : 28
           const kept: Array<{ x: number; y: number }> = []
