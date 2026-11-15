@@ -7,6 +7,7 @@ import { CountUp } from '../components/CountUp'
 import { HomeAsk } from '../components/HomeExtras'
 import { Scene } from '../components/Scene'
 import { TraceChart } from '../components/TraceChart'
+import { TurnPage } from '../components/TurnPage'
 import { useI18n, type Key } from '../i18n'
 import { useData } from '../lib/data'
 import { SLOPE_DECIMALS, plainUnit } from '../lib/format'
@@ -94,6 +95,7 @@ export function Place() {
           </motion.div>
         )}
       </AnimatePresence>
+      {zone.zone_id === 'cmr_yaounde' && <TurnPage current="/place/cmr_yaounde" />}
     </article>
   )
 }

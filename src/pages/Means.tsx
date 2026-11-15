@@ -1,4 +1,5 @@
 import { MeansForYou } from '../components/MeansForYou'
+import { TurnPage } from '../components/TurnPage'
 import { useI18n } from '../i18n'
 import { useData } from '../lib/data'
 
@@ -9,6 +10,7 @@ export function Means() {
   return (
     <article>
       <MeansForYou data={state.data} page />
+      <TurnPage current="/you" />
     </article>
   )
 }

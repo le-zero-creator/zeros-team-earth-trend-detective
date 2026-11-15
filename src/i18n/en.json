@@ -692,5 +692,6 @@
   "region.globe": "See these places on the globe",
   "turn.k": "Turn the page",
   "turn.prev": "Previous page",
-  "turn.next": "Next page"
+  "turn.next": "Next page",
+  "ask.sideTitle": "The published figure for this place"
 }

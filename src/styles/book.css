@@ -549,7 +549,6 @@ html { font-synthesis: none; }
 main { max-width: calc(var(--maxw) + 2 * var(--space-page, 16px)); }
 .method, .future-page, .compare-page { width: min(1240px, 100%); max-width: none; margin-inline: auto; }
 .method h1, .about h1, .ask-page h1, .region-page h1, .future-page h1, .compare-page h1, .simple h1 { font-size: var(--fs-display); line-height: 1.06; letter-spacing: -0.02em; }
-.method h2, .future-page h2, .compare-page h2, .region-page h2, .ask-page h2 { font-size: var(--fs-h2); line-height: 1.1; }
 .callout, .pull { font-size: var(--fs-lead); }
 
 /* ---------- The book goes on: previous / next chapter at the end of a page ---------- */
@@ -558,3 +557,24 @@ main { max-width: calc(var(--maxw) + 2 * var(--space-page, 16px)); }
 .pg-turn__k { font: 700 var(--fs-small)/1.2 var(--font-text); letter-spacing: 0.1em; text-transform: uppercase; color: var(--orange-text) !important; }
 html[data-theme='dark'] .pg-turn__k { color: var(--sun) !important; }
 .region-page .pg-trace .badge, .region-page .pg-trace [data-evidence] { justify-self: start; }
+
+/* ---------- Ask Terra, Method, Next, Compare, 404: same header, same cards ---------- */
+.simple-page { width: min(1240px, 100%); margin-inline: auto; }
+.pg-hero__copy .bk-cta { justify-self: start; }
+.ask-page .ask-page__grid { grid-template-columns: minmax(0, 1.5fr) minmax(0, 0.8fr); gap: clamp(12px, 2vw, 24px); margin-top: clamp(20px, 3vw, 32px); align-items: start; }
+.ask-page .hx-ask { width: 100%; }
+.ask-page .ask-side p { color: var(--grey-text); }
+@media (max-width: 900px) { .ask-page .ask-page__grid { grid-template-columns: minmax(0, 1fr); } .ask-page .ask-side { position: static; } }
+.method { display: block; }
+.legal-card--wide { grid-column: 1 / -1; }
+.legal-card ul { margin: 0; padding-left: 1.1em; display: grid; gap: 6px; color: var(--grey-text); }
+.legal-card .source-list { padding-left: 0; }
+.legal-card .source-list li { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; }
+.legal-card a { color: var(--orange-text); font-weight: 600; text-underline-offset: 3px; }
+.legal-card--wide .method-dl { grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 10px clamp(16px, 3vw, 40px); }
+.legal-card .method-dl dt { font-weight: 600; }
+.legal-card .method-dl dd { margin: 0; color: var(--grey-text); overflow-wrap: anywhere; }
+.future-list { list-style: none; padding: 0; margin-bottom: 0; }
+.future-list .pill { justify-self: start; }
+.compare-page { display: block; }
+.compare-page .soon-panel { margin-top: clamp(20px, 3vw, 32px); }

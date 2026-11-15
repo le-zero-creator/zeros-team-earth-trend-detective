@@ -2,6 +2,7 @@ import { useMemo } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { AskChat } from '../components/AskChat'
 import { Scene } from '../components/Scene'
+import { TurnPage } from '../components/TurnPage'
 import { useI18n, type Key } from '../i18n'
 import { useData } from '../lib/data'
 import { SLOPE_DECIMALS, formatSigned, plainUnit } from '../lib/format'
@@ -38,14 +39,16 @@ export function Ask() {
 
   return (
     <article className="ask-page">
-      <header className="ask-page__intro">
+      <header className="pg-hero">
         <Scene name="nasa-gulf" alt={t('scene.gulf')} />
-        <p className="kicker">{t('ask.kicker')}</p>
-        <h1>{t('ask.title')}</h1>
-        <p>{t('ask.lead')}</p>
+        <div className="pg-hero__copy">
+          <p className="kicker">{t('ask.kicker')}</p>
+          <h1 className="sec-display">{t('ask.title')}</h1>
+          <p className="sec-lead">{t('ask.lead')}</p>
+        </div>
       </header>
       <div className="ask-page__grid">
-        <section aria-labelledby="ask-title">
+        <section className="hx-ask" aria-labelledby="ask-title">
           <h2 id="ask-title" className="visually-hidden">
             {t('ask.label')}
           </h2>
@@ -81,7 +84,8 @@ export function Ask() {
             />
           )}
         </section>
-        <aside className="ask-side">
+        <aside className="legal-card ask-side">
+          <h2 className="sec-sub">{t('ask.sideTitle')}</h2>
           {analysis && zone && (
             <p data-observed="true">
               {lang === 'fr' ? zone.name_fr : zone.name_en}. {t('plain.var.t2m_max')}. {figure}.{' '}
@@ -94,6 +98,7 @@ export function Ask() {
           <p className="note">{t('ask.note')}</p>
         </aside>
       </div>
+      <TurnPage current="/ask" />
     </article>
   )
 }

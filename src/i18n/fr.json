@@ -692,5 +692,6 @@
   "region.globe": "Voir ces lieux sur le globe",
   "turn.k": "Tourner la page",
   "turn.prev": "Page précédente",
-  "turn.next": "Page suivante"
+  "turn.next": "Page suivante",
+  "ask.sideTitle": "Le chiffre publié pour ce lieu"
 }
