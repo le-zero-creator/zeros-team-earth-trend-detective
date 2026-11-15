@@ -12,6 +12,7 @@ Zero's team — NASA Space Apps Challenge 2026 (Yaoundé, Cameroon).
 ## Software
 - React, React Router, Vite, Vitest (MIT) · Leaflet (BSD-2-Clause) · react-leaflet (Hippocratic-2.1) · Recharts (MIT).
 - Statistics precomputed with Python, numpy, pandas and pymannkendall 1.4.3 (MIT).
+- Ask Terra uses the Vercel AI SDK and AI Gateway (OIDC on the server, no key in the repository). Live months are read from the public NASA POWER API and are not a trend test.
 
 ## Fonts (self-hosted via @fontsource, SIL Open Font License 1.1)
 - Manrope — headings and short titles.
