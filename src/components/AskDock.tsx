@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { AnimatePresence, motion } from 'motion/react'
 import { useLocation } from 'react-router-dom'
 import { AskChat } from './AskChat'
 import { useI18n, type Key } from '../i18n'
@@ -29,30 +30,32 @@ export function AskDock() {
 
   return (
     <div className="ask-dock">
-      <button type="button" className="ask-fab" aria-expanded={open} onClick={() => setOpen((value) => !value)}>
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path
-            d="M5 6.5h14v8.2H9.2L5 18.2V6.5Z"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.7"
-            strokeLinejoin="round"
-          />
-        </svg>
-        {open ? t('ask.close') : t('ask.open')}
+      <button type="button" className="ask-fab" aria-expanded={open} aria-label={open ? t('ask.close') : t('ask.open')} onClick={() => setOpen((value) => !value)}>
+        <span className="ask-fab__planet" aria-hidden="true" />
+        <span className="ask-fab__label">{open ? t('ask.close') : t('ask.open')}</span>
       </button>
-      {open && (
-        <div className="ask-panel" role="dialog" aria-label={t('ask.title')}>
-          <AskChat
-            compact
-            suggestions={suggestions}
-            profile={profile}
-            zoneId={zone?.zone_id ?? 'cmr_yaounde'}
-            lat={zone?.lat}
-            lon={zone?.lon}
-          />
-        </div>
-      )}
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            className="ask-panel glass"
+            role="dialog"
+            aria-label={t('ask.title')}
+            initial={{ opacity: 0, y: 10, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 10, scale: 0.98 }}
+            style={{ transformOrigin: 'bottom right' }}
+          >
+            <AskChat
+              compact
+              suggestions={suggestions}
+              profile={profile}
+              zoneId={zone?.zone_id ?? 'cmr_yaounde'}
+              lat={zone?.lat}
+              lon={zone?.lon}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }
