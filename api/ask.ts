@@ -1,5 +1,6 @@
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
+import { createGoogle } from '@ai-sdk/google'
 import { getCache } from '@vercel/functions'
 import { streamText } from 'ai'
 import type { IncomingMessage, ServerResponse } from 'node:http'
@@ -14,7 +15,14 @@ export const maxDuration = 30
 
 type NodeReq = IncomingMessage & { body?: unknown }
 
-const MODEL = 'google/gemini-2.5-flash'
+const GATEWAY_MODEL = 'google/gemini-2.5-flash'
+
+/** Clé Google seulement sur le serveur. Sinon, AI Gateway avec le jeton OIDC. La clé ne sort jamais dans une réponse. */
+function askModel() {
+  const key = process.env.GOOGLE_GENERATIVE_AI_API_KEY?.trim()
+  if (key) return createGoogle({ apiKey: key })('gemini-2.5-flash')
+  return GATEWAY_MODEL
+}
 const ZONES = new Set([
   'cmr_yaounde',
   'cmr_yokadouma',
@@ -301,7 +309,7 @@ export default async function handler(req: NodeReq, res: ServerResponse) {
 
   try {
     const result = streamText({
-      model: MODEL,
+      model: askModel(),
       system,
       prompt: question,
       maxOutputTokens: 400,

@@ -4,7 +4,7 @@ Date: 2026-11-15. Scope: the Vite app plus two Vercel functions (`api/ask`, `api
 
 ## 1. Secrets
 
-No API key, password, or private token is shipped to the browser or committed. Ask Terra calls the Vercel AI Gateway with the project’s OIDC token, which Vercel injects into the function. `AI_GATEWAY_API_KEY` is not set, and `.env.example` does not contain one. `npm audit` reports 0 vulnerabilities. `.gitignore` ignores `.env`. The browser never calls NASA or the model host. Only `api/power.ts` calls `https://power.larc.nasa.gov`, and only with a latitude, a longitude, and two years that passed the whitelist.
+No API key, password, or private token is shipped to the browser or committed. Ask Terra calls the Vercel AI Gateway with the project’s OIDC token, which Vercel injects into the function, unless `GOOGLE_GENERATIVE_AI_API_KEY` is set on the server. That optional key is read only inside `api/ask.ts`. It is not in the client bundle, and `.env.example` leaves it empty. `AI_GATEWAY_API_KEY` is not set. `npm audit` reports 0 vulnerabilities. `.gitignore` ignores `.env`. The browser never calls NASA or the model host. Only `api/power.ts` calls `https://power.larc.nasa.gov`, and only with a latitude, a longitude, and two years that passed the whitelist.
 
 ## 2. Row-level security
 
@@ -39,7 +39,7 @@ Pending sources (MODIS, GPM) are labelled Pending. They are never labelled Avail
 
 ## 8. Ask Terra and live NASA data
 
-- The model is `google/gemini-2.5-flash` through the Vercel AI Gateway. The prompt is built on the server from `results.json` and, for one known place, from cached NASA POWER months. The model is told not to calculate and not to invent a number.
+- If `GOOGLE_GENERATIVE_AI_API_KEY` is set on the server, Ask Terra uses `@ai-sdk/google` and `gemini-2.5-flash` directly. Otherwise the model is `google/gemini-2.5-flash` through the Vercel AI Gateway. The prompt, the rate limit, and the “do not invent a number” rules are the same either way. The prompt is built on the server from `results.json` and, for one known place, from cached NASA POWER months.
 - NASA months are stored in the Runtime Cache for six hours. The reply says they are live data, not a trend test.
 - Vercel Web Analytics was not added. It is cookieless, but this demo does not record visits.
 - The three approved pictures stay as WebP with a long cache header. They are not rewritten through an image optimizer, so a failed optimizer cannot hide them.
