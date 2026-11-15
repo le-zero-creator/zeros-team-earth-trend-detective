@@ -91,7 +91,7 @@ export function MeansForYou({ data, page = false }: { data: AppData; page?: bool
       <div className="means-stage">
         <ImpactScene analysis={analysis} region={region} unsure={unsure || variable === 'precip'} plain={plain} variable={variable} />
         <div className="means-levels">
-          <article className="means-card">
+          <article className="means-card" data-halo="true">
             <h3>{t('means.see')}</h3>
             {region === 'congo' && (
               <p>
@@ -107,7 +107,7 @@ export function MeansForYou({ data, page = false }: { data: AppData; page?: bool
             {analysis && region !== 'earth' && <Sparkline series={analysis.serie_annuelle} color="#C4512C" label={t('means.see')} />}
             <p className="note">{t('means.source')}</p>
           </article>
-          <article className="means-card">
+          <article className="means-card" data-halo="true">
             <h3>{t('means.why')}</h3>
             <ul className="means-impacts">
               {impactKeys(profile, variable).map((key) => (
@@ -115,7 +115,7 @@ export function MeansForYou({ data, page = false }: { data: AppData; page?: bool
               ))}
             </ul>
           </article>
-          <article className="means-card">
+          <article className="means-card" data-halo="true">
             <h3>{t('means.ask')}</h3>
             <div className="means-chips">
               {reading?.questions.map((question) => (

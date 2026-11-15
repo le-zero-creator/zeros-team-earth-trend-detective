@@ -11,17 +11,17 @@ import type { IncomingMessage, ServerResponse } from 'node:http'
  * Le jeton OIDC du projet authentifie AI Gateway. Aucune clé dans ce fichier.
  */
 export const config = { runtime: 'nodejs' }
-export const maxDuration = 30
+export const maxDuration = 60
 
 type NodeReq = IncomingMessage & { body?: unknown }
 
-const GATEWAY_MODEL = 'google/gemini-2.5-flash'
+const FLASH_MODEL = 'gemini-3.8-flash'
 
 /** Clé Google seulement sur le serveur. Sinon, AI Gateway avec le jeton OIDC. La clé ne sort jamais dans une réponse. */
 function askModel() {
   const key = process.env.GOOGLE_GENERATIVE_AI_API_KEY?.trim()
-  if (key) return createGoogle({ apiKey: key })('gemini-3.8-flash')
-  return GATEWAY_MODEL
+  if (key) return createGoogle({ apiKey: key })(FLASH_MODEL)
+  return `google/${FLASH_MODEL}`
 }
 const ZONES = new Set([
   'cmr_yaounde',
@@ -206,7 +206,7 @@ async function liveLines(lat: number, lon: number): Promise<string> {
   let months: { month: string; t2m_max: number | null; rh2m: number | null; precip_mm_per_day: number | null }[]
   if (Array.isArray(hit)) months = hit as typeof months
   else {
-    const response = await fetch(remote, { signal: AbortSignal.timeout(12_000), headers: { accept: 'application/json' } })
+    const response = await fetch(remote, { signal: AbortSignal.timeout(5_000), headers: { accept: 'application/json' } })
     if (!response.ok) throw new Error('power-http')
     const payload = (await response.json()) as { properties?: { parameter?: Record<string, Record<string, number>> } }
     const parameter = payload.properties?.parameter ?? {}
@@ -307,31 +307,54 @@ export default async function handler(req: NodeReq, res: ServerResponse) {
     live,
   ].join('\n')
 
+  const abort = new AbortController()
+  const kill = setTimeout(() => abort.abort(), 45_000)
   try {
     const result = streamText({
       model: askModel(),
       system,
       prompt: question,
-      maxOutputTokens: 400,
+      maxOutputTokens: 320,
       temperature: 0.2,
+      maxRetries: 0,
+      abortSignal: abort.signal,
+      providerOptions: {
+        google: { thinkingConfig: { thinkingBudget: 0, includeThoughts: false } },
+      },
     })
     const reader = result.textStream.getReader()
-    const first = await reader.read()
-    if (first.done || !first.value) return send(res, 503, { error: 'down' })
+    const first = await Promise.race([
+      reader.read(),
+      new Promise<null>((resolve) => setTimeout(() => resolve(null), 18_000)),
+    ])
+    if (!first || first.done || !first.value) {
+      abort.abort()
+      await reader.cancel().catch(() => undefined)
+      return send(res, 503, { error: 'late' })
+    }
     res.statusCode = 200
     res.setHeader('content-type', 'text/plain; charset=utf-8')
-    res.setHeader('cache-control', 'no-store')
+    res.setHeader('cache-control', 'no-cache, no-transform')
+    res.setHeader('x-accel-buffering', 'no')
     res.setHeader('x-content-type-options', 'nosniff')
-    res.write(first.value)
+    res.flushHeaders()
+    const write = (chunk: string) => {
+      res.write(chunk)
+      const flushable = res as ServerResponse & { flush?: () => void }
+      if (typeof flushable.flush === 'function') flushable.flush()
+    }
+    write(first.value)
     while (true) {
       const step = await reader.read()
       if (step.done) break
-      res.write(step.value)
+      if (step.value) write(step.value)
     }
     res.end()
   } catch (error) {
     console.error('ask-failed', error instanceof Error ? error.name : 'error')
-    if (!res.headersSent) return send(res, 503, { error: 'down' })
+    if (!res.headersSent) return send(res, 503, { error: abort.signal.aborted ? 'late' : 'down' })
     res.end()
+  } finally {
+    clearTimeout(kill)
   }
 }

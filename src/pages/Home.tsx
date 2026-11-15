@@ -5,6 +5,7 @@ import { CountUp } from '../components/CountUp'
 import { LocationsTable } from '../components/LocationsTable'
 import { MeansForYou } from '../components/MeansForYou'
 import { Picture } from '../components/Picture'
+import { WireField } from '../components/WireField'
 import { useI18n, type Key } from '../i18n'
 import { useData } from '../lib/data'
 import { SLOPE_DECIMALS, formatSigned, plainUnit } from '../lib/format'
@@ -123,6 +124,11 @@ export function HomeStory({ data }: { data: AppData | null }) {
 
       <section className="story-hero">
         <Picture name="earth-hero" alt={t('story.caption.earth')} />
+        <WireField />
+        <svg className="sat-orbit" viewBox="0 0 200 200" aria-hidden="true">
+          <ellipse cx="100" cy="100" rx="78" ry="28" fill="none" stroke="#C4512C" strokeWidth="1" strokeDasharray="3 5" />
+          <circle cx="178" cy="100" r="3.2" fill="#C4512C" />
+        </svg>
         <div className="story-hero__copy">
           <p className="kicker">{t('story.kicker')}</p>
           {name && <p>{t('space.hello', { name })}</p>}
@@ -136,7 +142,12 @@ export function HomeStory({ data }: { data: AppData | null }) {
         <p className="glass-caption">{t('story.caption.earth')} {t('photo.credit')}</p>
       </section>
 
-      <section className="scrolly" aria-label={t('story.kicker')}>
+      <nav className="scale-nav" aria-label={t('story.kicker')}>
+        <a href="#step-earth">{t('means.earth')}</a>
+        <a href="#step-forest">{t('means.congo')}</a>
+        <a href="#step-city">{t('means.yaounde')}</a>
+      </nav>
+      <section className="scrolly reveal" aria-label={t('story.kicker')}>
         <div className="scrolly__steps">
           {STEPS.map((item) => (
             <article key={item.id} className="scrolly__step" id={`step-${item.id}`}>
@@ -166,8 +177,12 @@ export function HomeStory({ data }: { data: AppData | null }) {
 
       {data ? <MeansForYou data={data} /> : <p className="story-skeleton" role="status">{t('state.loading')}</p>}
 
-      <section className="how" aria-labelledby="how-title">
+      <section className="how reveal" aria-labelledby="how-title">
         <h2 id="how-title">{t('how.h1')}</h2>
+        <svg className="flow-line" viewBox="0 0 640 28" aria-hidden="true">
+          <path d="M8 14 H632" />
+          <circle cx="8" cy="14" r="4" />
+        </svg>
         <ol>
           <li><Picture name="satellite" alt={t('story.caption.sat')} /><span>{t('how.1')}</span></li>
           <li><span>{t('how.2')}</span></li>
