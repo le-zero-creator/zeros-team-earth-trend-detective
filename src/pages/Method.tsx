@@ -40,6 +40,11 @@ export function Method() {
     <article className="method">
       <h1>{t('method.title')}</h1>
       <p>{t('method.intro')}</p>
+      <h2>{t('ai.title')}</h2>
+      <p>{t('ai.code')}</p>
+      <p>{t('ai.ask')}</p>
+      <p>{t('ai.images')}</p>
+      <p>{t('ai.numbers')}</p>
       {state.status === 'loading' && <p role="status">{t('state.loading')}</p>}
       {state.status === 'error' && (
         <div className="card error" role="alert">

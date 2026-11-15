@@ -1,14 +1,14 @@
 import { readFileSync } from 'node:fs'
 
-/** Le handler ne peut pas être appelé ici : la clé Google reste sur Vercel. On verrouille le contrat. */
 const source = readFileSync('api/ask.ts', 'utf8')
 
 describe('contrat Ask Terra', () => {
-  it('utilise gemini-3.8-flash, sans budget de réflexion, et un délai de 60 s', () => {
+  it('appelle generateText, liste les modèles flash, et ne renvoie pas la clé', () => {
+    expect(source).toContain('generateText')
+    expect(source).not.toContain('streamText')
     expect(source).toContain("const FLASH_MODEL = 'gemini-3.8-flash'")
+    expect(source).toContain('generativelanguage.googleapis.com/v1beta/models')
     expect(source).toContain('thinkingBudget: 0')
-    expect(source).toContain('export const maxDuration = 60')
-    expect(source).toContain("error: 'late'")
-    expect(source).toContain('flushHeaders')
+    expect(source).toContain("split(key).join('[key]')")
   })
 })

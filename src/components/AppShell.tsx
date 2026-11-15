@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react'
+import { useState, type ReactNode } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import { AskDock } from './AskDock'
 import { Intro } from './Intro'
@@ -49,6 +49,8 @@ function ThemeToggle() {
 
 export function AppShell({ children }: { children: ReactNode }) {
   const { t } = useI18n()
+  const [menu, setMenu] = useState(false)
+  const close = () => setMenu(false)
   return (
     <>
       <Intro />
@@ -56,10 +58,13 @@ export function AppShell({ children }: { children: ReactNode }) {
         {t('nav.skip')}
       </a>
       <Motion />
-      <header className="topbar" data-halo="true">
-        <Link to="/" className="brand">
+      <header className="topbar">
+        <Link to="/" className="brand" onClick={close}>
           <span className="brand__name">{t('app.name')}</span>
         </Link>
+        <button type="button" className="nav-burger" aria-expanded={menu} aria-controls="nav-panel" onClick={() => setMenu((open) => !open)}>
+          {menu ? t('nav.close') : t('nav.menu')}
+        </button>
         <nav className="topnav" aria-label={t('nav.main')}>
           <NavLink to="/" end>{t('nav.earth')}</NavLink>
           <NavLink to="/congo">{t('nav.congo')}</NavLink>
@@ -71,6 +76,18 @@ export function AppShell({ children }: { children: ReactNode }) {
           <LangToggle />
         </nav>
       </header>
+      {menu && (
+        <div id="nav-panel" className="nav-panel">
+          <p className="nav-panel__brand">{t('app.name')}</p>
+          <NavLink to="/" end onClick={close}>{t('nav.earth')}</NavLink>
+          <NavLink to="/congo" onClick={close}>{t('nav.congo')}</NavLink>
+          <NavLink to="/you" onClick={close}>{t('nav.you')}</NavLink>
+          <NavLink to="/ask" onClick={close}>{t('nav.ask')}</NavLink>
+          <NavLink to="/me" onClick={close}>{t('nav.me')}</NavLink>
+          <ThemeToggle />
+          <LangToggle />
+        </div>
+      )}
       <main id="main" tabIndex={-1}>
         {children}
       </main>

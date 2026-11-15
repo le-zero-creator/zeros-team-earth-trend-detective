@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { createGoogle } from '@ai-sdk/google'
 import { getCache } from '@vercel/functions'
-import { streamText } from 'ai'
+import { generateText } from 'ai'
 import type { IncomingMessage, ServerResponse } from 'node:http'
 
 /**
@@ -16,13 +16,39 @@ export const maxDuration = 60
 type NodeReq = IncomingMessage & { body?: unknown }
 
 const FLASH_MODEL = 'gemini-3.8-flash'
+let cachedModel: string | null = null
 
-/** Clé Google seulement sur le serveur. Sinon, AI Gateway avec le jeton OIDC. La clé ne sort jamais dans une réponse. */
-function askModel() {
-  const key = process.env.GOOGLE_GENERATIVE_AI_API_KEY?.trim()
-  if (key) return createGoogle({ apiKey: key })(FLASH_MODEL)
-  return `google/${FLASH_MODEL}`
+function publicError(error: unknown, key: string): string {
+  const raw = error instanceof Error ? `${error.name}: ${error.message}` : 'error'
+  return key ? raw.split(key).join('[key]') : raw
 }
+
+async function listFlashModels(key: string): Promise<string[]> {
+  const url = new URL('https://generativelanguage.googleapis.com/v1beta/models')
+  url.searchParams.set('key', key)
+  const response = await fetch(url, { signal: AbortSignal.timeout(8_000) })
+  if (!response.ok) throw new Error(await response.text())
+  const body = (await response.json()) as { models?: { name?: string; supportedGenerationMethods?: string[] }[] }
+  return (body.models ?? [])
+    .filter((model) => (model.supportedGenerationMethods ?? []).includes('generateContent'))
+    .map((model) => (model.name ?? '').replace(/^models\//, ''))
+    .filter((id) => /flash/i.test(id))
+}
+
+async function answerOnce(modelId: string, key: string, system: string, prompt: string): Promise<string> {
+  const result = await generateText({
+    model: createGoogle({ apiKey: key })(modelId),
+    system,
+    prompt,
+    maxOutputTokens: 320,
+    temperature: 0.2,
+    maxRetries: 0,
+    abortSignal: AbortSignal.timeout(20_000),
+    providerOptions: { google: { thinkingConfig: { thinkingBudget: 0, includeThoughts: false } } },
+  })
+  return result.text.trim()
+}
+
 const ZONES = new Set([
   'cmr_yaounde',
   'cmr_yokadouma',
@@ -307,57 +333,36 @@ export default async function handler(req: NodeReq, res: ServerResponse) {
     live,
   ].join('\n')
 
-  const abort = new AbortController()
-  const kill = setTimeout(() => abort.abort(), 45_000)
-  try {
-    const result = streamText({
-      model: askModel(),
-      system,
-      prompt: question,
-      maxOutputTokens: 320,
-      temperature: 0.2,
-      maxRetries: 0,
-      abortSignal: abort.signal,
-      onError({ error }) {
-        console.error('ask-stream', error instanceof Error ? `${error.name}: ${error.message}` : 'error')
-      },
-      providerOptions: {
-        google: { thinkingConfig: { thinkingBudget: 0, includeThoughts: false } },
-      },
-    })
-    const reader = result.textStream.getReader()
-    const first = await Promise.race([
-      reader.read(),
-      new Promise<null>((resolve) => setTimeout(() => resolve(null), 40_000)),
-    ])
-    if (!first || first.done || !first.value) {
-      abort.abort()
-      await reader.cancel().catch(() => undefined)
-      return send(res, 503, { error: 'late' })
+  const key = process.env.GOOGLE_GENERATIVE_AI_API_KEY?.trim() ?? ''
+  if (!key) return send(res, 503, { error: 'down' })
+  let googleMessage = ''
+  const tryModel = async (modelId: string) => {
+    try {
+      const text = await answerOnce(modelId, key, system, question)
+      if (!text) throw new Error('empty')
+      cachedModel = modelId
+      res.statusCode = 200
+      res.setHeader('content-type', 'text/plain; charset=utf-8')
+      res.setHeader('cache-control', 'no-store')
+      res.setHeader('x-content-type-options', 'nosniff')
+      res.end(text)
+      return true
+    } catch (error) {
+      googleMessage = publicError(error, key)
+      console.error('ask-model', modelId, googleMessage)
+      return false
     }
-    res.statusCode = 200
-    res.setHeader('content-type', 'text/plain; charset=utf-8')
-    res.setHeader('cache-control', 'no-cache, no-transform')
-    res.setHeader('x-accel-buffering', 'no')
-    res.setHeader('x-content-type-options', 'nosniff')
-    res.flushHeaders()
-    const write = (chunk: string) => {
-      res.write(chunk)
-      const flushable = res as ServerResponse & { flush?: () => void }
-      if (typeof flushable.flush === 'function') flushable.flush()
-    }
-    write(first.value)
-    while (true) {
-      const step = await reader.read()
-      if (step.done) break
-      if (step.value) write(step.value)
-    }
-    res.end()
-  } catch (error) {
-    console.error('ask-failed', error instanceof Error ? error.name : 'error')
-    if (!res.headersSent) return send(res, 503, { error: abort.signal.aborted ? 'late' : 'down' })
-    res.end()
-  } finally {
-    clearTimeout(kill)
   }
+  if (cachedModel && (await tryModel(cachedModel))) return
+  if (await tryModel(FLASH_MODEL)) return
+  try {
+    const models = (await listFlashModels(key)).filter((id) => id !== FLASH_MODEL && id !== cachedModel)
+    for (const id of models.slice(0, 4)) {
+      if (await tryModel(id)) return
+    }
+  } catch (error) {
+    googleMessage = publicError(error, key)
+    console.error('ask-list', googleMessage)
+  }
+  return send(res, 503, { error: 'down', detail: googleMessage.slice(0, 500) })
 }
