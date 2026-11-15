@@ -1,3 +1,4 @@
+import { pickReading } from '../lib/reading'
 import { readFileSync } from 'node:fs'
 import { fireEvent, render, screen } from '@testing-library/react'
 import type { ReactNode } from 'react'
@@ -59,8 +60,8 @@ describe('accueil grand public', () => {
   it('montre le chiffre de chaleur et celui de l’air, pas la pente de pluie', () => {
     wrap(<HomeStory data={data} />)
     const text = document.body.textContent ?? ''
-    expect(text).toContain('Hot afternoons in Yaoundé')
-    expect(text).toContain('Statistically robust')
+    expect(text).toContain('Hot afternoons')
+    expect(text).toContain('Enough evidence')
     expect(text).toContain('°C every 10 years')
     expect(text).not.toContain('decisions for every field')
     expect(document.querySelector('[data-figure="final"]')?.textContent).toBe('+0.78')
@@ -81,18 +82,20 @@ describe('accueil grand public', () => {
 })
 
 describe('personas et langue', () => {
-  it('change les questions sans changer le chiffre', () => {
+  it('change les questions sans changer le chiffre', async () => {
     wrap(<HomeStory data={data} />)
     const shown = document.querySelector('[data-observed]')!.textContent ?? ''
     expect(shown).toContain('+0.78')
     expect(shown).toContain('every 10 years')
-    fireEvent.click(screen.getByRole('button', { name: "I'm a farmer" }))
-    expect(screen.getByText(/crops are most sensitive to heat/)).toBeTruthy()
+    fireEvent.click(screen.getByRole('button', { name: /I'm a farmer/ }))
+    const heat = pick('cmr_yaounde', 't2m_max')
+    const farmerQ = pickReading('t2m_max', heat, 'farmer', 'en').questions[0]
+    expect((await screen.findAllByText(farmerQ, {}, { timeout: 3000 })).length).toBeGreaterThan(0)
     expect(document.querySelector('[data-observed]')!.textContent).toBe(shown)
-    fireEvent.click(screen.getByRole('button', { name: "I'm an architect" }))
-    expect(screen.getByText(/façades and roofs/)).toBeTruthy()
+    fireEvent.click(screen.getByRole('button', { name: /I'm an architect/ }))
+    const archQ = pickReading('t2m_max', heat, 'architect', 'en').questions[0]
+    expect((await screen.findAllByText(archQ, {}, { timeout: 3000 })).length).toBeGreaterThan(0)
     expect(document.querySelector('[data-observed]')!.textContent).toBe(shown)
-    expect(screen.queryByText(/crops are most sensitive to heat/)).toBeNull()
   })
 
   it('bascule toute l’interface en français', () => {

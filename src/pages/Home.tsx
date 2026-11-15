@@ -13,13 +13,6 @@ import { useSpace } from '../lib/space'
 import { periodLabel } from '../lib/story'
 import type { Analysis, AppData, Source } from '../lib/types'
 
-const FUTURES: { id: string; sourceId: string | null; label: Key }[] = [
-  { id: 'ndvi', sourceId: 'modis_ndvi', label: 'future.ndvi' },
-  { id: 'lst', sourceId: 'modis_lst', label: 'future.lst' },
-  { id: 'gpm', sourceId: 'gpm_imerg', label: 'future.gpm' },
-  { id: 'forest', sourceId: null, label: 'future.forest' },
-  { id: 'world', sourceId: null, label: 'future.world' },
-]
 
 
 function findAnalysis(data: AppData, zone: string, variable: string) {
@@ -143,26 +136,6 @@ export function HomeStory({ data }: { data: AppData | null }) {
       {yaounde && <p className="callout">{t('yaounde.short', { km: yaounde.distance_to_basin_km })}</p>}
 
       {data && hot && yaounde && <>
-      <section className="future" aria-labelledby="future-title">
-        <h2 id="future-title">{t('future.title')}</h2>
-        <ul className="future-row">
-          {FUTURES.map((item) => {
-            const source = item.sourceId ? data.results.meta.sources.find((entry) => entry.id === item.sourceId) : undefined
-            const status = source?.status ?? 'coming'
-            return (
-              <li key={item.id}>
-                <span className="chip chip--soon" data-future={status}>
-                  {t(item.label)}
-                  <span className={`pill pill--${status === 'coming' ? 'pending' : status}`}>
-                    {status === 'coming' ? t('soon.badge') : t(`status.${status}` as Key)}
-                  </span>
-                </span>
-              </li>
-            )
-          })}
-        </ul>
-      </section>
-
       <details className="science-fold">
         <summary>{t('place.deeper')}</summary>
         <p>{t('app.subtitle')}</p>

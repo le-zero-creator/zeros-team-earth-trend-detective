@@ -596,5 +596,18 @@
   "next.lst": "La température du sol, quartier par quartier (MODIS, 1 km). Bientôt.",
   "next.gpm": "La pluie mesurée depuis l'espace par GPM, pour revérifier la trace de la pluie. Bientôt.",
   "next.forest": "Là où la forêt disparaît, année après année. Bientôt.",
-  "next.world": "Choisis n'importe quel lieu sur Terre et lis ses traces. Bientôt."
+  "next.world": "Choisis n'importe quel lieu sur Terre et lis ses traces. Bientôt.",
+  "you.k": "Chapitre 9 · Ton regard",
+  "you.lead": "Les mêmes traces, lues avec les yeux de ton métier. Choisis une carte : les chiffres ne changent jamais, les questions oui.",
+  "you.pick": "Qui es-tu ?",
+  "you.trace": "Quelle trace veux-tu lire ?",
+  "you.seen": "Ce que les satellites ont vu à Yaoundé, 2001–2025",
+  "you.why.here": "C'est le même chiffre que dans l'histoire plus haut : c'est le point de départ des questions ci-dessous.",
+  "you.more.soon": "Une fiche détaillée pour ce point arrive bientôt.",
+  "you.ask.body": "Une question à explorer, pas une réponse. Terra peut t'aider à y réfléchir avec les chiffres publiés.",
+  "you.ask.cta": "Demander à Terra",
+  "you.need.body": "Avant d'agir, il faudrait encore cette donnée. Elle n'est pas dans cette version.",
+  "you.soon.teacher": "J'enseigne",
+  "you.soon.energy": "Je travaille dans l'énergie",
+  "you.soon.body": "Ce regard arrive bientôt. Le site est construit pour ajouter d'autres métiers sans changer aucun chiffre."
 }

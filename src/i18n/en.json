@@ -596,5 +596,18 @@
   "next.lst": "Ground temperature street by street (MODIS, 1 km). Coming soon.",
   "next.gpm": "Rain measured from space by GPM, to check the rain trace again. Coming soon.",
   "next.forest": "Where the forest disappears, year by year. Coming soon.",
-  "next.world": "Pick any place on Earth and read its traces. Coming soon."
+  "next.world": "Pick any place on Earth and read its traces. Coming soon.",
+  "you.k": "Chapter 9 · Your point of view",
+  "you.lead": "The same traces, read through the eyes of your job. Pick a card: the numbers never change, the questions do.",
+  "you.pick": "Who are you?",
+  "you.trace": "Which trace do you want to read?",
+  "you.seen": "What the satellites saw in Yaoundé, 2001–2025",
+  "you.why.here": "This is the same number as in the story above: it is the starting point of the questions below.",
+  "you.more.soon": "A detailed sheet for this point is coming soon.",
+  "you.ask.body": "A question to explore, not an answer. Terra can help you think it through with the published numbers.",
+  "you.ask.cta": "Ask Terra",
+  "you.need.body": "Before acting, this data would still be needed. It is not in this version.",
+  "you.soon.teacher": "I teach",
+  "you.soon.energy": "I work in energy",
+  "you.soon.body": "This point of view is coming soon. The site is built so new jobs can be added without changing any number."
 }
