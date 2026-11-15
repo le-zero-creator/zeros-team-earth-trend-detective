@@ -32,10 +32,19 @@ async function listFlashModels(key: string): Promise<string[]> {
   return (body.models ?? [])
     .filter((model) => (model.supportedGenerationMethods ?? []).includes('generateContent'))
     .map((model) => (model.name ?? '').replace(/^models\//, ''))
-    .filter((id) => /flash/i.test(id))
+    .filter((id) => /flash/i.test(id) && !/tts|image|live|audio|robot|embed|aqa/i.test(id))
+    .sort((a, b) => rank(a) - rank(b))
 }
 
-async function answerOnce(modelId: string, key: string, system: string, prompt: string): Promise<string> {
+function rank(id: string): number {
+  if (/3\.8-flash-lite/i.test(id)) return 0
+  if (/3\.8-flash/i.test(id)) return 1
+  if (/flash-lite/i.test(id)) return 2
+  if (/3\.\d-flash/i.test(id)) return 3
+  return 8
+}
+
+async function answerOnce(modelId: string, key: string, system: string, prompt: string, think: boolean): Promise<string> {
   const result = await generateText({
     model: createGoogle({ apiKey: key })(modelId),
     system,
@@ -44,7 +53,7 @@ async function answerOnce(modelId: string, key: string, system: string, prompt: 
     temperature: 0.2,
     maxRetries: 0,
     abortSignal: AbortSignal.timeout(20_000),
-    providerOptions: { google: { thinkingConfig: { thinkingBudget: 0, includeThoughts: false } } },
+    ...(think ? { providerOptions: { google: { thinkingConfig: { thinkingBudget: 0, includeThoughts: false } } } } : {}),
   })
   return result.text.trim()
 }
@@ -338,7 +347,14 @@ export default async function handler(req: NodeReq, res: ServerResponse) {
   let googleMessage = ''
   const tryModel = async (modelId: string) => {
     try {
-      const text = await answerOnce(modelId, key, system, question)
+      let text = ''
+      try {
+        text = await answerOnce(modelId, key, system, question, true)
+      } catch (error) {
+        const message = publicError(error, key)
+        if (!/invalid argument/i.test(message)) throw error
+        text = await answerOnce(modelId, key, system, question, false)
+      }
       if (!text) throw new Error('empty')
       cachedModel = modelId
       res.statusCode = 200
@@ -356,8 +372,8 @@ export default async function handler(req: NodeReq, res: ServerResponse) {
   if (cachedModel && (await tryModel(cachedModel))) return
   if (await tryModel(FLASH_MODEL)) return
   try {
-    const models = (await listFlashModels(key)).filter((id) => id !== FLASH_MODEL && id !== cachedModel)
-    for (const id of models.slice(0, 4)) {
+    const models = (await listFlashModels(key)).filter((id) => id !== FLASH_MODEL && id !== cachedModel && id !== 'gemini-2.5-flash')
+    for (const id of models.slice(0, 3)) {
       if (await tryModel(id)) return
     }
   } catch (error) {
