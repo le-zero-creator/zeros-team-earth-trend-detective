@@ -543,3 +543,11 @@ html { font-synthesis: none; }
 .space-qs a { display: block; padding: 12px 14px; border-radius: 14px; background: var(--bg); color: var(--text); text-decoration: none; font-weight: 600; transition: transform 0.3s var(--ease-o); }
 .space-qs a:hover { transform: translateX(4px); }
 @media (max-width: 560px) { .pg-hero--solo { grid-template-columns: 1fr; } }
+
+/* ---------- One column and one type scale on every page ---------- */
+/* On desktop the white sections sat about 22 px inside the header and the green band: same 1240 px column now. */
+main { max-width: calc(var(--maxw) + 2 * var(--space-page, 16px)); }
+.method, .future-page, .compare-page { width: min(1240px, 100%); max-width: none; margin-inline: auto; }
+.method h1, .about h1, .ask-page h1, .region-page h1, .future-page h1, .compare-page h1, .simple h1 { font-size: var(--fs-display); line-height: 1.06; letter-spacing: -0.02em; }
+.method h2, .future-page h2, .compare-page h2, .region-page h2, .ask-page h2 { font-size: var(--fs-h2); line-height: 1.1; }
+.callout, .pull { font-size: var(--fs-lead); }
