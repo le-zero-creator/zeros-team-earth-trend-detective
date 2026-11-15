@@ -65,7 +65,7 @@ describe('accueil grand public', () => {
     expect(text).not.toContain('decisions for every field')
     expect(document.querySelector('[data-figure="final"]')?.textContent).toBe('+0.78')
     expect(text).toContain(formatSlope(pick('cmr_yaounde', 't2m_max').pente_decennie, 't2m_max', pick('cmr_yaounde', 't2m_max').slope_unit, 'en'))
-    expect(text).toContain('−1.63 points every 10 years')
+    expect(document.querySelectorAll('.bk-dots button')).toHaveLength(8)
     expect(text).not.toContain(formatSlope(pick('cmr_yaounde', 'precip').pente_decennie, 'precip', pick('cmr_yaounde', 'precip').slope_unit, 'en'))
     const links = screen.getAllByRole('link', { name: /Open Yaoundé/ })
     expect(links.some((link) => link.getAttribute('href') === '/investigate?zone=cmr_yaounde&var=t2m_max&period=p2001_2025')).toBe(true)

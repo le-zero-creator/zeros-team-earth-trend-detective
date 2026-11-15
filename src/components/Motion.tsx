@@ -23,7 +23,7 @@ export function Motion() {
       )
     }
     const mark = (node: Element, kind: string) => {
-      if (seen.has(node) || node.closest('.story-hero, .explore-screen, .intro')) return
+      if (seen.has(node) || node.closest('.story-hero, .explore-screen, .intro, .bk')) return
       seen.add(node)
       const index = node.parentElement ? Array.prototype.indexOf.call(node.parentElement.children, node) : 0
       ;(node as HTMLElement).style.setProperty('--motion-delay', `${Math.min(Math.max(index, 0), 5) * 80}ms`)

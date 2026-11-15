@@ -14,21 +14,26 @@ Statuts : ✅ fait · 🟡 en cours · ⬜ à faire
 | 1 | Animation d'intro/chargement identique sur ordinateur et téléphone (storytelling) | ⬜ | |
 | 2 | Anneaux du héros comme l'image de référence : fins, élégants, proches de la planète, petits satellites (certains en sens inverse) | ⬜ | |
 | 3 | En-tête : petit logo animé + titre plus intéressant (comme le portfolio) | ⬜ | |
-| 4 | Héros : garder « Qu'est-ce qui change sur notre planète ? », retirer/réécrire « Depuis la Terre entière » | ⬜ | |
-| 5 | Le site se lit comme un LIVRE : Terre → bassin du Congo → Yaoundé → pour toi → demander à Terra (FR + EN) | ⬜ | |
-| 6 | Mise en page storytelling : une étape à la fois, en grand, on tourne la page ; clic pour détails si besoin | ⬜ | |
+| 4 | Héros : garder « Qu'est-ce qui change sur notre planète ? », retirer/réécrire « Depuis la Terre entière » | ✅ | Kicker réécrit : « Une enquête sur les traces de la Terre ». Titre conservé. |
+| 5 | Le site se lit comme un LIVRE : Terre → bassin du Congo → Yaoundé → pour toi → demander à Terra (FR + EN) | 🟡 | Accueil réécrit comme un livre (8 chapitres : Terre → satellites → bassin → Yaoundé → chaleur → air → pluie → pour toi), FR + EN. Autres pages : à faire. |
+| 6 | Mise en page storytelling : une étape à la fois, en grand, on tourne la page ; clic pour détails si besoin | ✅ | `src/components/Book.tsx` : scène collante, une page à la fois, défilement = tourner la page, points + flèches, « En savoir plus » ouvre une fenêtre. |
 | 7 | Échelle typographique unique ; sections blanches décalées sur ordinateur à réaligner | ⬜ | |
 | 8 | Profils : plus de petites pastilles ; une carte par profil avec image, dépliable ; extensible (« Bientôt ») | ⬜ | |
 | 9 | Puces « Après-midi chauds / Air humide / Pluie » séparées du choix du profil (« Quelle trace regarder ? ») | ⬜ | |
 | 10 | « Pourquoi cela peut compter », « Questions à explorer », « Ce qu'il faudrait encore » : cartes visibles, cliquables, dépliables (« Bientôt » si vide) | ⬜ | |
 | 11 | Chaque image correspond à son contexte (NASA domaine public ou image IA marquée) ; vérifier l'image satellite « Ouvrir Yaoundé » | ⬜ | |
-| 12 | Transitions entre bandes de couleur (vert → blanc) douces, pas de coupe nette | ⬜ | |
+| 12 | Transitions entre bandes de couleur (vert → blanc) douces, pas de coupe nette | 🟡 | Héros : fondu doux vers la page. Bande verte « Pour toi » : à faire. |
 | 13 | Éléments du bas qui ressemblent à des boutons : cliquables ou vraies phrases animées ; « Tendance locale… » expliquée | ⬜ | |
 | 14 | UN seul design sur toutes les pages (accueil, globe, Yaoundé, Pour toi, Mon espace, Ask Terra) ; animations partout ; « Lieu », « Indice pour vous » renommés | ⬜ | |
 | 15 | Champ Ask Terra directement dans l'étude de cas (Yaoundé, « Pour toi ») via `/api/ask` | ⬜ | |
 | 16 | « Montrer le guide » rejoue l'intro ; thème et langue en icônes avec infobulle + aria-label | ⬜ | |
 | 17 | Tutoriel d'intro storytelling : le détective suit les traces de la Terre depuis l'espace jusqu'à une ville puis jusqu'à toi ; Terra guide | ⬜ | |
 | 18 | « Mentions & crédits » simple : équipe, crédits données NASA, « site non officiel de la NASA », pas de pistage | ⬜ | |
+| A | Polices trop grandes sur petit portable (1280-1366) et téléphone : échelle fluide `clamp` | 🟡 | `src/styles/book.css` : variables `--fs-*` (titres, sous-titres, texte). À étendre aux autres pages. |
+| B | Le bouton/demi-globe vers les zones d'étude est trop caché : CTA clair « Explorer les zones d'étude », pastille qui pulse | ✅ | Bouton verre + point pulsant sur le globe, et 2e bouton sous le titre. Terra qui pointe : à faire. |
+| C | Vue zones d'étude : image cassée à trouver ; chemin vers Yaoundé (hors bassin) à rendre visible ; un clic sans effet à corriger ; garder et polir l'affichage et la fenêtre | ⬜ | |
+| D | Enquêter : texte qui paraît en italique, titres/sous-titres peu distincts ; AVANT le graphique, diapos pas à pas (source, variables une par une, pluie non prouvée), puis graphique animé (points puis droite), puis seulement « +0,78 °C/décennie » et son explication | ⬜ | |
+| E | Page Yaoundé (preuves) : même design que le reste (en-tête, échelle typo, cartes, animations) | ⬜ | |
 | 19 | Dynamique : connexion Google pour « Mon espace », panneau météo mondiale en direct (NASA POWER via `api/power.ts`) — en dernier, si sûr et gratuit | ⬜ | |
 
 ## Prochaines étapes (si non fait ce soir)
