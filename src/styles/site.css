@@ -7,7 +7,9 @@ html[data-theme='dark'] .ask-side { background: var(--surface); color: var(--tex
 html[data-theme='dark'] .topnav a { color: var(--text); }
 
 button:focus-visible, a:focus-visible, summary:focus-visible { outline: 3px solid var(--orange); outline-offset: 3px; }
-.topnav { flex-wrap: wrap; }
+.brand { flex-shrink: 0; }
+.brand__name { white-space: nowrap; }
+.topnav { flex-wrap: nowrap; overflow-x: auto; }
 .topnav a, .theme-toggle, .tour button, .means-people button, .means-regions button, .means-vars button {
   min-height: 44px;
 }
