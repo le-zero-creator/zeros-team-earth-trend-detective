@@ -304,6 +304,7 @@
   "ask.waiting": "Terra lit les résultats publiés…",
   "ask.down": "Je ne sais pas comment joindre l'assistant pour le moment.",
   "ask.slow": "Trop de questions. Attends un moment, puis réessaie.",
+  "ask.late": "Terra a mis trop de temps. Redemande dans un instant.",
   "ask.note": "Une tendance n'est pas une cause. Ce sont des questions, pas des conseils.",
   "ask.liveTitle": "Données NASA en direct, pas encore analysées par nos tests",
   "ask.liveNote": "Mois récents de NASA POWER. Ce n'est pas un test de tendance.",

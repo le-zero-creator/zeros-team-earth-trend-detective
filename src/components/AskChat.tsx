@@ -4,7 +4,7 @@ import { useI18n } from '../i18n'
 import type { ProfileId } from '../lib/profile'
 import type { PowerMonth } from '../lib/powerSeries'
 
-type Status = 'idle' | 'wait' | 'talk' | 'done' | 'down' | 'rate'
+type Status = 'idle' | 'wait' | 'talk' | 'done' | 'down' | 'rate' | 'late'
 
 export function AskChat({
   suggestions,
@@ -68,7 +68,7 @@ export function AskChat({
       })
       if (!res.ok || !res.body) {
         const code = await res.json().catch(() => ({ error: 'down' }))
-        setStatus(code.error === 'rate' ? 'rate' : 'down')
+        setStatus(code.error === 'rate' ? 'rate' : code.error === 'late' ? 'late' : 'down')
         return
       }
       const reader = res.body.getReader()
@@ -119,6 +119,7 @@ export function AskChat({
         {answer && <p>{answer}</p>}
         {status === 'down' && <p>{t('ask.down')}</p>}
         {status === 'rate' && <p>{t('ask.slow')}</p>}
+        {status === 'late' && <p>{t('ask.late')}</p>}
       </div>
       <p className="note">{t('ask.note')}</p>
       {(months || liveDown) && (

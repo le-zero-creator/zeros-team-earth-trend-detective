@@ -25,7 +25,7 @@ export function Sparkline({
     .join(' ')
   return (
     <svg className="spark" viewBox={`0 0 ${w} ${h}`} role="img" aria-label={label}>
-      <path d={d} fill="none" stroke={color} strokeWidth="2.6" strokeLinejoin="round" strokeLinecap="round" />
+      <path className="spark-draw" pathLength={1} d={d} fill="none" stroke={color} strokeWidth="2.6" strokeLinejoin="round" strokeLinecap="round" />
     </svg>
   )
 }

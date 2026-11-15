@@ -2,6 +2,7 @@ import type { ReactNode } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import { AskDock } from './AskDock'
 import { Intro } from './Intro'
+import { Motion } from './Motion'
 import { Tour } from './Tour'
 import { useTheme } from '../lib/theme'
 import { useI18n } from '../i18n'
@@ -54,7 +55,8 @@ export function AppShell({ children }: { children: ReactNode }) {
       <a className="skip" href="#main" onClick={(e) => { e.preventDefault(); document.getElementById('main')?.focus() }}>
         {t('nav.skip')}
       </a>
-      <header className="topbar">
+      <Motion />
+      <header className="topbar" data-halo="true">
         <Link to="/" className="brand">
           <span className="brand__name">{t('app.name')}</span>
         </Link>
