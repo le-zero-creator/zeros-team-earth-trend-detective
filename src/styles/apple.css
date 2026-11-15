@@ -486,7 +486,15 @@ html[data-theme='dark'] .ask-chips button { color: #e6eef3; }
 @keyframes terra-happy { 40% { transform: translateY(-3px) scale(1.05); } }
 @media (max-width: 800px) {
   .ask-dock { right: 10px; bottom: 10px; }
-  .terra-hint { width: min(200px, calc(100vw - 72px)); }
+  .terra-hint { width: min(180px, calc(100vw - 168px)); }
+  .ask-panel {
+    width: min(100vw - 16px, 420px);
+    max-height: 42vh;
+    overflow: auto;
+  }
+  .ask--compact .ask-form textarea { min-height: 64px; }
+  .ask--compact .chat { min-height: 96px; max-height: 22vh; }
+  .story-hero__copy { bottom: 30vh; }
 }
 @media (prefers-reduced-motion: reduce) {
   .terra__body, .terra__spin, .terra__eye, .terra--happy .terra__body { animation: none; }
