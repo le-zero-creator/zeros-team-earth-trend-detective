@@ -44,7 +44,6 @@ export function AppShell({ children }: { children: ReactNode }) {
       <header className="topbar">
         <Link to="/" className="brand">
           <span className="brand__name">{t('app.name')}</span>
-          <span className="brand__sub">{t('app.subtitle')}</span>
         </Link>
         <nav className="topnav" aria-label={t('nav.main')}>
           <NavLink to="/investigate" className="topnav__wide">

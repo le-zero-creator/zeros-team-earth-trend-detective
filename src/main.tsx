@@ -20,7 +20,7 @@ const rootEl = document.getElementById('root')
 document.documentElement.setAttribute('data-app', 'up')
 
 if (!rootEl) {
-  document.body.textContent = 'Trend Detective could not start. Reload the page.'
+  document.body.textContent = 'Terra Trace could not start. Reload the page.'
 } else {
   createRoot(rootEl).render(
     <StrictMode>

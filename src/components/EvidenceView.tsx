@@ -4,7 +4,7 @@ import { EvidenceBadge } from './EvidenceBadge'
 import { LocationsTable } from './LocationsTable'
 import { TrendChart } from './TrendChart'
 import { useI18n, type Key } from '../i18n'
-import { SLOPE_DECIMALS, formatNumber, formatP, formatSigned, formatSlope } from '../lib/format'
+import { SLOPE_DECIMALS, formatNumber, formatP, formatSigned, formatSlope, plainUnit } from '../lib/format'
 import { periodLabel } from '../lib/story'
 import type { Analysis, Source, Variable, Zone } from '../lib/types'
 
@@ -37,6 +37,9 @@ export function EvidenceView({
   const hi = formatNumber(analysis.pente_decennie_ic95[1], decimals, lang)
   const period = periodLabel(analysis.period)
   const what = variable.name[lang]
+  const shortName = place.split('–')[0].split('—')[0].trim()
+  const shortVar = t(`plain.var.${analysis.variable_id}` as Key)
+  const plain = `${formatSigned(analysis.pente_decennie, decimals, lang)} ${plainUnit(analysis.slope_unit, lang)}`
   const unsure = analysis.evidence_level === 'not_enough_evidence_yet' || !analysis.significatif
   const observed = unsure
     ? t('observe.unsure', { place, what, period })
@@ -47,26 +50,14 @@ export function EvidenceView({
 
   return (
     <div className="evidence">
-      <p className="place-kicker">{place}</p>
-      <h2>{what}</h2>
-      <p className="note">
-        {period} · {t(`evidence.plain.${analysis.evidence_level}` as Key)} · {analysis.n_years} {t('science.years')}
-      </p>
-      <p className="lead-obs">{observed}</p>
+      <p className="place-kicker">{shortName}</p>
+      <h2>{shortVar}</h2>
       <div className="verdict-row">
-        <EvidenceBadge level={analysis.evidence_level} direction={analysis.direction} />
         <p className={`big-slope${unsure ? ' is-quiet' : ''}`} aria-live="polite">
-          {slope}
+          {plain}
         </p>
       </div>
-      <p>
-        <span className="label">{t('science.ciLabel')}</span> {lo} {t('science.to')} {hi} {analysis.slope_unit}
-      </p>
-      <p className="note">{t('science.ic')}</p>
-      <p>
-        <span className="label">{t('science.recordLabel')}</span>{' '}
-        {formatSigned(analysis.variation_totale, decimals, lang)} {analysis.unit}
-      </p>
+      <p className="band__yes">{unsure ? t('plain.notSure') : t('home.story.yes')}</p>
 
       <TrendChart
         analysis={analysis}
@@ -74,9 +65,9 @@ export function EvidenceView({
         lineName={t('chart.sen')}
         alt={t('science.chartAlt', { what, place, period, level: t(`evidence.${analysis.evidence_level}`) })}
       />
-      <p className="note">{t('chart.verdict')}</p>
-      {analysis.warnings.includes('long_period_solar_source_change_to_verify') && <p className="warning">{t('home.solarWarning')}</p>}
 
+      <details className="science-fold">
+        <summary>{t('science.title')}</summary>
       <section id="tests" aria-labelledby="tests-title">
         <h3 id="tests-title">{t('science.title')}</h3>
         <ExploratoryBanner />
@@ -212,6 +203,20 @@ export function EvidenceView({
       <p>
         <Link to="/method">{t('nav.method')}</Link>
       </p>
+      <p className="note">{slope}</p>
+      <p>
+        <span className="label">{t('science.ciLabel')}</span> {lo} {t('science.to')} {hi} {analysis.slope_unit}
+      </p>
+      <p className="note">{t('science.ic')}</p>
+      <p>
+        <span className="label">{t('science.recordLabel')}</span>{' '}
+        {formatSigned(analysis.variation_totale, decimals, lang)} {analysis.unit}
+      </p>
+      <EvidenceBadge level={analysis.evidence_level} direction={analysis.direction} />
+      <p>{what}</p>
+      <p>{observed}</p>
+      {analysis.warnings.includes('long_period_solar_source_change_to_verify') && <p className="warning">{t('home.solarWarning')}</p>}
+      </details>
     </div>
   )
 }

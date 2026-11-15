@@ -59,16 +59,15 @@ describe('accueil grand public', () => {
   it('montre le chiffre de chaleur et celui de l’air, pas la pente de pluie', () => {
     wrap(<HomeStory data={data} />)
     const text = document.body.textContent ?? ''
-    expect(text).toContain('Is Yaoundé getting hotter?')
-    expect(text).toContain('NASA data says yes.')
-    expect(text).toContain('Afternoon (daily max) temperature')
-    expect(text).toContain('questions for every field')
+    expect(text).toContain('Hot afternoons in Yaoundé')
+    expect(text).toContain('Sure: yes')
+    expect(text).toContain('°C every 10 years')
     expect(text).not.toContain('decisions for every field')
     expect(document.querySelector('[data-figure="final"]')?.textContent).toBe('+0.78')
     expect(text).toContain(formatSlope(pick('cmr_yaounde', 't2m_max').pente_decennie, 't2m_max', pick('cmr_yaounde', 't2m_max').slope_unit, 'en'))
-    expect(text).toContain(formatSlope(pick('cmr_yaounde', 'rh2m').pente_decennie, 'rh2m', pick('cmr_yaounde', 'rh2m').slope_unit, 'en'))
+    expect(text).toContain('−1.63 points every 10 years')
     expect(text).not.toContain(formatSlope(pick('cmr_yaounde', 'precip').pente_decennie, 'precip', pick('cmr_yaounde', 'precip').slope_unit, 'en'))
-    const links = screen.getAllByRole('link', { name: /See the full analysis/ })
+    const links = screen.getAllByRole('link', { name: 'Open' })
     expect(links.some((link) => link.getAttribute('href') === '/investigate?zone=cmr_yaounde&var=t2m_max&period=p2001_2025')).toBe(true)
   })
 
@@ -84,14 +83,15 @@ describe('accueil grand public', () => {
 describe('personas et langue', () => {
   it('change les questions sans changer le chiffre', () => {
     wrap(<HomeStory data={data} />)
-    const slope = formatSlope(pick('cmr_yaounde', 't2m_max').pente_decennie, 't2m_max', '°C per decade', 'en')
-    expect(document.querySelector('[data-observed]')!.textContent).toContain(slope)
+    const shown = document.querySelector('[data-observed]')!.textContent ?? ''
+    expect(shown).toContain('+0.78')
+    expect(shown).toContain('every 10 years')
     fireEvent.click(screen.getByRole('button', { name: "I'm a farmer" }))
     expect(screen.getByText(/crops are most sensitive to heat/)).toBeTruthy()
-    expect(document.querySelector('[data-observed]')!.textContent).toContain(slope)
+    expect(document.querySelector('[data-observed]')!.textContent).toBe(shown)
     fireEvent.click(screen.getByRole('button', { name: "I'm an architect" }))
     expect(screen.getByText(/façades and roofs/)).toBeTruthy()
-    expect(document.querySelector('[data-observed]')!.textContent).toContain(slope)
+    expect(document.querySelector('[data-observed]')!.textContent).toBe(shown)
     expect(screen.queryByText(/crops are most sensitive to heat/)).toBeNull()
   })
 
@@ -102,7 +102,7 @@ describe('personas et langue', () => {
       </AppShell>,
     )
     fireEvent.click(screen.getByRole('button', { name: 'FR' }))
-    expect(screen.getByRole('heading', { level: 1 }).textContent).toMatch(/Yaoundé devient-elle plus chaude/)
+    expect(screen.getByRole('heading', { level: 1 }).textContent).toMatch(/Après-midi chauds à Yaoundé/)
     expect(document.documentElement.lang).toBe('fr')
   })
 })
@@ -236,7 +236,7 @@ describe('écran d’ouverture', () => {
 describe('démarrage sur un téléphone', () => {
   it('affiche un texte de chargement dans la page, avant le JavaScript', () => {
     const html = readFileSync('index.html', 'utf8')
-    expect(html).toContain('Loading Trend Detective')
+    expect(html).toContain('Loading Terra Trace')
     expect(html).toContain('boot.js')
   })
 

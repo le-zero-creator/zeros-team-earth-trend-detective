@@ -8,7 +8,7 @@ import { Sparkline } from '../components/Sparkline'
 import { WorldStage } from '../components/WorldStage'
 import { useI18n, type Key } from '../i18n'
 import { useData } from '../lib/data'
-import { SLOPE_DECIMALS, formatSlope } from '../lib/format'
+import { SLOPE_DECIMALS, formatSigned, plainUnit } from '../lib/format'
 import { investigateLink } from '../lib/params'
 import { periodLabel } from '../lib/story'
 import type { Analysis, AppData, Source } from '../lib/types'
@@ -61,38 +61,26 @@ export function HomeStory({ data }: { data: AppData }) {
   const yaounde = data.zones.find((z) => z.zone_id === 'cmr_yaounde')!
   const yes = hot.evidence_level === 'robust' && hot.significatif && hot.direction === 'increasing'
   const period = periodLabel(hot.period)
-  const hotSlope = formatSlope(hot.pente_decennie, hot.variable_id, hot.slope_unit, lang)
-  const airSlope = formatSlope(air.pente_decennie, air.variable_id, air.slope_unit, lang)
+  const hotPlain = `${formatSigned(hot.pente_decennie, SLOPE_DECIMALS.t2m_max, lang)} ${plainUnit(hot.slope_unit, lang)}`
+  const airPlain = `${formatSigned(air.pente_decennie, SLOPE_DECIMALS.rh2m, lang)} ${plainUnit(air.slope_unit, lang)}`
   const heatLink = investigateLink('cmr_yaounde', 't2m_max', 'p2001_2025')
   const mapAnalyses = new Map<string, Analysis>(
     data.results.analyses.filter((a) => a.variable_id === 't2m_max' && a.period_id === 'p2001_2025').map((a) => [a.zone_id, a]),
   )
-  const observed = t('observe.sig', {
-    place: 'Yaoundé',
-    what: t('home.card.heat.title'),
-    slope: hotSlope,
-    period,
-    level: t(`evidence.plain.${hot.evidence_level}` as Key),
-  })
+  const observed = `${t('home.story.question')}. ${hotPlain}. ${yes ? t('home.story.yes') : t('plain.notSure')}`
 
   return (
     <>
       <section className="band" aria-labelledby="hero-title">
         <div className="band__copy">
-          <p className="band__lead">{t('home.lead')}</p>
           <h1 id="hero-title">{t('home.story.question')}</h1>
-          <p className="band__yes">{yes ? t('home.story.yes') : t('home.story.careful')}</p>
-          <p className="hero-which">{t('home.story.which')}</p>
           <p className="hero-numline">
             <span className="hero-num">
               <CountUp value={hot.pente_decennie} decimals={SLOPE_DECIMALS.t2m_max} lang={lang} />
             </span>{' '}
-            <span className="hero-unit">{hot.slope_unit}</span>
+            <span className="hero-unit">{plainUnit(hot.slope_unit, lang)}</span>
           </p>
-          <p className="band__meta">
-            {period} · {t('evidence.plain.robust')} · {t('app.subtitle')}
-          </p>
-          <p className="band__tag">{t('home.tagline')}</p>
+          <p className="band__yes">{yes ? t('home.story.yes') : t('plain.notSure')}</p>
           <Link className="cta cta--sun" to={heatLink}>
             {t('home.seeAnalysis')}
           </Link>
@@ -105,7 +93,7 @@ export function HomeStory({ data }: { data: AppData }) {
             <Icon name="sun" />
             <span className="story-card__title">{t('home.card.heat.title')}</span>
             <span>{t('home.card.heat.sentence')}</span>
-            <strong>{hotSlope}</strong>
+            <strong>{hotPlain}</strong>
             <Sparkline series={hot.serie_annuelle} color="#e36414" label={t('home.card.heat.title')} />
             <span className="textlink">{t('home.seeAnalysis')}</span>
           </Link>
@@ -115,7 +103,7 @@ export function HomeStory({ data }: { data: AppData }) {
             <Icon name="drop" />
             <span className="story-card__title">{t('home.card.air.title')}</span>
             <span>{t('home.card.air.sentence')}</span>
-            <strong>{airSlope}</strong>
+            <strong>{airPlain}</strong>
             <Sparkline series={air.serie_annuelle} color="#8a4b2a" label={t('home.card.air.title')} />
             <span className="textlink">{t('home.seeAnalysis')}</span>
           </Link>
@@ -125,15 +113,14 @@ export function HomeStory({ data }: { data: AppData }) {
             <Icon name="cloud" />
             <span className="story-card__title">{t('home.card.rain.title')}</span>
             <span>{t('home.card.rain.sentence')}</span>
-            <strong>{t('evidence.not_enough_evidence_yet')}</strong>
+            <strong>{t('plain.notSure')}</strong>
             <Sparkline series={rain.serie_annuelle} color="#64748b" label={t('home.card.rain.title')} />
-            <span className="note">{t('evidence.neeNote')}</span>
             <span className="textlink">{t('home.seeAnalysis')}</span>
           </Link>
         </li>
       </ul>
 
-      <p className="callout">{t('yaounde.forest', { km: yaounde.distance_to_basin_km })}</p>
+      <p className="callout">{t('yaounde.short', { km: yaounde.distance_to_basin_km })}</p>
 
       <WorldStage
         zones={data.zones}
@@ -150,7 +137,7 @@ export function HomeStory({ data }: { data: AppData }) {
           {data.results.variables.map((v) => (
             <li key={v.variable_id}>
               <Link className="chip" to={investigateLink('cmr_yaounde', v.variable_id, 'p2001_2025')}>
-                {v.name[lang]}
+                {t(`plain.var.${v.variable_id}` as Key)}
                 <span className="pill pill--available">{t('status.available')}</span>
               </Link>
             </li>
@@ -180,18 +167,19 @@ export function HomeStory({ data }: { data: AppData }) {
         </Link>
       </section>
 
-      <p className="pull">{t('home.visible')}</p>
-      <p className="pull">{t('home.oneearth')}</p>
       <PersonaPanel observed={observed} analysis={hot} variableId="t2m_max" />
-      <p className="note">{t('home.whoNote')}</p>
 
-      <section className="tablecard card" aria-labelledby="table-title">
-        <h2 id="table-title">{t('home.notSame')}</h2>
-        <LocationsTable zones={data.zones} analyses={mapAnalyses} caption={t('home.table.caption', { variable: t('home.card.heat.title'), period, unit: hot.slope_unit })} />
-        <p className="note">{t('home.pnote')}</p>
-      </section>
-
-      <SourceStrip sources={data.results.meta.sources as Source[]} />
+      <details className="science-fold">
+        <summary>{t('science.title')}</summary>
+        <p>{t('app.subtitle')}</p>
+        <p>{t('yaounde.forest', { km: yaounde.distance_to_basin_km })}</p>
+        <section className="tablecard" aria-labelledby="table-title">
+          <h2 id="table-title">{t('home.notSame')}</h2>
+          <LocationsTable zones={data.zones} analyses={mapAnalyses} caption={t('home.table.caption', { variable: t('home.card.heat.title'), period, unit: hot.slope_unit })} />
+          <p className="note">{t('home.pnote')}</p>
+        </section>
+        <SourceStrip sources={data.results.meta.sources as Source[]} />
+      </details>
     </>
   )
 }

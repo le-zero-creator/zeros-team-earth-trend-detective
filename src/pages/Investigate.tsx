@@ -11,18 +11,6 @@ import { STEP_IDS, investigateLink, safeParams, safeStep, type StepId } from '..
 import { COMING_REGIONS, periodLabel } from '../lib/story'
 import type { Analysis, Source, Variable, Zone } from '../lib/types'
 
-const DEFS: Record<string, Key> = {
-  t2m: 'def.t2m',
-  t2m_max: 'def.t2m_max',
-  t2m_min: 'def.t2m_min',
-  ts: 'def.ts',
-  precip: 'def.precip',
-  rh2m: 'def.rh2m',
-  solar: 'def.solar',
-  wind: 'def.wind',
-  soil_root: 'def.soil_root',
-}
-
 export function Investigate() {
   const { t } = useI18n()
   const { state, retry } = useData()
@@ -190,7 +178,7 @@ function InvestigateStep({
 
       {step === 'clues' && (
         <section aria-labelledby="clue-title">
-          <h1 id="clue-title">{place}</h1>
+          <h1 id="clue-title">{place.split('–')[0].split('—')[0].trim()}</h1>
           <p>{t('clue.pick')}</p>
           <fieldset className="segmented">
             <legend>{t('science.period')}</legend>
@@ -203,17 +191,10 @@ function InvestigateStep({
           </fieldset>
           <ul className="clue-grid">
             {variables.map((v) => {
-              const source = sources.find((s) => s.id === v.source_id)
               return (
                 <li key={v.variable_id}>
                   <button type="button" className="clue" aria-pressed={v.variable_id === variable.variable_id} onClick={() => onGo({ var: v.variable_id, step: 'evidence' })}>
-                    <strong>{v.name[lang]}</strong>
-                    <span>{t(DEFS[v.variable_id] ?? 'def.t2m')}</span>
-                    {source && (
-                      <span className="note">
-                        {t(`sourceType.${source.id}` as Key)} · <span className={`pill pill--${source.status}`}>{t(`status.${source.status}` as Key)}</span>
-                      </span>
-                    )}
+                    <strong>{t(`plain.var.${v.variable_id}` as Key)}</strong>
                   </button>
                 </li>
               )
