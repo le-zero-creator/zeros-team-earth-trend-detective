@@ -40,7 +40,21 @@ Voir DECISIONS.md (liste complète). Les règles détaillées sont dans CLAUDE.m
 - 14/11 : défi thème 2 confirmé. Angle Yaoundé + lecture métier d'architecte.
 - 15/11 : V1 = NASA POWER seulement, tout précalculé dans public/data/results.json ; aucun calcul statistique dans le navigateur.
 
-## État actuel (15/11, images et mouvement)
+## État actuel (15/11, 21 h — Terra Trace sur `main`, en ligne)
+- **La version de référence est Terra Trace sur `main`** (décision de Ludovic) : on l'améliore, on ne revient pas vers la V1 décrite dans CLAUDE.md. Les règles de science et de sécurité restent valables. Vercel publie `main` tout seul sur https://trend-detective-congo.vercel.app ; ce soir on pousse directement sur `main` (consigne de Ludovic).
+- Le suivi détaillé, demande par demande, est dans `docs/BACKLOG_LUDOVIC.md`.
+- Fait ce soir, vérifié à 375 et 1440 px en français, puis sur le site en ligne (10 pages, téléphone et PC, aucune erreur, rien qui déborde) :
+  - une seule largeur de colonne et une seule échelle de polices (`--fs-*` de `book.css`) sur toutes les pages ;
+  - Bassin du Congo, Ask Terra, Méthode, La suite, Comparer, 404 et Mentions dans le même design (`pg-hero`, `legal-card`) ;
+  - le récit en livre continue en bas des pages (`TurnPage.tsx`) ;
+  - plus de faux boutons ; lecture architecte (`ArchitectSketch.tsx`) ; Terra pointe vers « Explorer les zones d'étude » ;
+  - globe : l'en-tête et le menu restent visibles (l'écran du globe est maintenant dans `#root`, pas dans `body`), panneaux plus coupés, niveau de preuve affiché tel que dans `results.json` ;
+  - globe : un clic sur une région du monde affiche le dernier mois NASA POWER, lu en direct par `api/power.ts` (`LiveMonth.tsx`, affichage seul, aucun calcul).
+- `npm test` 42/42 · `npm run build` OK · `npm audit` : 0 vulnérabilité.
+- **Non fait** : connexion Google pour « Mon espace » (audit en 7 points et raisons dans le backlog, section « Prochaines étapes »).
+- **Non vérifié** : `python data/validate.py` (Python absent de la machine ; aucun calcul modifié ce soir) ; Lighthouse ; le site en anglais n'a été contrôlé que par le test automatique des clés de traduction.
+
+## État précédent (15/11, images et mouvement)
 - Chaque grand écran a une photo large aux coins arrondis : questions du récit, étapes d'enquête, profils, globe, méthode, à propos, Ask Terra.
 - Photos NASA domaine public (bibliothèque images.nasa.gov) plus les trois images IA déjà filigranées. Crédits dans CREDITS.md.
 - Le globe d'accueil tourne avec trois anneaux et de petits satellites, dont un en sens inverse. Les photos glissent un peu au défilement. Un filet réaffiche le texte au bout de 1,3 s. Le mouvement réduit reste immobile.
@@ -73,4 +87,5 @@ Voir DECISIONS.md (liste complète). Les règles détaillées sont dans CLAUDE.m
 - Un ancien serveur du 14/11 occupe parfois le port 4173 : utiliser 4174.
 
 ## Prochaine étape
-- Ludovic : relire les phrases, merger la PR, activer GitHub Pages (README, section GitHub Pages), puis partager l'URL.
+- Ludovic : relire le site en ligne (https://trend-detective-congo.vercel.app), puis remettre le projet avant le 15/11 à 23 h 59.
+- Après la remise : connexion Google seulement si l'audit du backlog est levé point par point.
