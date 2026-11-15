@@ -3,6 +3,7 @@ import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { BasinMap } from '../components/BasinMap'
 import { Scene, type SceneName } from '../components/Scene'
 import { EvidenceView } from '../components/EvidenceView'
+import { EvidenceSlides } from '../components/EvidenceSlides'
 import { PersonaPanel } from '../components/PersonaPanel'
 import { SoonNote } from '../components/WorldStage'
 import { useI18n, type Key } from '../i18n'
@@ -242,9 +243,18 @@ function InvestigateStep({
 
       {step === 'evidence' && analysis && (
         <section aria-labelledby="evidence-title">
-          <h1 id="evidence-title" className="sr-only">
-            {t('step.evidence')}
+          <h1 id="evidence-title" className="sec-display ev-h1">
+            {place.split('–')[0].split('—')[0].trim()}
           </h1>
+          <EvidenceSlides
+            zone={zone}
+            analysis={analysis}
+            variable={variable}
+            source={sources.find((s) => s.id === analysis.source_id)}
+            zoneAnalyses={analyses.filter((a) => a.zone_id === zone.zone_id && a.period_id === periodId)}
+            onDone={() => document.getElementById('ev-details')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+          />
+          <h2 id="ev-details" className="sec-title ev-details-title">{t('ev.details')}</h2>
           <div className="chart-controls">
             <label>
               {t('ask.place')}
