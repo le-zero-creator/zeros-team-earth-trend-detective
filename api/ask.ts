@@ -307,11 +307,19 @@ export default async function handler(req: NodeReq, res: ServerResponse) {
       maxOutputTokens: 400,
       temperature: 0.2,
     })
+    const reader = result.textStream.getReader()
+    const first = await reader.read()
+    if (first.done || !first.value) return send(res, 503, { error: 'down' })
     res.statusCode = 200
     res.setHeader('content-type', 'text/plain; charset=utf-8')
     res.setHeader('cache-control', 'no-store')
     res.setHeader('x-content-type-options', 'nosniff')
-    for await (const part of result.textStream) res.write(part)
+    res.write(first.value)
+    while (true) {
+      const step = await reader.read()
+      if (step.done) break
+      res.write(step.value)
+    }
     res.end()
   } catch (error) {
     console.error('ask-failed', error instanceof Error ? error.name : 'error')
