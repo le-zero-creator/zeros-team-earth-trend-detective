@@ -151,9 +151,10 @@ a {
 
 /* ---------- Page ---------- */
 main {
+  --main-pad-top: 24px;
   max-width: var(--maxw);
   margin: 0 auto;
-  padding: 24px 16px 32px;
+  padding: var(--main-pad-top) 16px 32px;
 }
 
 main:focus {
@@ -736,7 +737,8 @@ select {
   }
 
   main {
-    padding: 16px 12px 24px;
+    --main-pad-top: 16px;
+    padding: var(--main-pad-top) 12px 24px;
   }
 
   .card {
@@ -872,7 +874,8 @@ select {
 
 @media (min-width: 1024px) {
   main {
-    padding-top: 36px;
+    --main-pad-top: 36px;
+    padding-top: var(--main-pad-top);
   }
 
   .home {

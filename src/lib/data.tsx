@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from 'react'
+import { createContext, useCallback, useContext, useEffect, useRef, useState, type ReactNode } from 'react'
 import type { AppData, Results, Zone, ZoneProps } from './types'
 
 type State = { status: 'loading' } | { status: 'error' } | { status: 'ready'; data: AppData }
@@ -14,9 +14,18 @@ async function getJson<T>(path: string, signal: AbortSignal): Promise<T> {
   return res.json() as Promise<T>
 }
 
+async function loadResults(signal: AbortSignal): Promise<Results> {
+  try {
+    return await getJson<Results>('results.min.json', signal)
+  } catch (error) {
+    if (signal.aborted) throw error
+    return getJson<Results>('results.json', signal)
+  }
+}
+
 export async function loadData(signal: AbortSignal = new AbortController().signal): Promise<AppData> {
   const [results, points, boundary] = await Promise.all([
-    getJson<Results>('results.json', signal),
+    loadResults(signal),
     getJson<GeoJSON.FeatureCollection<GeoJSON.Point, ZoneProps>>('zones/congo_basin_points.geojson', signal),
     getJson<GeoJSON.FeatureCollection>('zones/congo_basin_boundary.geojson', signal),
   ])
@@ -31,15 +40,26 @@ export async function loadData(signal: AbortSignal = new AbortController().signa
 export function DataProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<State>({ status: 'loading' })
   const [attempt, setAttempt] = useState(0)
+  const autoRetried = useRef(false)
 
   useEffect(() => {
     let alive = true
     const ctrl = new AbortController()
-    const timer = window.setTimeout(() => ctrl.abort(), 25000)
-    setState({ status: 'loading' })
+    const timer = window.setTimeout(() => ctrl.abort(), 40000)
+    setState((current) => (current.status === 'ready' ? current : { status: 'loading' }))
     loadData(ctrl.signal)
-      .then((data) => alive && setState({ status: 'ready', data }))
-      .catch(() => alive && setState({ status: 'error' }))
+      .then((data) => {
+        if (alive) setState({ status: 'ready', data })
+      })
+      .catch(() => {
+        if (!alive || ctrl.signal.aborted) return
+        if (!autoRetried.current) {
+          autoRetried.current = true
+          window.setTimeout(() => alive && setAttempt((n) => n + 1), 400)
+          return
+        }
+        setState({ status: 'error' })
+      })
     return () => {
       alive = false
       window.clearTimeout(timer)
