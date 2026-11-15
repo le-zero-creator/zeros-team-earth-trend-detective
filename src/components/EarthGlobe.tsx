@@ -1,6 +1,9 @@
 import { useEffect, useRef } from 'react'
-import { Map as GlobeMap, Marker } from 'maplibre-gl'
+import { Map as GlobeMap, Marker, setWorkerUrl } from 'maplibre-gl'
+import workerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?url'
 import 'maplibre-gl/dist/maplibre-gl.css'
+
+setWorkerUrl(workerUrl)
 import type { Zone } from '../lib/types'
 
 const STYLE = {
