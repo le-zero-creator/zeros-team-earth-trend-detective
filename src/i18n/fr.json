@@ -432,6 +432,8 @@
   "ai.numbers": "Les statistiques ont été calculées par nos scripts Python. Aucun chiffre n'a été généré par une IA.",
   "globe.layers": "Quoi lire",
   "globe.basinNote": "Onze lieux choisis. Pas la moyenne du bassin. Yaoundé est hors du bassin hydrographique.",
+  "globe.groupBasin": "Zones du bassin du Congo",
+  "globe.groupLocal": "Cas local : Yaoundé",
   "journey.label": "Questions",
   "journey.progress": "{n} sur {total}",
   "journey.next": "Question suivante",

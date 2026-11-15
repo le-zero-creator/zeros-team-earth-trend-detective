@@ -165,16 +165,97 @@ html[data-theme='dark'] figcaption {
 }
 .globe-sheet h2 { margin: 0 0 8px; }
 .globe-sheet .big { font-size: 2rem; margin: 0; }
+.explore-screen .zone-list, .explore-screen ul { list-style: none; margin: 0; padding: 0; }
+.zone-group { margin: 10px 0 6px; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: #d7e6df; }
+.zone-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 44px;
+  margin: 0 0 6px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 14px;
+  background: rgb(255 255 255 / 8%);
+  color: #f4f7f4;
+  text-align: left;
+  cursor: pointer;
+}
+.zone-row strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600; }
+.zone-tag, .zone-trend {
+  max-width: 7.5rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  border-radius: 999px;
+  padding: 3px 8px;
+  font-size: 0.75rem;
+  background: rgb(255 255 255 / 16%);
+}
+.zone-trend.is-quiet { opacity: 0.7; }
+.zone-row:hover { background: rgb(255 255 255 / 16%); }
+.zone-row[aria-pressed='true'] { background: #c4512c; }
+.explore-screen .earth-pin {
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  box-shadow: none;
+}
+.explore-screen .earth-pin::before {
+  width: 12px;
+  height: 12px;
+  margin: 18px auto 0;
+  border-radius: 50%;
+  background: #e7b089;
+  box-shadow: 0 0 0 0 rgb(231 176 137 / 60%);
+  animation: pin-pulse 2.4s ease-out infinite;
+}
+.explore-screen .earth-pin.is-hollow::before { background: transparent; box-shadow: 0 0 0 2px #f4f7f4; }
+.explore-screen .earth-pin.is-on::before,
+.explore-screen .earth-pin.is-basin::before {
+  width: 16px;
+  height: 16px;
+  margin-top: 16px;
+  background: #c4512c;
+}
+.explore-screen .earth-pin span {
+  left: 42px;
+  top: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: rgb(16 24 32 / 82%);
+  color: #f4f7f4;
+  white-space: nowrap;
+}
+.explore-screen .earth-pin span::before {
+  content: '';
+  width: 14px;
+  height: 1px;
+  background: #f4f7f4;
+}
+@keyframes pin-pulse {
+  70% { box-shadow: 0 0 0 12px rgb(231 176 137 / 0); }
+  100% { box-shadow: 0 0 0 0 rgb(231 176 137 / 0); }
+}
 @media (max-width: 800px) {
-  .globe-float { top: 76px; left: 12px; right: 12px; width: auto; max-height: 34vh; }
-  .globe-sheet {
+  .globe-float {
     top: auto;
-    left: 12px;
-    right: 12px;
-    bottom: 72px;
-    width: auto;
-    max-height: 38vh;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    max-height: 48vh;
+    border-radius: 24px 24px 0 0;
   }
+  .globe-sheet { display: none; }
 }
 .earth-stage { position: relative; min-height: 72vh; }
 .earth-stage .ai-photo,
@@ -431,7 +512,7 @@ html[data-theme='dark'] .ask-chips button { color: #e6eef3; }
   border-radius: 999px;
 }
 .chart-box, .ai-photo, .ai-photo img { overflow: hidden; }
-.story-hero, .story-hero .earth-view, .explore-screen, .earth-pin::before { border-radius: 0; }
+.story-hero, .story-hero .earth-view, .explore-screen { border-radius: 0; }
 .ask-fab { border-radius: 999px; }
 html[data-paused] * { animation-play-state: paused !important; }
 .motion-line {

@@ -15,6 +15,7 @@ type Props = {
   onReady?: () => void
   onFallback?: () => void
   onEnter?: () => void
+  outline?: Array<[number, number]>
 }
 
 /** Equirectangular point on a Three sphere, before any mesh rotation. */
@@ -29,7 +30,7 @@ function latLonToVector(lat: number, lon: number, radius: number) {
 }
 
 export const LivingEarth = forwardRef<EarthHandle, Props>(function LivingEarth(
-  { hero = false, zones = [], selected = null, onPick, onReady, onFallback, onEnter },
+  { hero = false, zones = [], selected = null, onPick, onReady, onFallback, onEnter, outline = [] },
   ref,
 ) {
   const root = useRef<HTMLDivElement>(null)
@@ -39,7 +40,10 @@ export const LivingEarth = forwardRef<EarthHandle, Props>(function LivingEarth(
   const ready = useRef(onReady)
   const fallback = useRef(onFallback)
   const entered = useRef(onEnter)
+  const outlineRef = useRef(outline)
+  const drawOutline = useRef<(pts: Array<[number, number]>) => void>(() => {})
   pick.current = onPick
+  outlineRef.current = outline
   ready.current = onReady
   fallback.current = onFallback
   entered.current = onEnter
@@ -83,7 +87,7 @@ export const LivingEarth = forwardRef<EarthHandle, Props>(function LivingEarth(
 
         const scene = new THREE.Scene()
         const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 20)
-        const start = latLonToVector(8, 17, hero ? 2.9 : 2.6)
+        const start = latLonToVector(hero ? 8 : 2, hero ? 17 : 18, hero ? 2.9 : 3.55)
         camera.position.set(start.x, start.y, start.z)
 
         const controls = new OrbitControls(camera, renderer.domElement)
@@ -120,6 +124,26 @@ export const LivingEarth = forwardRef<EarthHandle, Props>(function LivingEarth(
           new THREE.MeshPhongMaterial({ map, specular: new THREE.Color('#1a3344'), shininess: 12 }),
         )
         scene.add(earth)
+        let basinLine: { geometry: { dispose: () => void } } | null = null
+        drawOutline.current = (pts) => {
+          if (basinLine) {
+            earth.remove(basinLine as never)
+            basinLine.geometry.dispose()
+            basinLine = null
+          }
+          if (pts.length < 3) return
+          const vectors = pts.map(([lon, lat]) => {
+            const p = latLonToVector(lat, lon, 1.015)
+            return new THREE.Vector3(p.x, p.y, p.z)
+          })
+          vectors.push(vectors[0].clone())
+          const geometry = new THREE.BufferGeometry().setFromPoints(vectors)
+          const material = new THREE.LineBasicMaterial({ color: 0xf6d7b8, transparent: true, opacity: 0.95 })
+          const line = new THREE.Line(geometry, material)
+          earth.add(line)
+          basinLine = line
+        }
+        drawOutline.current(outlineRef.current)
 
         const glow = new THREE.Mesh(
           new THREE.SphereGeometry(1.07, 64, 64),
@@ -271,6 +295,10 @@ export const LivingEarth = forwardRef<EarthHandle, Props>(function LivingEarth(
       cleanups.forEach((fn) => fn())
     }
   }, [hero])
+
+  useEffect(() => {
+    drawOutline.current(outline)
+  }, [outline])
 
   return (
     <div ref={root} className={hero ? 'earth-view' : 'earth-view earth-view--stage'}>
