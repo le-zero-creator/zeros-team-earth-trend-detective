@@ -551,3 +551,10 @@ main { max-width: calc(var(--maxw) + 2 * var(--space-page, 16px)); }
 .method h1, .about h1, .ask-page h1, .region-page h1, .future-page h1, .compare-page h1, .simple h1 { font-size: var(--fs-display); line-height: 1.06; letter-spacing: -0.02em; }
 .method h2, .future-page h2, .compare-page h2, .region-page h2, .ask-page h2 { font-size: var(--fs-h2); line-height: 1.1; }
 .callout, .pull { font-size: var(--fs-lead); }
+
+/* ---------- The book goes on: previous / next chapter at the end of a page ---------- */
+.pg-turn { margin-top: clamp(40px, 6vw, 80px); }
+.pg-turn .hx-go__grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 420px)); }
+.pg-turn__k { font: 700 var(--fs-small)/1.2 var(--font-text); letter-spacing: 0.1em; text-transform: uppercase; color: var(--orange-text) !important; }
+html[data-theme='dark'] .pg-turn__k { color: var(--sun) !important; }
+.region-page .pg-trace .badge, .region-page .pg-trace [data-evidence] { justify-self: start; }

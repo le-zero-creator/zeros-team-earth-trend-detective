@@ -685,5 +685,12 @@
   "legal.license": "Licence",
   "space.k": "My space",
   "space.card": "My detective card",
-  "space.saved": "Saved ✓"
+  "space.saved": "Saved ✓",
+  "region.k": "The places · Chapter 3",
+  "region.story": "Eleven places around the great forest, from the river to the high plateaus. Each one keeps its own trace: we read them one by one, never as an average.",
+  "region.traces": "Afternoon heat, place by place",
+  "region.globe": "See these places on the globe",
+  "turn.k": "Turn the page",
+  "turn.prev": "Previous page",
+  "turn.next": "Next page"
 }

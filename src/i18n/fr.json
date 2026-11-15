@@ -685,5 +685,12 @@
   "legal.license": "Licence",
   "space.k": "Mon espace",
   "space.card": "Ma carte de détective",
-  "space.saved": "Enregistré ✓"
+  "space.saved": "Enregistré ✓",
+  "region.k": "Les lieux · Chapitre 3",
+  "region.story": "Onze lieux autour de la grande forêt, du fleuve aux hauts plateaux. Chacun garde sa propre trace : on les lit un par un, jamais en moyenne.",
+  "region.traces": "La chaleur de l'après-midi, lieu par lieu",
+  "region.globe": "Voir ces lieux sur le globe",
+  "turn.k": "Tourner la page",
+  "turn.prev": "Page précédente",
+  "turn.next": "Page suivante"
 }
