@@ -157,12 +157,30 @@ export const LivingEarth = forwardRef<EarthHandle, Props>(function LivingEarth(
           if (hero && !goal) controls.autoRotate = true
         })
 
+        const placeHero = () => {
+          if (!hero) {
+            earth.position.set(0, 0, 0)
+            glow.position.set(0, 0, 0)
+            return
+          }
+          camera.lookAt(0, 0, 0)
+          camera.updateMatrixWorld()
+          const right = new THREE.Vector3(1, 0, 0).applyQuaternion(camera.quaternion)
+          const up = new THREE.Vector3(0, 1, 0).applyQuaternion(camera.quaternion)
+          const narrow = node.clientWidth < 800
+          const shift = narrow
+            ? up.clone().multiplyScalar(-0.55)
+            : right.clone().multiplyScalar(0.88).add(up.clone().multiplyScalar(-0.12))
+          earth.position.copy(shift)
+          glow.position.copy(shift)
+        }
         const resize = () => {
           const w = node.clientWidth || 1
           const h = node.clientHeight || 1
           camera.aspect = w / h
           camera.updateProjectionMatrix()
           renderer.setSize(w, h, false)
+          placeHero()
         }
         resize()
         const observer = new ResizeObserver(resize)

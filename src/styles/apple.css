@@ -45,7 +45,7 @@ html[data-theme='dark'] figcaption {
   top: 0;
   z-index: 40;
   background: rgb(26 35 48 / 82%);
-  backdrop-filter: blur(20px) saturate(1.4);
+  backdrop-filter: blur(16px) saturate(1.4);
 }
 .story-hero { background: #061018; }
 .story-hero::after {
@@ -90,16 +90,92 @@ html[data-theme='dark'] figcaption {
 .story-hero .earth-view {
   position: absolute;
   z-index: 0;
-  inset: auto;
-  width: 118vh;
-  height: 118vh;
-  right: -16vh;
-  bottom: -26vh;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
   background: transparent;
 }
 .earth-view--stage { background: #071018; }
 .earth-view canvas { width: 100%; height: 100%; display: block; }
-.earth-view--stage { position: relative; height: 72vh; border-radius: 28px; overflow: hidden; }
+.explore-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  background: #061018;
+}
+.explore-screen .earth-view,
+.explore-screen .earth-view--stage {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+  background: transparent;
+}
+.globe-float {
+  position: absolute;
+  z-index: 3;
+  top: 84px;
+  left: 16px;
+  display: grid;
+  gap: 8px;
+  width: min(300px, calc(100% - 32px));
+  max-height: calc(100% - 120px);
+  overflow: auto;
+  padding: 12px;
+  pointer-events: auto;
+}
+.globe-float input, .globe-sheet {
+  font: inherit;
+  color: inherit;
+}
+.globe-float input {
+  min-height: 44px;
+  width: 100%;
+  border-radius: 999px;
+  border: 0;
+  padding: 0 14px;
+  background: rgb(255 255 255 / 88%);
+  color: #1a2330;
+}
+.globe-layers { display: flex; gap: 6px; flex-wrap: wrap; }
+.globe-layers button, .globe-float .zone-btn {
+  min-height: 36px;
+  border: 0;
+  border-radius: 999px;
+  padding: 6px 12px;
+  background: rgb(255 255 255 / 16%);
+  color: #f4f7f8;
+  cursor: pointer;
+}
+.globe-layers button[aria-pressed='true'], .globe-float .zone-btn[aria-pressed='true'] {
+  background: #c4512c;
+  color: #fff;
+}
+.globe-sheet {
+  position: absolute;
+  z-index: 4;
+  top: 84px;
+  right: 16px;
+  width: min(320px, calc(100% - 32px));
+  padding: 18px;
+  max-height: calc(100% - 120px);
+  overflow: auto;
+}
+.globe-sheet h2 { margin: 0 0 8px; }
+.globe-sheet .big { font-size: 2rem; margin: 0; }
+@media (max-width: 800px) {
+  .globe-float { top: 76px; left: 12px; right: 12px; width: auto; max-height: 34vh; }
+  .globe-sheet {
+    top: auto;
+    left: 12px;
+    right: 12px;
+    bottom: 72px;
+    width: auto;
+    max-height: 38vh;
+  }
+}
 .earth-stage { position: relative; min-height: 72vh; }
 .earth-stage .ai-photo,
 .earth-stage picture,
@@ -107,7 +183,7 @@ html[data-theme='dark'] figcaption {
 
 .glass {
   background: rgb(255 255 255 / 72%);
-  backdrop-filter: blur(20px) saturate(1.4);
+  backdrop-filter: blur(16px) saturate(1.4);
   border: 1px solid rgb(255 255 255 / 55%);
   border-radius: 24px;
   box-shadow: 0 18px 50px rgb(16 24 32 / 10%), inset 0 1px 0 rgb(255 255 255 / 80%);
@@ -293,14 +369,60 @@ html[data-theme='dark'] .ask-chips button { color: #e6eef3; }
 @media (max-width: 800px) {
   .explore-layout, .ask-form { grid-template-columns: 1fr; }
   .earth-view--stage, .earth-stage, .earth-stage img { height: 62vh; min-height: 62vh; }
-  .story-hero .earth-view { width: 148vw; height: 148vw; right: -36vw; bottom: -18vw; }
-  .enter-earth span { right: 16px; bottom: 88px; }
+  .story-hero::after {
+    background: linear-gradient(180deg, rgb(6 16 24 / 55%) 0%, rgb(6 16 24 / 18%) 38%, transparent 70%);
+  }
+  .story-hero__copy { bottom: 18vh; padding-right: 72px; }
+  .enter-earth span { right: 16px; bottom: 96px; }
   .ask-dock { right: 12px; bottom: 12px; }
 }
 
+:root { --ease: cubic-bezier(.16, .84, .24, 1); }
+.means .means-stage { grid-template-columns: 1fr; }
+.means-card, .card, .glass, .journey-card, .chart-box, .ai-photo, .welcome-card, .tour-card, .profile-reading, .space-page form {
+  border-radius: 20px;
+}
+.ask-chips button, .means-people button, .means-regions button, .means-vars button, .journey-choices button, .journey-choices a, .globe-layers button, .zone-btn, .lang, .nav-burger, .cta {
+  border-radius: 999px;
+}
+.chart-box, .ai-photo, .ai-photo img { overflow: hidden; }
+.story-hero, .story-hero .earth-view, .explore-screen, .earth-pin::before { border-radius: 0; }
+.ask-fab { border-radius: 999px; }
+html[data-paused] * { animation-play-state: paused !important; }
+.motion-line {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+  transition-delay: var(--motion-delay, 0ms);
+}
+.motion-line.is-in { opacity: 1; transform: none; }
+.motion-media {
+  opacity: 0;
+  clip-path: inset(0 0 100% 0 round 20px);
+  transform: scale(1.03);
+  transition: opacity 0.8s var(--ease), clip-path 0.9s var(--ease), transform 0.9s var(--ease);
+  transition-delay: var(--motion-delay, 0ms);
+}
+.motion-media.is-in { opacity: 1; clip-path: inset(0 0 0 0 round 20px); transform: none; }
+.motion-card { position: relative; transition: transform 0.45s var(--ease), box-shadow 0.45s var(--ease); }
+.motion-icon, .means-people svg, .accent-icon { transition: transform 0.45s var(--ease); }
+@media (hover: hover) and (pointer: fine) {
+  .motion-card:hover { transform: translateY(-4px); }
+  button:hover .motion-icon, .means-people button:hover svg { transform: translateY(-2px) scale(1.05); }
+  .motion-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    background: radial-gradient(160px circle at var(--gx, 50%) var(--gy, 0%), rgb(196 81 44 / 16%), transparent 70%);
+    opacity: 0;
+  }
+  .motion-card:hover::after { opacity: 1; }
+}
 @media (prefers-reduced-motion: reduce) {
-  .page-in, .dots i, .ask-fab__planet, .sat-orbit { animation: none; }
-  .page-in { transform: none; }
+  .page-in, .dots i, .ask-fab__planet, .sat-orbit, .motion-icon { animation: none; }
+  .page-in, .motion-line, .motion-media, .motion-card { transform: none; opacity: 1; clip-path: none; transition: none; }
 }
 @media (prefers-reduced-transparency: reduce) {
   .glass, .topbar, .story-hero__copy, .ask-panel {

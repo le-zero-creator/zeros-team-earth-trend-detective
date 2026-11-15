@@ -8,7 +8,7 @@ import { SLOPE_DECIMALS, formatSigned, plainUnit } from '../lib/format'
 import { investigateLink } from '../lib/params'
 import { PROFILE_IDS, useProfile, type ProfileId } from '../lib/profile'
 import { pickReading } from '../lib/reading'
-import type { Analysis, AppData } from '../lib/types'
+import type { AppData } from '../lib/types'
 
 const ICONS = {
   farmer: Sprout,
@@ -89,7 +89,6 @@ export function MeansForYou({ data, page = false }: { data: AppData; page?: bool
         })}
       </div>
       <div className="means-stage">
-        <ImpactScene analysis={analysis} region={region} unsure={unsure || variable === 'precip'} plain={plain} variable={variable} />
         <div className="means-levels">
           <article className="means-card" data-halo="true">
             <h3>{t('means.see')}</h3>
@@ -149,29 +148,3 @@ export function MeansForYou({ data, page = false }: { data: AppData; page?: bool
   )
 }
 
-function ImpactScene({
-  analysis,
-  region,
-  unsure,
-  plain,
-  variable,
-}: {
-  analysis?: Analysis
-  region: Region
-  unsure: boolean
-  plain: string
-  variable: string
-}) {
-  const heat = variable === 't2m_max' && !unsure && region !== 'earth' && analysis
-  return (
-    <figure className="means-scene" aria-hidden="true">
-      <svg viewBox="0 0 280 220" className="means-draw">
-        <rect x="118" y="28" width="28" height="120" rx="14" fill="none" stroke="currentColor" strokeWidth="3" />
-        <circle cx="132" cy="162" r="22" fill="none" stroke="currentColor" strokeWidth="3" />
-        {heat && <rect className="means-mercury" x="126" y="78" width="12" height="70" rx="6" />}
-        {!heat && <text x="132" y="168" textAnchor="middle" fontSize="18">?</text>}
-      </svg>
-      <figcaption>{heat ? plain : region === 'earth' ? '' : unsure ? '' : plain}</figcaption>
-    </figure>
-  )
-}
