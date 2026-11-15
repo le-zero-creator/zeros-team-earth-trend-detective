@@ -5,6 +5,7 @@ import {
   Building2, ChevronDown, Compass, Droplets, FlaskConical, GraduationCap, HeartPulse, Landmark, Lightbulb,
   MessageCircleQuestion, Sprout, Sun, CloudRain, Wind, ClipboardList, Zap,
 } from 'lucide-react'
+import { ArchitectSketch } from './ArchitectSketch'
 import { CountUp } from './CountUp'
 import { HomeAsk } from './HomeExtras'
 import { Scene, type SceneName } from './Scene'
@@ -181,6 +182,8 @@ export function MeansForYou({ data, page = false }: { data: AppData; page?: bool
                   </div>
                 )}
               </div>
+
+              {profile === 'architect' && <ArchitectSketch variable={variable} points={impactKeys(profile, variable).map((key) => t(key))} />}
 
               <div className="you-groups">
                 <div className="you-group">

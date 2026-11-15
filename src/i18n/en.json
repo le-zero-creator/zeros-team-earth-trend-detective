@@ -693,5 +693,9 @@
   "turn.k": "Turn the page",
   "turn.prev": "Previous page",
   "turn.next": "Next page",
-  "ask.sideTitle": "The published figure for this place"
+  "ask.sideTitle": "The published figure for this place",
+  "you.sketch.t": "Where to look on a building?",
+  "you.sketch.alt": "Line drawing of a building with a tree, a water tank and the sun, with three numbered hot spots",
+  "you.sketch.hint": "Tap a hot spot.",
+  "you.sketch.note": "Illustration only: not a plan and not building advice."
 }

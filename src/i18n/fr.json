@@ -693,5 +693,9 @@
   "turn.k": "Tourner la page",
   "turn.prev": "Page précédente",
   "turn.next": "Page suivante",
-  "ask.sideTitle": "Le chiffre publié pour ce lieu"
+  "ask.sideTitle": "Le chiffre publié pour ce lieu",
+  "you.sketch.t": "Où regarder sur un bâtiment ?",
+  "you.sketch.alt": "Dessin au trait d'un bâtiment avec un arbre, une citerne et le soleil, et trois points chauds numérotés",
+  "you.sketch.hint": "Touche un point chaud.",
+  "you.sketch.note": "Dessin d'illustration : ni un plan, ni un conseil de construction."
 }

@@ -596,3 +596,36 @@ html[data-theme='dark'] .pg-turn__k { color: var(--sun) !important; }
   .enter-earth span { display: none; }
 }
 @media (prefers-reduced-motion: reduce) { .enter-earth__arrow { animation: none; } }
+
+/* ---------- Architect reading: a building that draws itself, with three hot spots ---------- */
+.you-sketch {
+  grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); gap: clamp(14px, 3vw, 40px); align-items: center;
+  padding: clamp(14px, 2.4vw, 28px); border-radius: var(--r-md);
+  background: rgb(255 255 255 / 7%); border: 1px solid rgb(255 255 255 / 14%);
+}
+.you-sketch__art { position: relative; max-width: 560px; width: 100%; margin-inline: auto; }
+.you-sketch__art svg { display: block; width: 100%; height: auto; overflow: visible; }
+.you-sketch__line > * {
+  fill: none; stroke: #f6faf7; stroke-opacity: 0.88; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+  stroke-dasharray: 1; stroke-dashoffset: 1;
+  animation: lm-draw 1.2s var(--ease-o) forwards; animation-delay: calc(var(--i, 0) * 0.13s);
+}
+.you-sketch__sun > * { stroke: var(--sun); stroke-opacity: 1; }
+.you-sketch__spot {
+  position: absolute; width: 44px; height: 44px; margin: -22px 0 0 -22px; padding: 0; border-radius: 50%;
+  border: 2px solid #143832; background: var(--sun); color: #143832; font: 700 1rem/1 var(--font-text); cursor: pointer;
+  box-shadow: 0 0 0 0 rgb(255 210 156 / 70%); animation: hx-pulse 1.8s var(--ease-o) infinite;
+  transition: transform 0.3s var(--ease-o), background 0.3s;
+}
+.you-sketch__spot:hover { transform: scale(1.08); }
+.you-sketch__spot[aria-pressed='true'] { background: #f6faf7; transform: scale(1.14); animation: none; box-shadow: 0 0 0 5px rgb(231 176 137 / 35%); }
+.you-sketch__copy { display: grid; gap: 12px; align-content: center; }
+.you-sketch__copy h3 { display: flex; align-items: center; gap: 10px; }
+.you-sketch__copy h3 svg { width: 22px; height: 22px; color: var(--sun); flex: none; }
+.you-sketch__text { display: flex; align-items: flex-start; gap: 12px; font: 600 var(--fs-h3)/1.3 var(--font-title) !important; color: #f6faf7; min-height: 3.2em; }
+.you-sketch__text span { display: grid; place-items: center; flex: none; width: 30px; height: 30px; border-radius: 50%; background: var(--sun); color: #143832; font: 700 0.95rem/1 var(--font-text); }
+@media (max-width: 960px) { .you-sketch { grid-template-columns: 1fr; } }
+@media (prefers-reduced-motion: reduce) {
+  .you-sketch__line > * { animation: none; stroke-dashoffset: 0; }
+  .you-sketch__spot { animation: none; }
+}
