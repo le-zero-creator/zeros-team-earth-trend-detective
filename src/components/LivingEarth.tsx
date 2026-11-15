@@ -156,27 +156,21 @@ export const LivingEarth = forwardRef<EarthHandle, Props>(function LivingEarth(
         )
         scene.add(glow)
 
-        const orbits = new THREE.Group()
-        if (hero) scene.add(orbits)
-        const ringSpecs = hero ? [
-          { radius: 1.06, tilt: 0.42, speed: 0.35, color: 0xd5e6f2 },
-          { radius: 1.1, tilt: 0.48, speed: -0.22, color: 0xf0d2b4 },
-          { radius: 1.14, tilt: 0.55, speed: 0.28, color: 0xc9ddd4 },
-        ] : []
-        const satellites = ringSpecs.map((spec) => {
-          const pivot = new THREE.Group()
-          pivot.rotation.x = spec.tilt
-          const ring = new THREE.Mesh(
-            new THREE.TorusGeometry(spec.radius, 0.008, 8, 96),
-            new THREE.MeshBasicMaterial({ color: spec.color, transparent: true, opacity: 0.9, depthTest: true, depthWrite: false }),
-          )
-          pivot.add(ring)
-          const sat = new THREE.Mesh(new THREE.SphereGeometry(0.012, 8, 8), new THREE.MeshBasicMaterial({ color: 0xfff8ef, depthTest: true }))
-          sat.position.set(spec.radius, 0, 0)
-          pivot.add(sat)
-          earth.add(pivot)
-          return { pivot, speed: spec.speed }
-        })
+        const placeHalo = () => {
+          if (!hero) return
+          const width = node.clientWidth || 1
+          const height = node.clientHeight || 1
+          const right = new THREE.Vector3(1, 0, 0).applyQuaternion(camera.quaternion)
+          const center = earth.position.clone().project(camera)
+          const limb = earth.position.clone().add(right.multiplyScalar(1.04)).project(camera)
+          const cx = (center.x * 0.5 + 0.5) * width
+          const cy = (-center.y * 0.5 + 0.5) * height
+          const lx = (limb.x * 0.5 + 0.5) * width
+          const ly = (-limb.y * 0.5 + 0.5) * height
+          node.style.setProperty('--halo-x', `${cx}px`)
+          node.style.setProperty('--halo-y', `${cy}px`)
+          node.style.setProperty('--halo-r', `${Math.hypot(lx - cx, ly - cy)}px`)
+        }
 
         let goal: { x: number; y: number; z: number } | null = null
         let flight: { origin: InstanceType<typeof THREE.Vector3>; dest: InstanceType<typeof THREE.Vector3>; t0: number } | null = null
@@ -282,7 +276,7 @@ export const LivingEarth = forwardRef<EarthHandle, Props>(function LivingEarth(
           }
           raf = window.requestAnimationFrame(loop)
           if (hero && !flight) earth.rotation.y += 0.0011
-          for (const sat of satellites) sat.pivot.rotation.y += sat.speed * 0.01
+          placeHalo()
           if (flight) {
             const k = Math.min(1, (performance.now() - flight.t0) / 1000)
             const eased = 1 - (1 - k) ** 3
@@ -363,6 +357,13 @@ export const LivingEarth = forwardRef<EarthHandle, Props>(function LivingEarth(
             <span>{labels?.[zone.zone_id] ?? zone.name_en.split(/[–—-]/)[0]}</span>
           </button>
         ))}
+      {hero && (
+        <>
+          <span className="halo halo--a" aria-hidden="true"><i /></span>
+          <span className="halo halo--b" aria-hidden="true"><i /></span>
+          <span className="halo halo--c" aria-hidden="true"><i /></span>
+        </>
+      )}
       {children}
     </div>
   )

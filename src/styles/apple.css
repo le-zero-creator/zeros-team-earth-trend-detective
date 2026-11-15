@@ -879,6 +879,39 @@ main {
 .scrolly__step { min-height: 0; margin: 0 0 64px; padding: 0; align-content: start; }
 .home.home--story > section { margin-top: 64px; }
 .story-hero:has([data-earth='ready']) .ai-photo { display: none; }
+.story-hero .earth-view { overflow: hidden; }
+.halo {
+  position: absolute;
+  left: var(--halo-x, 70%);
+  top: var(--halo-y, 58%);
+  width: calc(var(--halo-r, 180px) * 2.02);
+  height: calc(var(--halo-r, 180px) * 1.9);
+  transform: translate(-50%, -50%) rotate(16deg);
+  border-radius: 50%;
+  border: 3px solid rgb(214 228 238 / 78%);
+  pointer-events: none;
+  z-index: 1;
+}
+.halo--b { width: calc(var(--halo-r, 180px) * 2.1); height: calc(var(--halo-r, 180px) * 1.96); border-width: 2px; border-color: rgb(240 210 180 / 70%); transform: translate(-50%, -50%) rotate(16deg); }
+.halo--c { width: calc(var(--halo-r, 180px) * 2.16); height: calc(var(--halo-r, 180px) * 2.02); border-width: 2px; border-color: rgb(190 214 206 / 66%); transform: translate(-50%, -50%) rotate(16deg); }
+.halo i {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 7px;
+  height: 7px;
+  margin: -3.5px;
+  border-radius: 50%;
+  background: #fff;
+  offset-path: ellipse(50% 50% at 50% 50%);
+  animation: halo-sat 22s linear infinite;
+}
+.halo--b i { animation-duration: 28s; animation-direction: reverse; background: #f3d7bc; }
+.halo--c i { animation-duration: 18s; background: #d5ebe4; }
+@keyframes halo-sat { to { offset-distance: 100%; } }
+@media (prefers-reduced-motion: reduce) {
+  .halo i { animation: none; offset-distance: 12%; }
+}
 @media (prefers-reduced-motion: reduce) {
   .journey-answer, .means-swap, .journey-choices button { animation: none; transform: none; }
 }
