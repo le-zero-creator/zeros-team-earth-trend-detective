@@ -2,6 +2,8 @@ import type { ReactNode } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import { AskDock } from './AskDock'
 import { Intro } from './Intro'
+import { Tour } from './Tour'
+import { useTheme } from '../lib/theme'
 import { useI18n } from '../i18n'
 import { useData } from '../lib/data'
 
@@ -34,6 +36,16 @@ function Footer() {
   )
 }
 
+function ThemeToggle() {
+  const { t } = useI18n()
+  const { theme, toggle } = useTheme()
+  return (
+    <button type="button" className="theme-toggle" aria-pressed={theme === 'dark'} onClick={toggle}>
+      {theme === 'dark' ? t('theme.light') : t('theme.dark')}
+    </button>
+  )
+}
+
 export function AppShell({ children }: { children: ReactNode }) {
   const { t } = useI18n()
   return (
@@ -47,19 +59,13 @@ export function AppShell({ children }: { children: ReactNode }) {
           <span className="brand__name">{t('app.name')}</span>
         </Link>
         <nav className="topnav" aria-label={t('nav.main')}>
-          <NavLink to="/investigate" className="topnav__wide">
-            {t('nav.investigate')}
-          </NavLink>
-          <NavLink to="/method" className="topnav__wide">
-            {t('nav.method')}
-          </NavLink>
-          <NavLink to="/compare" className="topnav__wide">
-            {t('nav.compare')}
-          </NavLink>
-          <NavLink to="/ask" className="topnav__wide">
-            {t('nav.ask')}
-          </NavLink>
-          <NavLink to="/about">{t('nav.about')}</NavLink>
+          <NavLink to="/" end>{t('nav.earth')}</NavLink>
+          <NavLink to="/congo">{t('nav.congo')}</NavLink>
+          <NavLink to="/you">{t('nav.you')}</NavLink>
+          <NavLink to="/ask">{t('nav.ask')}</NavLink>
+          <NavLink to="/me">{t('nav.me')}</NavLink>
+          <Tour />
+          <ThemeToggle />
           <LangToggle />
         </nav>
       </header>
@@ -68,20 +74,6 @@ export function AppShell({ children }: { children: ReactNode }) {
       </main>
       <Footer />
       <AskDock />
-      <nav className="bottomnav" aria-label={t('nav.main')}>
-        <NavLink to="/" end>
-          <span aria-hidden="true">⌂</span>
-          {t('nav.home')}
-        </NavLink>
-        <NavLink to="/investigate">
-          <span aria-hidden="true">⌕</span>
-          {t('nav.investigate')}
-        </NavLink>
-        <NavLink to="/method">
-          <span aria-hidden="true">≡</span>
-          {t('nav.method')}
-        </NavLink>
-      </nav>
     </>
   )
 }
