@@ -30,7 +30,7 @@ Not applicable. Nothing receives a webhook.
 
 - `npm audit`: 0 info, 0 low, 0 moderate, 0 high, 0 critical (run again on 2026-11-15 after adding the AI SDK).
 - GitHub Pages serves the site over HTTPS.
-- The built `index.html` includes a content-security policy: `default-src 'self'`; scripts and fonts from `'self'`; images from `'self'`, `data:`, and `https://tile.openstreetmap.org`; `connect-src 'self'`; `object-src 'none'`.
+- The built `index.html` includes a content-security policy: `default-src 'self'`; scripts and fonts from `'self'`; images from `'self'`, `data:`, `blob:`, `https://tile.openstreetmap.org` and `https://server.arcgisonline.com`; `connect-src 'self'` and the same Esri host; `worker-src 'self' blob:`; `object-src 'none'`.
 - External links use `rel="noopener noreferrer"`.
 - A bad `results.json` shows “The data could not be loaded” and does not print a stack trace.
 - Screenshot runs contacted only the site itself and `tile.openstreetmap.org`.

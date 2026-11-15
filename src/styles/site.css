@@ -1,0 +1,123 @@
+html[data-theme='dark'] body { background: var(--bg); color: var(--text); }
+html[data-theme='dark'] .topbar,
+html[data-theme='dark'] .card,
+html[data-theme='dark'] .means-card,
+html[data-theme='dark'] .ask-panel,
+html[data-theme='dark'] .ask-side { background: var(--surface); color: var(--text); }
+html[data-theme='dark'] .topnav a { color: var(--text); }
+
+button:focus-visible, a:focus-visible, summary:focus-visible { outline: 3px solid var(--orange); outline-offset: 3px; }
+.topnav { flex-wrap: wrap; }
+.topnav a, .theme-toggle, .tour button, .means-people button, .means-regions button, .means-vars button {
+  min-height: 44px;
+}
+.theme-toggle, .tour button {
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--text);
+  border-radius: 999px;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+.accent-icon, .means-people svg { color: var(--orange); width: 22px; height: 22px; }
+
+.story-hero {
+  position: relative;
+  min-height: 88vh;
+  margin: 0 calc(50% - 50vw) 48px;
+  display: grid;
+  align-items: end;
+}
+.story-hero picture, .story-hero img { width: 100%; height: 88vh; object-fit: cover; display: block; }
+.story-hero__copy {
+  position: absolute;
+  left: max(24px, calc(50vw - 620px));
+  bottom: 12vh;
+  max-width: 34rem;
+  color: #f4f7f8;
+  text-shadow: 0 1px 12px rgb(0 0 0 / 35%);
+}
+.story-hero__copy h1 { font-family: var(--font-title); font-size: clamp(2.6rem, 5vw, 4.6rem); line-height: 1.05; margin: 0 0 12px; color: #f7f4ef; }
+.story-hero .kicker { color: #f3c2ae; }
+.glass-caption {
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: 16px;
+  margin: 0;
+  padding: 8px 12px;
+  border-radius: 12px;
+  background: rgb(16 24 32 / 45%);
+  color: #f4f7f8;
+  backdrop-filter: blur(10px);
+}
+
+.scrolly { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 48px; align-items: start; margin: 24px 0 64px; }
+.scrolly__visual { position: sticky; top: 96px; min-height: 68vh; }
+.scrolly__visual img, .scrolly__visual picture { width: 100%; height: 68vh; object-fit: cover; display: block; }
+.scrolly__step { min-height: 72vh; display: grid; align-content: center; gap: 8px; max-width: 36rem; }
+.scrolly__step h2 { font-family: var(--font-title); font-size: clamp(2rem, 3vw, 3rem); margin: 0; }
+.story-num { font-family: var(--font-num); font-size: clamp(2.4rem, 4vw, 4rem); font-variant-numeric: tabular-nums; color: var(--orange-text); margin: 0; }
+
+.means { margin: 48px 0; }
+.means-people, .means-regions, .means-vars { display: flex; flex-wrap: wrap; gap: 10px; margin: 16px 0; }
+.means-people button, .means-regions button, .means-vars button {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 14px; border-radius: 16px; border: 1px solid var(--line);
+  background: var(--surface); color: var(--text); cursor: pointer;
+}
+.means-people button[aria-pressed='true'], .means-regions button[aria-pressed='true'] { border-color: var(--orange); }
+.means-stage { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: 28px; align-items: start; }
+.means-scene { margin: 0; color: var(--orange); min-height: 220px; }
+.means-draw { width: min(100%, 280px); }
+.means-mercury { fill: var(--orange); transform-origin: center bottom; animation: rise-mercury 1.1s ease both; }
+.means-levels { display: grid; gap: 14px; }
+.means-card { background: var(--surface); border-radius: 18px; padding: 16px 18px; box-shadow: var(--shadow); }
+.means-impacts { display: flex; flex-wrap: wrap; gap: 8px; padding: 0; list-style: none; }
+.means-impacts li, .means-chips a, .means-chips span {
+  display: inline-flex; align-items: center; min-height: 44px; padding: 8px 12px;
+  border-radius: 999px; background: var(--bg); color: var(--text); text-decoration: none;
+}
+.means-num { font-size: 2rem; color: var(--orange-text); font-variant-numeric: tabular-nums; }
+.draw-line { fill: none; stroke: var(--orange); stroke-width: 2.5; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 1; animation: intro-draw 1.4s ease forwards; }
+.city-sketch { width: min(100%, 420px); height: auto; }
+
+.how ol { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; padding: 0; list-style: none; }
+.how li { background: var(--surface); border-radius: 16px; overflow: hidden; }
+.how img { height: 120px; width: 100%; object-fit: cover; }
+.how span, .how li { padding: 8px; }
+
+.explore { display: grid; grid-template-columns: 280px 1fr; min-height: 80vh; gap: 16px; }
+.globe-live { height: 78vh; border-radius: 18px; overflow: hidden; }
+.globe-pin {
+  width: 16px; height: 16px; border-radius: 50%; border: 2px solid #1a2330;
+  background: #c4512c; color: transparent; font-size: 0; padding: 0; cursor: pointer;
+}
+.globe-pin--hollow { background: transparent; }
+.region-hero { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 24px; align-items: center; }
+.region-hero img { width: 100%; height: 420px; object-fit: cover; border-radius: 18px; }
+.region-list { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 0; list-style: none; }
+.region-list a { display: grid; min-height: 72px; padding: 12px 14px; background: var(--surface); border-radius: 14px; text-decoration: none; color: inherit; }
+.welcome, .tour-card { padding: 16px; border-radius: 16px; background: var(--surface); margin-bottom: 16px; }
+.welcome-emoji { font-size: 2rem; margin: 0; }
+.pointer-glow {
+  position: fixed; width: 240px; height: 240px; border-radius: 50%; pointer-events: none; z-index: 0;
+  background: radial-gradient(circle, rgb(196 81 44 / 16%), transparent 70%);
+  transform: translate(-50%, -50%);
+}
+.space-page form, .place-page { display: grid; gap: 12px; max-width: 40rem; }
+.space-page input, .space-page select { min-height: 44px; font: inherit; width: 100%; }
+
+@media (max-width: 900px) {
+  .scrolly, .means-stage, .explore, .region-hero, .how ol, .region-list { grid-template-columns: 1fr; }
+  .scrolly__visual { position: relative; top: 0; min-height: 42vh; }
+  .scrolly__step { min-height: auto; padding: 28px 0; }
+  .story-hero, .story-hero img { min-height: 70vh; height: 70vh; }
+  .globe-live { height: 62vh; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .means-mercury, .draw-line, .pointer-glow { animation: none; }
+  .draw-line { stroke-dashoffset: 0; }
+}
+@keyframes rise-mercury { from { transform: scaleY(0.2); } to { transform: scaleY(1); } }

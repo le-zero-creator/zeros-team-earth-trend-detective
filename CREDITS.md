@@ -15,8 +15,10 @@ Zero's team — NASA Space Apps Challenge 2026 (Yaoundé, Cameroon).
 - Ask Terra uses the Vercel AI SDK and AI Gateway (OIDC on the server, no key in the repository). Live months are read from the public NASA POWER API and are not a trend test.
 
 ## Fonts (self-hosted via @fontsource, SIL Open Font License 1.1)
-- Manrope — headings and short titles.
-- IBM Plex Sans — reading text, buttons, and climate figures (tabular numbers).
+- Newsreader — story titles.
+- Source Sans 3 — reading text, buttons, and climate figures (tabular numbers).
+- earth-hero, satellite, congo-forest: Illustration (AI-generated).
+- Globe imagery: Esri, Maxar, Earthstar Geographics, via Esri World Imagery.
 
 ## Licence
 MIT — see [LICENSE](LICENSE).
