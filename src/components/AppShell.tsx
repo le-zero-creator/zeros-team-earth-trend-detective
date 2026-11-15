@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from 'react'
+import { useLayoutEffect, useState, type ReactNode } from 'react'
 import { motion, MotionConfig } from 'motion/react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { AskDock } from './AskDock'
@@ -53,6 +53,18 @@ export function AppShell({ children }: { children: ReactNode }) {
   const { pathname } = useLocation()
   const [menu, setMenu] = useState(false)
   const close = () => setMenu(false)
+  useLayoutEffect(() => {
+    const bar = document.querySelector('.topbar')
+    if (!bar || typeof ResizeObserver === 'undefined') return
+    const apply = () => {
+      const height = Math.round(bar.getBoundingClientRect().height)
+      if (height > 0) document.documentElement.style.setProperty('--bar', `${height}px`)
+    }
+    apply()
+    const observer = new ResizeObserver(apply)
+    observer.observe(bar)
+    return () => observer.disconnect()
+  }, [])
   return (
     <MotionConfig reducedMotion="user" transition={{ type: 'spring', bounce: 0, duration: 0.28 }}>
       <Intro />

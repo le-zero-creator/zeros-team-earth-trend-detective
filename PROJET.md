@@ -40,7 +40,13 @@ Voir DECISIONS.md (liste complète). Les règles détaillées sont dans CLAUDE.m
 - 14/11 : défi thème 2 confirmé. Angle Yaoundé + lecture métier d'architecte.
 - 15/11 : V1 = NASA POWER seulement, tout précalculé dans public/data/results.json ; aucun calcul statistique dans le navigateur.
 
-## État actuel (15/11, accueil grand public + preuves)
+## État actuel (15/11, toutes les largeurs)
+- L'accueil tient dans la fenêtre de 360 à 1920 px, et sur un portable bas (1366×768). Le premier écran fait exactement la hauteur sous la barre. Le bouton « Open the globe », le crédit de la photo et Terra restent visibles. Pas de défilement horizontal.
+- Le panneau Ask Terra reste dans la fenêtre, y compris à 1440. Sur téléphone il ne couvre pas le titre. Les puces de variable de l'écran Preuves sont lisibles (texte foncé sur fond clair).
+- Typographie et espacements fluides (`clamp`). La bande « Et pour toi ? » et le graphique utilisent des container queries.
+- Vérifié ici : `npm test` 39/39. Grilles de captures : accueil et Preuves, neuf largeurs. Le site publié n'a pas encore ce correctif tant que la PR n'est pas mergée.
+
+## État précédent (15/11, accueil grand public + preuves)
 - Branche : `feat/home-grand-public` (à partir de `feature/v1-explorer`). Pull request vers `main`. Pas de merge.
 - Accueil : question, chiffre géant (T2M_MAX Yaoundé), trois cartes, globe (le bassin en vert), recherche mondiale, indices bientôt / en attente, métiers, tableau des 11 lieux.
 - Enquête : Lieu → Indices → Preuves → Pour vous. Le lien direct ouvre les Preuves. Graphique annuel, droite de Sen, IC en chiffres, trois tests, q, niveau de preuve, 5 étapes Acker, comparaison des 11 lieux, deux périodes.

@@ -45,6 +45,11 @@ export function AskDock() {
   }, [pathname])
 
   useEffect(() => {
+    document.documentElement.toggleAttribute('data-ask-open', open)
+    return () => document.documentElement.removeAttribute('data-ask-open')
+  }, [open])
+
+  useEffect(() => {
     if (mood !== 'happy') return
     const timer = window.setTimeout(() => setMood('idle'), 2200)
     return () => window.clearTimeout(timer)

@@ -307,11 +307,13 @@ button:active, .cta:active, .topnav a:active {
   box-shadow: 0 18px 50px rgb(16 24 32 / 8%), inset 0 0 0 1px rgb(26 35 48 / 8%);
 }
 html[data-theme='dark'] .chat { background: rgb(16 24 32 / 72%); }
-.ask--compact .ask-form textarea { min-height: 88px; font-size: 1rem; }
-.ask--compact .chat { min-height: 180px; max-height: 38vh; }
-.ask-chips { flex-wrap: nowrap; overflow-x: auto; margin: 0; gap: 6px; }
+.ask--compact .ask-form textarea { min-height: 64px; font-size: 1rem; }
+.ask--compact .chat { min-height: 72px; max-height: 28vh; }
+.ask-chips { flex-wrap: wrap; overflow-x: visible; margin: 0; gap: 6px; }
 .ask-chips button {
-  flex: 0 0 auto;
+  flex: 1 1 12rem;
+  max-width: 100%;
+  white-space: normal;
   min-height: 32px;
   padding: 4px 10px;
   font-size: 0.82rem;
@@ -367,8 +369,8 @@ html[data-theme='dark'] .ask-chips button { color: #e6eef3; }
 .ask-panel { transform-origin: bottom right; }
 
 @media (max-height: 820px) and (min-width: 900px) {
-  .story-hero__copy { bottom: 4vh; }
-  .story-hero__copy h1 { font-size: clamp(1.7rem, 6vh, 3.1rem); }
+  .story-hero__copy { bottom: clamp(84px, 12vh, 128px); }
+  .story-hero__copy h1 { font-size: clamp(1.6rem, 4.8vh, 2.7rem); }
   .means-layout .ai-photo, .means-layout img { height: min(360px, 42vh); }
 }
 @media (min-width: 801px) and (max-width: 1180px) {
@@ -381,7 +383,13 @@ html[data-theme='dark'] .ask-chips button { color: #e6eef3; }
   .story-hero::after {
     background: linear-gradient(180deg, rgb(6 16 24 / 55%) 0%, rgb(6 16 24 / 18%) 38%, transparent 70%);
   }
-  .story-hero__copy { bottom: 18vh; padding-right: 72px; }
+  .story-hero__copy {
+    bottom: clamp(96px, 18vh, 26vh);
+    left: max(16px, env(safe-area-inset-left));
+    right: max(16px, env(safe-area-inset-right));
+    padding-right: 0;
+    max-width: none;
+  }
   .enter-earth span { right: 16px; bottom: 96px; }
   .ask-dock { right: 12px; bottom: 12px; }
 }
@@ -453,7 +461,7 @@ html[data-theme='dark'] .ask-chips button { color: #e6eef3; }
 .chart-box, .ai-photo, .ai-photo img { overflow: hidden; }
 .story-hero, .story-hero .earth-view, .explore-screen, .earth-pin::before { border-radius: 0; }
 .ask-fab { border-radius: 999px; }
-.ask-dock { align-items: flex-end; max-width: min(260px, calc(100vw - 24px)); }
+.ask-dock { align-items: flex-end; }
 .terra-launcher {
   display: inline-flex;
   align-items: center;
@@ -505,16 +513,11 @@ html[data-theme='dark'] .ask-chips button { color: #e6eef3; }
 @keyframes terra-blink { 0%, 42%, 48%, 100% { transform: scaleY(1); } 45% { transform: scaleY(0.15); } }
 @keyframes terra-happy { 40% { transform: translateY(-3px) scale(1.05); } }
 @media (max-width: 800px) {
-  .ask-dock { right: 10px; bottom: 10px; }
-  .terra-hint { width: min(180px, calc(100vw - 168px)); }
-  .ask-panel {
-    width: min(100vw - 16px, 420px);
-    max-height: 42vh;
-    overflow: auto;
-  }
+  .ask-dock { right: max(10px, env(safe-area-inset-right)); bottom: max(10px, env(safe-area-inset-bottom)); }
+  .terra-hint { width: min(220px, calc(100vw - 36px - env(safe-area-inset-left) - env(safe-area-inset-right))); }
+  .ask-panel { max-height: calc(100dvh - var(--bar, 66px) - 80px); overflow: auto; }
   .ask--compact .ask-form textarea { min-height: 64px; }
   .ask--compact .chat { min-height: 96px; max-height: 22vh; }
-  .story-hero__copy { bottom: 30vh; }
 }
 @media (prefers-reduced-motion: reduce) {
   .terra__body, .terra__spin, .terra__eye, .terra--happy .terra__body { animation: none; }
@@ -526,8 +529,17 @@ html, body, #root { overflow-x: clip; max-width: 100%; }
 .home.home--story > .story-hero {
   width: 100dvw;
   max-width: 100dvw;
+  height: calc(100dvh - var(--bar, 66px));
+  min-height: calc(100svh - var(--bar, 66px));
+  max-height: calc(100dvh - var(--bar, 66px));
   margin-left: calc(50% - 50dvw);
   margin-right: calc(50% - 50dvw);
+}
+.story-hero img,
+.story-hero picture,
+.story-hero .ai-photo {
+  height: 100%;
+  min-height: 0;
 }
 .means-band {
   position: relative;
@@ -551,13 +563,16 @@ html, body, #root { overflow-x: clip; max-width: 100%; }
   right: max(12px, env(safe-area-inset-right));
   bottom: max(12px, env(safe-area-inset-bottom));
   left: auto;
-  width: min(400px, calc(100vw - 24px - env(safe-area-inset-left) - env(safe-area-inset-right)));
-  max-width: calc(100vw - 24px);
+  width: auto;
+  max-width: min(400px, calc(100vw - 24px - env(safe-area-inset-left) - env(safe-area-inset-right)));
+  max-height: calc(100dvh - var(--bar, 66px) - 16px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
 }
 .ask-panel {
-  width: 100%;
+  width: min(400px, calc(100vw - 24px - env(safe-area-inset-left) - env(safe-area-inset-right)));
   max-width: 100%;
+  max-height: calc(100dvh - var(--bar, 66px) - 72px);
   box-sizing: border-box;
+  overflow: auto;
 }
 .ask-form textarea, .bubble, .chat, .terra-hint { max-width: 100%; overflow-wrap: anywhere; }
 .ask-chips { flex-wrap: wrap; overflow-x: visible; }
@@ -605,4 +620,104 @@ html[data-paused] * { animation-play-state: paused !important; }
   }
   .topbar, .topbar a, .story-hero__copy, .story-hero__copy p { color: var(--text); }
   .topbar { background: var(--surface); }
+}
+
+/* Fluid page rhythm. The hero stays one viewport tall, under the measured bar. */
+:root {
+  --bar: 66px;
+  --space-section: clamp(2.5rem, 1.4rem + 3vw, 5rem);
+  --space-page: clamp(12px, 1.5vw, 28px);
+}
+main {
+  padding-inline: var(--space-page);
+  padding-bottom: calc(88px + env(safe-area-inset-bottom));
+}
+.home.home--story > section,
+.home.home--story > .means,
+.sheet__head,
+.explore-layout,
+.about > * + *,
+.space-page > * + * {
+  margin-top: var(--space-section);
+}
+.means-band {
+  padding: var(--space-section) max(var(--space-page), calc((100dvw - var(--maxw)) / 2)) calc(var(--space-section) + 0.5rem);
+}
+.story-hero .glass-caption {
+  left: max(12px, env(safe-area-inset-left));
+  right: max(148px, calc(20px + env(safe-area-inset-right)));
+  bottom: max(10px, env(safe-area-inset-bottom));
+}
+.story-hero__copy {
+  bottom: clamp(84px, 12vh, 14vh);
+  left: max(24px, env(safe-area-inset-left), calc(50vw - 620px));
+  max-width: min(34rem, calc(100vw - 48px - env(safe-area-inset-right)));
+}
+.chart-controls {
+  container-type: inline-size;
+  container-name: controls;
+  display: grid;
+  gap: clamp(8px, 1.2vw, 16px);
+  margin-bottom: clamp(12px, 2vw, 24px);
+}
+.chart-controls .globe-layers button {
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--line);
+}
+.chart-controls .globe-layers button[aria-pressed='true'] {
+  background: #c4512c;
+  color: #fff;
+  border-color: #c4512c;
+}
+.evidence { container-type: inline-size; container-name: evidence; min-width: 0; }
+.investigate, .investigate .stepper, .chart-box, .chart-plot { min-width: 0; max-width: 100%; }
+.investigate .stepper { top: var(--bar, 66px); }
+.ask-chips button { max-width: 100%; white-space: normal; overflow-wrap: anywhere; }
+.terra-hint { box-sizing: border-box; }
+@container evidence (max-width: 560px) {
+  .chart-box { height: clamp(200px, 52cqw, 260px); }
+  .big-slope { font-size: clamp(1.8rem, 8cqw, 2.6rem); }
+}
+@media (max-width: 800px) {
+  .story-hero__copy {
+    bottom: clamp(96px, 18vh, 26vh);
+    left: max(16px, env(safe-area-inset-left));
+    right: max(16px, env(safe-area-inset-right));
+    padding-right: 0;
+    max-width: none;
+  }
+  html[data-ask-open] .story-hero__copy {
+    top: 12px;
+    bottom: auto;
+  }
+  html[data-ask-open] .story-hero__copy h1 { font-size: clamp(1.45rem, 7vw, 1.9rem); }
+}
+@media (max-height: 820px) and (min-width: 801px) {
+  .ask--compact .chat { min-height: 72px; max-height: 18vh; }
+  .ask--compact .ask-form textarea { min-height: 52px; }
+}
+@media (max-height: 820px) and (min-width: 900px) {
+  .story-hero__copy { bottom: clamp(84px, 12vh, 128px); }
+  .story-hero__copy h1 { font-size: clamp(1.6rem, 4.8vh, 2.7rem); }
+}
+@media (max-width: 800px) {
+  .ask-panel {
+    max-height: calc(100dvh - var(--bar, 66px) - 164px);
+    overflow-x: hidden;
+  }
+  .ask--compact .ask-chips {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    max-width: 100%;
+    padding-bottom: 4px;
+  }
+  .ask--compact .ask-chips button {
+    flex: 0 0 auto;
+    max-width: none;
+    white-space: nowrap;
+  }
+  .ask--compact .ask-form textarea { height: 52px; min-height: 52px; padding: 8px 12px; }
+  .ask--compact .chat { min-height: 64px; }
+  .ask--compact .note { margin: 0; }
 }
