@@ -19,7 +19,7 @@ Zero's team — NASA Space Apps Challenge 2026 (Yaoundé, Cameroon).
 - Source Sans 3 — reading text, buttons, and climate figures (tabular numbers).
 
 ## Pictures
-- earth-hero, satellite, congo-forest: AI-generated. Each one is labelled on the page, “AI-generated image”.
+- earth-hero, satellite, congo-forest, and the four profile pictures (farmer, architect, health, city): AI-generated. Each one is labelled on the page, “AI-generated image”.
 - The turning Earth uses NASA Visible Earth Blue Marble (land, ocean and ice), a public-domain image. No NASA logo, flag, or mission insignia.
 - Other NASA photographs on the pages are also public-domain U.S. government work, from the NASA Image and Video Library (https://images.nasa.gov/):
   - Radar mosaic of equatorial Africa, 1996 (PIA01348, JPL).

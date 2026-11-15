@@ -36,9 +36,17 @@ function find(data: AppData, zone: string, variable: string) {
 }
 
 function impactKeys(profile: ProfileId, variable: string): Key[] {
-  if (variable === 'precip') return ['means.rain.1', 'means.rain.2', 'means.rain.3']
-  if (variable === 'rh2m') return ['means.air.1', 'means.air.2', 'means.air.3']
-  return [`means.heat.${profile}.1`, `means.heat.${profile}.2`, `means.heat.${profile}.3`] as Key[]
+  const family = variable === 'precip' ? 'rain' : variable === 'rh2m' ? 'air' : 'heat'
+  return [`means.${family}.${profile}.1`, `means.${family}.${profile}.2`, `means.${family}.${profile}.3`] as Key[]
+}
+
+const PROFILE_PHOTO: Record<ProfileId, { name: SceneName; alt: Key }> = {
+  farmer: { name: 'profile-farmer', alt: 'scene.farmer' },
+  architect: { name: 'profile-architect', alt: 'scene.architect' },
+  health: { name: 'profile-health', alt: 'scene.health' },
+  urban_planner: { name: 'profile-city', alt: 'scene.city' },
+  student: { name: 'congo-forest', alt: 'story.caption.forest' },
+  researcher: { name: 'nasa-gpm', alt: 'scene.gpm' },
 }
 
 /** Le cœur du site : un métier, une scène, trois cartes. Les chiffres viennent de results.json. */
@@ -66,34 +74,7 @@ export function MeansForYou({ data, page = false }: { data: AppData; page?: bool
           variable === 't2m_max' && !unsure ? t('home.story.yes') : t('plain.notSure')
         }`
 
-  const photo: SceneName =
-    region === 'earth'
-      ? 'nasa-marble-east'
-      : region === 'congo'
-        ? 'nasa-congo-river'
-        : profile === 'farmer'
-          ? 'nasa-soil'
-          : profile === 'architect'
-            ? 'nasa-cameroon'
-            : profile === 'health'
-              ? 'nasa-clouds'
-              : profile === 'urban_planner'
-                ? 'nasa-gulf'
-                : 'nasa-africa-radar'
-  const photoAlt: Key =
-    photo === 'nasa-marble-east'
-      ? 'scene.marble'
-      : photo === 'nasa-congo-river'
-        ? 'scene.river'
-        : photo === 'nasa-soil'
-          ? 'scene.soil'
-          : photo === 'nasa-cameroon'
-            ? 'scene.cameroon'
-            : photo === 'nasa-clouds'
-              ? 'scene.clouds'
-              : photo === 'nasa-gulf'
-                ? 'scene.gulf'
-                : 'scene.radar'
+  const photo = region === 'earth' ? { name: 'nasa-marble-east' as const, alt: 'scene.marble' as const } : region === 'congo' ? { name: 'nasa-congo-river' as const, alt: 'scene.river' as const } : PROFILE_PHOTO[profile]
   return (
     <section id="for-you" className={page ? 'means means-band means--page' : 'means means-band'} aria-labelledby="means-title">
       <p className="kicker">{t('means.kicker')}</p>
@@ -117,8 +98,16 @@ export function MeansForYou({ data, page = false }: { data: AppData; page?: bool
           )
         })}
       </div>
+      <div className="means-vars" role="group" aria-label={t('home.control.variable')}>
+        {(['t2m_max', 'rh2m', 'precip'] as const).map((id) => (
+          <button key={id} type="button" aria-pressed={variable === id} onClick={() => setVariable(id)}>
+            {t(`plain.var.${id}` as Key)}
+          </button>
+        ))}
+      </div>
+      <div className="means-swap" key={`${profile}-${region}-${variable}`}>
       <div className="means-layout">
-        <Scene name={photo} alt={t(photoAlt)} />
+        <Scene name={photo.name} alt={t(photo.alt)} />
         <article className="means-result" data-halo="true">
           <h3>{t('means.see')}</h3>
           {region === 'congo' && (
@@ -163,15 +152,8 @@ export function MeansForYou({ data, page = false }: { data: AppData; page?: bool
             </div>
           </article>
       </div>
-      <div className="means-vars" role="group" aria-label={t('home.control.variable')}>
-        {['t2m_max', 'rh2m', 'precip'].map((id) => (
-          <button key={id} type="button" aria-pressed={variable === id} onClick={() => setVariable(id)}>
-            {t(`plain.var.${id}` as Key)}
-          </button>
-        ))}
       </div>
       <p className="note">{t('means.disclaimer')}</p>
-      <p className="note">{reading?.why}</p>
       {region !== 'earth' && (
         <Link className="cta cta--sun" to={investigateLink(zoneId, variable, 'p2001_2025')}>{t('story.openYaounde')}</Link>
       )}

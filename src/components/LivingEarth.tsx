@@ -1,4 +1,4 @@
-import { forwardRef, useEffect, useImperativeHandle, useRef } from 'react'
+import { forwardRef, useEffect, useImperativeHandle, useRef, type ReactNode } from 'react'
 import type { Zone } from '../lib/types'
 
 export type EarthHandle = {
@@ -10,11 +10,15 @@ export type EarthHandle = {
 type Props = {
   hero?: boolean
   zones?: Zone[]
+  labels?: Record<string, string>
+  showPlaces?: boolean
+  outline?: Array<[number, number]>
   selected?: string | null
   onPick?: (zoneId: string) => void
   onReady?: () => void
   onFallback?: () => void
   onEnter?: () => void
+  children?: ReactNode
 }
 
 /** Equirectangular point on a Three sphere, before any mesh rotation. */
@@ -29,7 +33,7 @@ function latLonToVector(lat: number, lon: number, radius: number) {
 }
 
 export const LivingEarth = forwardRef<EarthHandle, Props>(function LivingEarth(
-  { hero = false, zones = [], selected = null, onPick, onReady, onFallback, onEnter },
+  { hero = false, zones = [], labels, showPlaces = false, outline = [], selected = null, onPick, onReady, onFallback, onEnter, children },
   ref,
 ) {
   const root = useRef<HTMLDivElement>(null)
@@ -39,6 +43,9 @@ export const LivingEarth = forwardRef<EarthHandle, Props>(function LivingEarth(
   const ready = useRef(onReady)
   const fallback = useRef(onFallback)
   const entered = useRef(onEnter)
+  const drawOutline = useRef<(ring: Array<[number, number]>) => void>(() => {})
+  const outlineNow = useRef(outline)
+  outlineNow.current = outline
   pick.current = onPick
   ready.current = onReady
   fallback.current = onFallback
@@ -120,6 +127,21 @@ export const LivingEarth = forwardRef<EarthHandle, Props>(function LivingEarth(
           new THREE.MeshPhongMaterial({ map, specular: new THREE.Color('#1a3344'), shininess: 12 }),
         )
         scene.add(earth)
+        const outlineGroup = new THREE.Group()
+        earth.add(outlineGroup)
+        drawOutline.current = (ring) => {
+          outlineGroup.clear()
+          if (ring.length < 2) return
+          const points = ring.map(([lon, lat]) => {
+            const point = latLonToVector(lat, lon, 1.015)
+            return new THREE.Vector3(point.x, point.y, point.z)
+          })
+          outlineGroup.add(new THREE.Line(
+            new THREE.BufferGeometry().setFromPoints(points),
+            new THREE.LineBasicMaterial({ color: 0xffb703 }),
+          ))
+        }
+        drawOutline.current(outlineNow.current)
 
         const glow = new THREE.Mesh(
           new THREE.SphereGeometry(1.07, 64, 64),
@@ -137,23 +159,22 @@ export const LivingEarth = forwardRef<EarthHandle, Props>(function LivingEarth(
         const orbits = new THREE.Group()
         if (hero) scene.add(orbits)
         const ringSpecs = hero ? [
-          { radius: 1.36, tilt: 0.5, speed: 0.42, color: 0xb7d4ea },
-          { radius: 1.55, tilt: -0.82, speed: -0.28, color: 0xe7c4a8 },
-          { radius: 1.76, tilt: 1.15, speed: 0.55, color: 0x9fd0c8 },
+          { radius: 1.06, tilt: 0.42, speed: 0.35, color: 0xd5e6f2 },
+          { radius: 1.1, tilt: 0.48, speed: -0.22, color: 0xf0d2b4 },
+          { radius: 1.14, tilt: 0.55, speed: 0.28, color: 0xc9ddd4 },
         ] : []
         const satellites = ringSpecs.map((spec) => {
-          const points = Array.from({ length: 160 }, (_, index) => {
-            const angle = (index / 160) * Math.PI * 2
-            return new THREE.Vector3(Math.cos(angle) * spec.radius, 0, Math.sin(angle) * spec.radius)
-          })
           const pivot = new THREE.Group()
-          pivot.rotation.z = spec.tilt
-          pivot.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(points), new THREE.LineBasicMaterial({ color: spec.color, transparent: true, opacity: 0.7 })))
-          const sat = new THREE.Mesh(new THREE.SphereGeometry(0.018, 10, 10), new THREE.MeshBasicMaterial({ color: 0xfff8ef }))
+          pivot.rotation.x = spec.tilt
+          const ring = new THREE.Mesh(
+            new THREE.TorusGeometry(spec.radius, 0.008, 8, 96),
+            new THREE.MeshBasicMaterial({ color: spec.color, transparent: true, opacity: 0.9, depthTest: true, depthWrite: false }),
+          )
+          pivot.add(ring)
+          const sat = new THREE.Mesh(new THREE.SphereGeometry(0.012, 8, 8), new THREE.MeshBasicMaterial({ color: 0xfff8ef, depthTest: true }))
           sat.position.set(spec.radius, 0, 0)
-          sat.add(new THREE.Mesh(new THREE.SphereGeometry(0.04, 8, 8), new THREE.MeshBasicMaterial({ color: spec.color, transparent: true, opacity: 0.35 })))
           pivot.add(sat)
-          orbits.add(pivot)
+          earth.add(pivot)
           return { pivot, speed: spec.speed }
         })
 
@@ -224,15 +245,32 @@ export const LivingEarth = forwardRef<EarthHandle, Props>(function LivingEarth(
           const width = node.clientWidth
           const height = node.clientHeight
           const cam = camera.position.clone().normalize()
-          for (const pin of node.querySelectorAll<HTMLButtonElement>('[data-zone]')) {
+          const pins = [...node.querySelectorAll<HTMLElement>('[data-pin]')]
+          for (const pin of pins) {
             const lat = Number(pin.dataset.lat)
             const lon = Number(pin.dataset.lon)
             const local = latLonToVector(lat, lon, 1.02)
             const world = new THREE.Vector3(local.x, local.y, local.z).applyMatrix4(earth.matrixWorld)
-            const facing = world.clone().normalize().dot(cam) > 0.12
+            const facing = world.clone().normalize().dot(cam) > 0.08
             const projected = world.project(camera)
             pin.style.transform = `translate(-50%, -50%) translate(${(projected.x * 0.5 + 0.5) * width}px, ${(-projected.y * 0.5 + 0.5) * height}px)`
-            pin.hidden = !facing
+            pin.hidden = !facing || projected.z > 1
+          }
+          const gap = camera.position.length() > 2.3 ? 46 : 28
+          const kept: Array<{ x: number; y: number }> = []
+          const ranked = pins
+            .filter((pin) => !pin.hidden && pin.classList.contains('earth-pin'))
+            .map((pin) => ({
+              pin,
+              rank: pin.classList.contains('is-on') ? 0 : pin.dataset.zone === 'cmr_yaounde' ? 1 : 2,
+            }))
+            .sort((a, b) => a.rank - b.rank)
+          for (const item of ranked) {
+            const box = item.pin.getBoundingClientRect()
+            const point = { x: box.left + box.width / 2, y: box.top + box.height / 2 }
+            const crowded = kept.some((other) => Math.hypot(other.x - point.x, other.y - point.y) < gap)
+            item.pin.classList.toggle('is-clustered', crowded && item.rank > 0)
+            if (!crowded || item.rank === 0) kept.push(point)
           }
         }
 
@@ -244,8 +282,7 @@ export const LivingEarth = forwardRef<EarthHandle, Props>(function LivingEarth(
           }
           raf = window.requestAnimationFrame(loop)
           if (hero && !flight) earth.rotation.y += 0.0011
-          orbits.position.copy(earth.position)
-          for (const sat of satellites) sat.pivot.rotation.y += sat.speed * 0.012
+          for (const sat of satellites) sat.pivot.rotation.y += sat.speed * 0.01
           if (flight) {
             const k = Math.min(1, (performance.now() - flight.t0) / 1000)
             const eased = 1 - (1 - k) ** 3
@@ -293,33 +330,40 @@ export const LivingEarth = forwardRef<EarthHandle, Props>(function LivingEarth(
       window.cancelAnimationFrame(raf)
       look.current = () => {}
       enter.current = () => false
+      drawOutline.current = () => {}
       cleanups.forEach((fn) => fn())
     }
   }, [hero])
 
+  useEffect(() => {
+    drawOutline.current(outline)
+  }, [outline])
+
   return (
     <div ref={root} className={hero ? 'earth-view' : 'earth-view earth-view--stage'}>
-      {!hero &&
+      {!hero && showPlaces &&
         zones.map((zone) => (
           <button
             key={zone.zone_id}
             type="button"
             className={
-              selected === zone.zone_id || (selected === 'basin' && zone.in_hydrobasins_congo)
+              selected === zone.zone_id
                 ? 'earth-pin is-on'
                 : zone.in_hydrobasins_congo
                   ? 'earth-pin'
                   : 'earth-pin is-hollow'
             }
+            data-pin=""
             data-zone={zone.zone_id}
             data-lat={zone.lat}
             data-lon={zone.lon}
             aria-pressed={selected === zone.zone_id}
             onClick={() => pick.current?.(zone.zone_id)}
           >
-            <span>{zone.name_en}</span>
+            <span>{labels?.[zone.zone_id] ?? zone.name_en.split(/[–—-]/)[0]}</span>
           </button>
         ))}
+      {children}
     </div>
   )
 })

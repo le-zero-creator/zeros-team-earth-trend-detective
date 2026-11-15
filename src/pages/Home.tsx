@@ -50,7 +50,6 @@ export function HomeStory({ data }: { data: AppData | null }) {
   const { profile } = useProfile()
   const { name } = useSpace()
   const [welcome, setWelcome] = useState(0)
-  const [step, setStep] = useState(0)
   const hot = data ? findAnalysis(data, 'cmr_yaounde', 't2m_max') : undefined
   const air = data ? findAnalysis(data, 'cmr_yaounde', 'rh2m') : undefined
   const yaounde = data?.zones.find((zone) => zone.zone_id === 'cmr_yaounde')
@@ -60,9 +59,8 @@ export function HomeStory({ data }: { data: AppData | null }) {
   const mapAnalyses = new Map<string, Analysis>(
     (data?.results.analyses ?? []).filter((item) => item.variable_id === 't2m_max' && item.period_id === 'p2001_2025').map((item) => [item.zone_id, item]),
   )
-  const frame = STEPS[step]
   const earth = useRef<EarthHandle>(null)
-  const [globe, setGlobe] = useState(false)
+  const [globe, setGlobe] = useState<boolean | null>(null)
   const navigate = useNavigate()
   const goExplore = () => navigate('/explore')
 
@@ -72,21 +70,6 @@ export function HomeStory({ data }: { data: AppData | null }) {
     } catch {
       setWelcome(5)
     }
-  }, [])
-
-  useEffect(() => {
-    if (typeof IntersectionObserver !== 'function') return
-    const nodes = STEPS.map((item) => document.getElementById(`step-${item.id}`)).filter((node): node is HTMLElement => Boolean(node))
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries.filter((entry) => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0]
-        const index = nodes.findIndex((node) => node === visible?.target)
-        if (index >= 0) setStep(index)
-      },
-      { threshold: 0.55 },
-    )
-    nodes.forEach((node) => observer.observe(node))
-    return () => observer.disconnect()
   }, [])
 
   return (
@@ -136,7 +119,7 @@ export function HomeStory({ data }: { data: AppData | null }) {
       )}
 
       <section className="story-hero">
-        {!globe && <Picture name="earth-hero" alt={t('story.caption.earth')} />}
+        {globe === false && <Picture name="earth-hero" alt={t('story.caption.earth')} />}
         <LivingEarth ref={earth} hero onReady={() => setGlobe(true)} onFallback={() => setGlobe(false)} onEnter={goExplore} />
         <button
           type="button"
@@ -163,20 +146,16 @@ export function HomeStory({ data }: { data: AppData | null }) {
             </button>
           </p>
         </div>
-        <p className="glass-caption">{globe ? t('globe.credit') : `${t('story.caption.earth')} ${t('photo.credit')}`}</p>
+        <p className="glass-caption">{globe === false ? `${t('story.caption.earth')} ${t('photo.credit')}` : t('globe.credit')}</p>
       </section>
 
       {data ? <MeansForYou data={data} /> : <p className="story-skeleton" role="status">{t('state.loading')}</p>}
       <Journey data={data} />
-      <nav className="scale-nav" aria-label={t('story.kicker')}>
-        <a href="#step-earth">{t('means.earth')}</a>
-        <a href="#step-forest">{t('means.congo')}</a>
-        <a href="#step-city">{t('means.yaounde')}</a>
-      </nav>
       <section className="scrolly reveal" aria-label={t('story.kicker')}>
         <div className="scrolly__steps">
           {STEPS.map((item) => (
             <article key={item.id} className="scrolly__step" id={`step-${item.id}`}>
+              <Scene name={item.image} alt={t(item.alt)} />
               <h2>{item.id === 'city' ? t('home.story.question') : t(item.title)}</h2>
               <p>{t(`story.body.${item.id}` as Key)}</p>
               {item.id === 'city' && hot && (
@@ -194,9 +173,6 @@ export function HomeStory({ data }: { data: AppData | null }) {
             </article>
           ))}
         </div>
-        <figure className="scrolly__visual">
-          <Scene name={frame.image} alt={t(frame.alt)} />
-        </figure>
       </section>
 
       <section className="how reveal" aria-labelledby="how-title">
