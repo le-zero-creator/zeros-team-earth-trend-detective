@@ -39,7 +39,7 @@ Pending sources (MODIS, GPM) are labelled Pending. They are never labelled Avail
 
 ## 8. Ask Terra and live NASA data
 
-- If `GOOGLE_GENERATIVE_AI_API_KEY` is set on the server, Ask Terra uses `@ai-sdk/google` and `gemini-2.5-flash` directly. Otherwise the model is `google/gemini-2.5-flash` through the Vercel AI Gateway. The prompt, the rate limit, and the “do not invent a number” rules are the same either way. The prompt is built on the server from `results.json` and, for one known place, from cached NASA POWER months.
+- If `GOOGLE_GENERATIVE_AI_API_KEY` is set on the server, Ask Terra uses `@ai-sdk/google` and `gemini-3.8-flash` directly. Otherwise the model is `google/gemini-2.5-flash` through the Vercel AI Gateway. The prompt, the rate limit, and the “do not invent a number” rules are the same either way. The prompt is built on the server from `results.json` and, for one known place, from cached NASA POWER months.
 - NASA months are stored in the Runtime Cache for six hours. The reply says they are live data, not a trend test.
 - Vercel Web Analytics was not added. It is cookieless, but this demo does not record visits.
 - The three approved pictures stay as WebP with a long cache header. They are not rewritten through an image optimizer, so a failed optimizer cannot hide them.

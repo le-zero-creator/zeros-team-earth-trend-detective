@@ -20,7 +20,7 @@ const GATEWAY_MODEL = 'google/gemini-2.5-flash'
 /** Clé Google seulement sur le serveur. Sinon, AI Gateway avec le jeton OIDC. La clé ne sort jamais dans une réponse. */
 function askModel() {
   const key = process.env.GOOGLE_GENERATIVE_AI_API_KEY?.trim()
-  if (key) return createGoogle({ apiKey: key })('gemini-2.5-flash')
+  if (key) return createGoogle({ apiKey: key })('gemini-3.8-flash')
   return GATEWAY_MODEL
 }
 const ZONES = new Set([
