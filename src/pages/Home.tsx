@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { SourceStrip } from '../components/Banners'
 import { CountUp } from '../components/CountUp'
 import { LocationsTable } from '../components/LocationsTable'
@@ -61,26 +61,8 @@ export function HomeStory({ data }: { data: AppData | null }) {
   const frame = STEPS[step]
   const earth = useRef<EarthHandle>(null)
   const [globe, setGlobe] = useState(false)
-
-  useEffect(() => {
-    const reduce = typeof window.matchMedia === 'function' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    if (reduce) return
-    let frameId = 0
-    const onScroll = () => {
-      window.cancelAnimationFrame(frameId)
-      frameId = window.requestAnimationFrame(() => {
-        const t = Math.min(1, window.scrollY / (window.innerHeight * 1.8))
-        if (t < 0.34) earth.current?.lookAt(12, 18, 2.9)
-        else if (t < 0.68) earth.current?.lookAt(1, 20, 2.15)
-        else earth.current?.lookAt(3.87, 11.52, 1.72)
-      })
-    }
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => {
-      window.cancelAnimationFrame(frameId)
-      window.removeEventListener('scroll', onScroll)
-    }
-  }, [])
+  const navigate = useNavigate()
+  const goExplore = () => navigate('/explore')
 
   useEffect(() => {
     try {
@@ -153,7 +135,16 @@ export function HomeStory({ data }: { data: AppData | null }) {
 
       <section className="story-hero">
         {!globe && <Picture name="earth-hero" alt={t('story.caption.earth')} />}
-        <LivingEarth ref={earth} hero onReady={() => setGlobe(true)} onFallback={() => setGlobe(false)} />
+        <LivingEarth ref={earth} hero onReady={() => setGlobe(true)} onFallback={() => setGlobe(false)} onEnter={goExplore} />
+        <button
+          type="button"
+          className="enter-earth"
+          onClick={() => {
+            if (!earth.current?.enter()) goExplore()
+          }}
+        >
+          <span>{t('globe.enter')}</span>
+        </button>
         <div className="story-hero__copy">
           <p className="kicker">{t('story.kicker')}</p>
           {name && <p>{t('space.hello', { name })}</p>}
