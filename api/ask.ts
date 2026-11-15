@@ -319,13 +319,13 @@ export default async function handler(req: NodeReq, res: ServerResponse) {
       maxRetries: 0,
       abortSignal: abort.signal,
       providerOptions: {
-        google: { thinkingConfig: { thinkingBudget: 0, includeThoughts: false } },
+        google: { thinkingConfig: { thinkingLevel: 'minimal', thinkingBudget: 0, includeThoughts: false } },
       },
     })
     const reader = result.textStream.getReader()
     const first = await Promise.race([
       reader.read(),
-      new Promise<null>((resolve) => setTimeout(() => resolve(null), 18_000)),
+      new Promise<null>((resolve) => setTimeout(() => resolve(null), 40_000)),
     ])
     if (!first || first.done || !first.value) {
       abort.abort()
