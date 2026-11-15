@@ -667,5 +667,11 @@
   "tuto.4.t": "Une Terre. Des regards différents. Des décisions éclairées.",
   "tuto.4.b": "À la fin, choisis ton métier : les chiffres restent les mêmes, les questions changent. Et s'il te reste une question, demande-moi.",
   "tuto.start": "Commencer l'enquête",
-  "brand.tag": "Détective des traces de la Terre"
+  "brand.tag": "Détective des traces de la Terre",
+  "img.city": "Illustration d'une ville verte sur des collines, inspirée de Yaoundé",
+  "img.heat": "Illustration d'un après-midi chaud dans une rue d'Afrique centrale",
+  "img.air": "Illustration d'un après-midi sec et brumeux sur une ville en collines",
+  "img.rain": "Illustration d'une forte pluie tropicale sur un quartier",
+  "img.you": "Illustration d'un agriculteur, une soignante, un architecte et un urbaniste qui lisent un graphique",
+  "book.cap.city": "Illustration inspirée de Yaoundé, pas une photo de la ville."
 }

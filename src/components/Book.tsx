@@ -54,14 +54,14 @@ export function Book({ data }: { data: AppData | null }) {
       cta: <Link className="bk-cta" to="/explore">{t('book.3.cta')} →</Link>,
     },
     {
-      id: 'city', image: 'nasa-cameroon', alt: 'scene.cameroon', caption: 'book.cap.cameroon', vars: { km },
+      id: 'city', image: 'city-yaounde', alt: 'img.city', caption: 'book.cap.city', vars: { km },
       cta: <Link className="bk-cta" to="/place/cmr_yaounde">{t('story.openYaounde')} →</Link>,
     },
-    { id: 'heat', image: 'nasa-soil', alt: 'scene.soil', trace: heat, more: chartMore(heat) },
-    { id: 'air', image: 'nasa-clouds', alt: 'scene.clouds', trace: air, more: chartMore(air) },
-    { id: 'rain', image: 'nasa-gpm', alt: 'scene.gpm', trace: rain, more: chartMore(rain) },
+    { id: 'heat', image: 'story-heat', alt: 'img.heat', trace: heat, more: chartMore(heat) },
+    { id: 'air', image: 'story-air', alt: 'img.air', trace: air, more: chartMore(air) },
+    { id: 'rain', image: 'story-rain', alt: 'img.rain', trace: rain, more: chartMore(rain) },
     {
-      id: 'you', image: 'profile-architect', alt: 'scene.architect',
+      id: 'you', image: 'story-you', alt: 'img.you',
       cta: (
         <button type="button" className="bk-cta" onClick={() => document.getElementById('for-you')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}>
           {t('book.8.cta')} ↓

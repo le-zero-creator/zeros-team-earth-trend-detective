@@ -17,9 +17,9 @@ function investigateScene(step: string, variable: string): SceneName {
   if (step === 'place') return 'nasa-africa-radar'
   if (step === 'clues') return 'nasa-gulf'
   if (step === 'act') return 'nasa-soil'
-  if (variable === 'rh2m') return 'nasa-clouds'
-  if (variable === 'precip') return 'nasa-gpm'
-  if (variable === 't2m_max' || variable === 't2m' || variable === 'ts' || variable === 't2m_min') return 'nasa-cameroon'
+  if (variable === 'rh2m') return 'story-air'
+  if (variable === 'precip') return 'story-rain'
+  if (variable === 't2m_max' || variable === 't2m' || variable === 'ts' || variable === 't2m_min') return 'story-heat'
   return 'nasa-congo-river'
 }
 
@@ -27,9 +27,9 @@ function investigateAlt(step: string, variable: string): Key {
   if (step === 'place') return 'scene.radar'
   if (step === 'clues') return 'scene.gulf'
   if (step === 'act') return 'scene.soil'
-  if (variable === 'rh2m') return 'scene.clouds'
-  if (variable === 'precip') return 'scene.gpm'
-  if (variable === 't2m_max' || variable === 't2m' || variable === 'ts' || variable === 't2m_min') return 'scene.cameroon'
+  if (variable === 'rh2m') return 'img.air'
+  if (variable === 'precip') return 'img.rain'
+  if (variable === 't2m_max' || variable === 't2m' || variable === 'ts' || variable === 't2m_min') return 'img.heat'
   return 'scene.river'
 }
 

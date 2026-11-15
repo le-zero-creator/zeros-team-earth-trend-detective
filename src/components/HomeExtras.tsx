@@ -38,7 +38,7 @@ export function HomeAsk({ zoneId = 'cmr_yaounde', lat, lon, titleKey = 'homeask.
 const ROUTES: { to: string; image: SceneName; alt: Key; title: Key; body: Key }[] = [
   { to: '/explore', image: 'nasa-marble-east', alt: 'scene.marble', title: 'go.globe.t', body: 'go.globe.b' },
   { to: '/congo', image: 'nasa-congo-river', alt: 'scene.river', title: 'go.congo.t', body: 'go.congo.b' },
-  { to: '/place/cmr_yaounde', image: 'nasa-africa-radar', alt: 'scene.radar', title: 'go.city.t', body: 'go.city.b' },
+  { to: '/place/cmr_yaounde', image: 'city-yaounde', alt: 'img.city', title: 'go.city.t', body: 'go.city.b' },
   { to: '/method', image: 'satellite', alt: 'story.caption.sat', title: 'go.method.t', body: 'go.method.b' },
 ]
 

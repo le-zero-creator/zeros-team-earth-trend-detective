@@ -64,9 +64,9 @@ export function EvidenceSlides({
         </>
       ),
     },
-    traceSlide('t2m_max', Sun, 'nasa-soil', 'scene.soil'),
-    traceSlide('rh2m', Wind, 'nasa-clouds', 'scene.clouds'),
-    traceSlide('precip', CloudRain, 'nasa-gpm', 'scene.gpm'),
+    traceSlide('t2m_max', Sun, 'story-heat', 'img.heat'),
+    traceSlide('rh2m', Wind, 'story-air', 'img.air'),
+    traceSlide('precip', CloudRain, 'story-rain', 'img.rain'),
     {
       id: 'trend', kicker: t('ev.kicker.trend'), title: t('ev.trend.t'),
       body: (

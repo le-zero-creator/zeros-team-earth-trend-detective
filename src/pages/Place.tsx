@@ -35,7 +35,7 @@ export function Place() {
   return (
     <article className="place-page">
       <header className="pg-hero">
-        <Scene name="nasa-africa-radar" alt={t('scene.radar')} />
+        <Scene name={zone.zone_id === 'cmr_yaounde' ? 'city-yaounde' : 'nasa-congo-river'} alt={zone.zone_id === 'cmr_yaounde' ? t('img.city') : t('scene.river')} />
         <div className="pg-hero__copy">
           <p className="kicker">{t('place.k')}</p>
           <h1 className="sec-display">{t('place.t', { place: name })}</h1>
