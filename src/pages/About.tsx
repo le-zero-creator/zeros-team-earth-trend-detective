@@ -16,6 +16,11 @@ export function About() {
       <p>{t('cite.power')}</p>
       <p>{t('cite.hydro')}</p>
       <p>{t('footer.map')}</p>
+      <h2>{t('ai.title')}</h2>
+      <p>{t('ai.code')}</p>
+      <p>{t('ai.ask')}</p>
+      <p>{t('ai.images')}</p>
+      <p>{t('ai.numbers')}</p>
       <p>{t('about.privacy')}</p>
       <p>{t('about.licenseBody')}</p>
     </article>

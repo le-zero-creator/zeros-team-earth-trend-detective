@@ -82,9 +82,10 @@
   margin: 10px 0 16px;
 }
 
-.cta--sun {
-  background: var(--sun);
-  color: #10281c;
+.cta--sun, .story-hero .cta--sun {
+  background: #c4512c;
+  color: #fff;
+  font-weight: 700;
 }
 
 .story-cards {

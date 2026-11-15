@@ -43,9 +43,16 @@ button:focus-visible, a:focus-visible, summary:focus-visible { outline: 3px soli
   grid-column: 1 / -1;
   overflow: hidden;
 }
-.story-hero picture { opacity: 0.38; }
-.wire-field { position: absolute; right: -6%; top: 0; width: min(78%, 820px); height: 100%; opacity: 0.5; pointer-events: none; }
+.story-hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(90deg, rgb(8 14 20 / 58%) 0%, rgb(8 14 20 / 18%) 34%, transparent 58%);
+}
+.wire-field { position: absolute; right: -4%; top: 8%; width: min(62%, 640px); height: 84%; opacity: 0.42; pointer-events: none; z-index: 1; }
 .sat-orbit { position: absolute; right: 6%; top: 18%; width: min(46vh, 420px); height: auto; opacity: 0.7; pointer-events: none; transform-origin: 50% 50%; animation: sat-spin 48s linear infinite; }
+.story-hero .ai-photo,
 .story-hero picture {
   position: absolute;
   inset: 0;
@@ -97,14 +104,20 @@ button:focus-visible, a:focus-visible, summary:focus-visible { outline: 3px soli
 .means-draw { width: min(100%, 280px); }
 .means-mercury { fill: var(--orange); transform-origin: center bottom; animation: rise-mercury 1.1s ease both; }
 .means-levels { display: grid; gap: 14px; }
-.means-card, .topbar {
-  background: rgb(255 255 255 / 8%);
-  border: 1px solid rgb(255 255 255 / 16%);
+.topbar {
+  background: #1a2330;
+  color: #fff;
+}
+.topbar a, .topnav a, .theme-toggle, .tour > button, .nav-burger {
+  color: #fff;
+}
+.means-card {
+  border: 1px solid rgb(26 35 48 / 12%);
   backdrop-filter: blur(14px) saturate(1.4);
 }
 .means-card { position: relative; border-radius: 18px; padding: 16px 18px; overflow: hidden; background: rgb(243 246 248 / 72%); }
 html[data-theme='dark'] .means-card { background: rgb(16 24 32 / 55%); }
-.means-card::before, .topbar::before {
+.means-card::before {
   content: '';
   position: absolute;
   inset: 0;
@@ -113,7 +126,7 @@ html[data-theme='dark'] .means-card { background: rgb(16 24 32 / 55%); }
   opacity: 0;
 }
 @media (hover: hover) and (pointer: fine) {
-  .means-card:hover::before, .topbar:hover::before { opacity: 1; }
+  .means-card:hover::before { opacity: 1; }
 }
 .topbar { position: relative; }
 .scale-nav {
@@ -209,6 +222,58 @@ html[data-theme='dark'] .welcome-card { background: rgb(24 34 44 / 92%); color: 
 }
 .space-page form, .place-page { display: grid; gap: 12px; max-width: 40rem; }
 .space-page input, .space-page select { min-height: 44px; font: inherit; width: 100%; }
+
+.ai-photo { position: relative; display: block; }
+.ai-photo__mark {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 3;
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: rgb(16 24 32 / 78%);
+  color: #fff;
+  font: 600 0.75rem/1.2 var(--font-text);
+}
+.nav-burger { display: none; }
+.nav-panel {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 28px 20px;
+  background: #1a2330;
+  color: #fff;
+}
+.nav-panel a, .nav-panel button {
+  min-height: 48px;
+  color: #fff;
+  font-size: 1.35rem;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+}
+.nav-panel__brand { margin: 0 0 12px; font-family: var(--font-title); font-size: 1.6rem; }
+
+@media (max-width: 800px) {
+  .nav-burger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    min-width: 44px;
+    margin-left: auto;
+    border: 1px solid rgb(255 255 255 / 40%);
+    border-radius: 999px;
+    background: transparent;
+    color: #fff;
+    font: 600 0.95rem/1 var(--font-text);
+    cursor: pointer;
+  }
+  .topnav { display: none; }
+}
 
 html, body { overflow-x: clip; }
 .brand, .topnav { position: relative; z-index: 1; }

@@ -417,5 +417,13 @@
   "space.hello": "Bonjour {name}.",
   "future.h1": "La suite",
   "future.lead": "Pas encore disponible. Aucun chiffre de remplacement.",
-  "photo.credit": "Illustration (générée par IA)"
+  "photo.credit": "Illustration (générée par IA)",
+  "photo.watermark": "Image générée par IA",
+  "nav.menu": "Menu",
+  "nav.close": "Fermer",
+  "ai.title": "Usage de l'IA",
+  "ai.code": "Un agent de code dans Cursor a rédigé des écrans et des phrases simples. L'équipe les relit.",
+  "ai.ask": "Demander à Terra utilise Gemini sur le serveur. Il ne peut répéter que les chiffres de notre fichier publié.",
+  "ai.images": "earth-hero, satellite et congo-forest sont des images générées par IA. Chacune est étiquetée.",
+  "ai.numbers": "Les statistiques ont été calculées par nos scripts Python. Aucun chiffre n'a été généré par une IA."
 }
