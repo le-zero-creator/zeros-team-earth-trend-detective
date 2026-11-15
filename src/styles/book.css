@@ -629,3 +629,13 @@ html[data-theme='dark'] .pg-turn__k { color: var(--sun) !important; }
   .you-sketch__line > * { animation: none; stroke-dashoffset: 0; }
   .you-sketch__spot { animation: none; }
 }
+
+/* ---------- Nothing looks like a button unless it is one ---------- */
+/* The profile pill on the photo is now a real button: it takes you back to "Who are you?". */
+button.you-panel__who { border: 1px solid rgb(255 255 255 / 30%); color: #f6faf7; font: 600 var(--fs-body)/1 var(--font-text); cursor: pointer; min-height: 44px; transition: transform 0.3s var(--ease-o), background 0.3s; }
+button.you-panel__who:hover { transform: translateY(-2px); background: rgb(10 25 22 / 78%); }
+.you-panel__media .scene__credit { top: 12px; bottom: auto; }
+/* "Outside the basin" is a margin note, not a pill. */
+.pg-chip { padding: 2px 0 2px 12px; border: 0; border-left: 3px solid var(--sun); border-radius: 0; background: none; color: var(--grey-text); }
+/* Sources: a name and its status tag, not a row of pills. */
+.sources li { padding: 0; border: 0; border-radius: 0; background: none; box-shadow: none; }

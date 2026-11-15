@@ -154,7 +154,14 @@ export function MeansForYou({ data, page = false }: { data: AppData; page?: bool
             >
               <div className="you-panel__media">
                 <Scene name={photo.name} alt={t(photo.alt)} />
-                <p className="you-panel__who"><Icon aria-hidden="true" /> {t(LABELS[profile])}</p>
+                <button
+                  type="button"
+                  className="you-panel__who"
+                  title={t('you.pick')}
+                  onClick={() => document.querySelector('.you-cards')?.scrollIntoView({ behavior: 'smooth', block: 'center' })}
+                >
+                  <Icon aria-hidden="true" /> {t(LABELS[profile])}
+                </button>
               </div>
               <div className="you-panel__body">
                 <p className="you-step"><span>2</span>{t('you.trace')}</p>
