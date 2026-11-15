@@ -1,0 +1,355 @@
+{
+ "version": "2.0",
+ "principle_en": "Same data, same statistics, different questions. Level 1 = what we observe (generated from results.json). Level 2 = why it matters for this profession. Level 3 = questions worth exploring, never solutions deduced from statistics. Every card lists the extra data and local expertise needed before acting.",
+ "principle_fr": "Mêmes données, mêmes statistiques, questions différentes. Niveau 1 = ce qu'on observe (généré depuis results.json). Niveau 2 = pourquoi ça intéresse ce métier. Niveau 3 = pistes à explorer sous forme de questions, jamais des solutions déduites des statistiques. Chaque carte liste les données et l'expertise locale nécessaires avant d'agir.",
+ "level1_template": {
+  "en": "Observed: {variable} shows {direction_word} of {slope} {slope_unit} over {period} at {place} (NASA POWER grid cell, ~55 × 70 km). Mann-Kendall p = {p_mk}; seasonal MK p = {p_smk}; autocorrelation-corrected (Hamed-Rao) p = {p_hr}; FDR q = {q_bh}. Evidence: {evidence_level}.",
+  "fr": "Observé : {variable} montre {direction_word} de {slope} {slope_unit} sur {period} à {place} (maille NASA POWER, ~55 × 70 km). Mann-Kendall p = {p_mk} ; MK saisonnier p = {p_smk} ; p corrigé de l'autocorrélation (Hamed-Rao) = {p_hr} ; FDR q = {q_bh}. Niveau de preuve : {evidence_level}."
+ },
+ "profiles": [
+  {
+   "id": "architect",
+   "en": "Architect",
+   "fr": "Architecte"
+  },
+  {
+   "id": "urban_planner",
+   "en": "Urban planner / decision maker",
+   "fr": "Urbaniste / décideur"
+  },
+  {
+   "id": "farmer",
+   "en": "Farmer",
+   "fr": "Agriculteur"
+  },
+  {
+   "id": "health",
+   "en": "Health worker",
+   "fr": "Santé"
+  },
+  {
+   "id": "student",
+   "en": "Student / citizen",
+   "fr": "Élève / citoyen"
+  },
+  {
+   "id": "researcher",
+   "en": "Researcher",
+   "fr": "Chercheur"
+  }
+ ],
+ "groups": {
+  "heat": [
+   "t2m",
+   "t2m_max",
+   "ts"
+  ],
+  "night_heat": [
+   "t2m_min"
+  ],
+  "humidity": [
+   "rh2m"
+  ],
+  "soil": [
+   "soil_root"
+  ],
+  "rain": [
+   "precip"
+  ],
+  "solar": [
+   "solar"
+  ],
+  "wind": [
+   "wind"
+  ]
+ },
+ "cards": [
+  {
+   "id": "HEAT_ARCH",
+   "group": "heat",
+   "direction": "increasing",
+   "profile": "architect",
+   "why_en": "Warmer afternoons can increase overheating risk and cooling needs in buildings, so thermal comfort deserves closer study.",
+   "why_fr": "Des après-midi plus chauds peuvent augmenter le risque de surchauffe et les besoins de rafraîchissement : le confort thermique mérite une étude plus fine.",
+   "questions_en": [
+    "Which façades and roofs of my project receive the most sun at the hottest hours?",
+    "Could solar protection (overhangs, screens) and natural ventilation reduce indoor heat here, given local winds?",
+    "Which locally available materials limit heat gains without trapping humidity?"
+   ],
+   "questions_fr": [
+    "Quelles façades et toitures de mon projet reçoivent le plus de soleil aux heures chaudes ?",
+    "Une protection solaire (débords, brise-soleil) et la ventilation naturelle réduiraient-elles la chaleur intérieure ici, vu les vents locaux ?",
+    "Quels matériaux disponibles localement limitent les apports de chaleur sans piéger l'humidité ?"
+   ],
+   "needed_en": [
+    "Hourly temperature and humidity on site",
+    "Prevailing wind direction",
+    "Orientation, solar masks, building use",
+    "Local architect/engineer judgement"
+   ],
+   "needed_fr": [
+    "Températures et humidité horaires sur site",
+    "Vents dominants",
+    "Orientation, masques solaires, usages",
+    "Avis d'un architecte/ingénieur local"
+   ]
+  },
+  {
+   "id": "HEAT_PLAN",
+   "group": "heat",
+   "direction": "increasing",
+   "profile": "urban_planner",
+   "why_en": "A warming trend at city scale is a signal to check where people are most exposed to heat.",
+   "why_fr": "Une tendance au réchauffement à l'échelle de la ville invite à vérifier où les habitants sont le plus exposés.",
+   "questions_en": [
+    "Which streets, markets and schools have little shade or vegetation?",
+    "Is the warming similar in neighbourhoods? (needs 1 km MODIS data, not this 55 km cell)",
+    "Which green areas should be protected first?"
+   ],
+   "questions_fr": [
+    "Quelles rues, quels marchés et quelles écoles manquent d'ombre ou de végétation ?",
+    "Le réchauffement est-il le même dans chaque quartier ? (il faut MODIS à 1 km, pas cette maille de 55 km)",
+    "Quels espaces verts protéger en priorité ?"
+   ],
+   "needed_en": [
+    "Neighbourhood surface temperature (MODIS/Landsat)",
+    "Land-cover map",
+    "Population and vulnerability data",
+    "Municipal services"
+   ],
+   "needed_fr": [
+    "Température de surface par quartier (MODIS/Landsat)",
+    "Carte d'occupation du sol",
+    "Données de population et de vulnérabilité",
+    "Services municipaux"
+   ]
+  },
+  {
+   "id": "HEAT_HEALTH",
+   "group": "heat",
+   "direction": "increasing",
+   "profile": "health",
+   "why_en": "Rising maximum temperatures can matter for heat stress, especially for elderly people, children and outdoor workers.",
+   "why_fr": "La hausse des températures maximales peut compter pour le stress thermique, surtout pour les personnes âgées, les enfants et les travailleurs en extérieur.",
+   "questions_en": [
+    "Are heat-related consultations increasing in the hottest months?",
+    "Do clinics have shaded, ventilated waiting areas and drinking water?"
+   ],
+   "questions_fr": [
+    "Les consultations liées à la chaleur augmentent-elles pendant les mois les plus chauds ?",
+    "Les centres de santé ont-ils des salles d'attente ombragées, ventilées, avec eau potable ?"
+   ],
+   "needed_en": [
+    "Health records",
+    "Daily maximum temperatures",
+    "Local health authorities"
+   ],
+   "needed_fr": [
+    "Registres de santé",
+    "Températures maximales journalières",
+    "Autorités sanitaires locales"
+   ]
+  },
+  {
+   "id": "HEAT_FARM",
+   "group": "heat",
+   "direction": "increasing",
+   "profile": "farmer",
+   "why_en": "Hotter days can raise crop water demand and stress sensitive crops.",
+   "why_fr": "Des journées plus chaudes peuvent augmenter les besoins en eau et stresser les cultures sensibles.",
+   "questions_en": [
+    "Which of my crops are most sensitive to heat at flowering?",
+    "Would mulching or shade at nursery stage help on my plot?"
+   ],
+   "questions_fr": [
+    "Lesquelles de mes cultures sont les plus sensibles à la chaleur à la floraison ?",
+    "Le paillage ou l'ombrage en pépinière aideraient-ils sur ma parcelle ?"
+   ],
+   "needed_en": [
+    "Crop calendar",
+    "Plot-level observations",
+    "Agricultural extension advice"
+   ],
+   "needed_fr": [
+    "Calendrier cultural",
+    "Observations à la parcelle",
+    "Conseil agricole (vulgarisation)"
+   ]
+  },
+  {
+   "id": "SOIL_DRY_FARM",
+   "group": "soil",
+   "direction": "decreasing",
+   "profile": "farmer",
+   "why_en": "The model indicates drier root-zone soils, which can matter for planting dates and water management.",
+   "why_fr": "Le modèle indique des sols plus secs en profondeur, ce qui peut compter pour les dates de semis et la gestion de l'eau.",
+   "questions_en": [
+    "Do my own observations confirm drier soils at the start of the rainy season?",
+    "Is rainwater storage feasible on my farm?"
+   ],
+   "questions_fr": [
+    "Mes observations confirment-elles des sols plus secs au début des pluies ?",
+    "Le stockage d'eau de pluie est-il faisable sur mon exploitation ?"
+   ],
+   "needed_en": [
+    "Field soil moisture",
+    "Rain gauge records",
+    "Agronomist advice"
+   ],
+   "needed_fr": [
+    "Humidité du sol mesurée au champ",
+    "Relevés de pluviomètre",
+    "Conseil d'un agronome"
+   ]
+  },
+  {
+   "id": "SOIL_DRY_ARCH",
+   "group": "soil",
+   "direction": "decreasing",
+   "profile": "architect",
+   "why_en": "Drier soils and air can change water needs for landscaping and the value of collecting roof water.",
+   "why_fr": "Des sols et un air plus secs peuvent changer les besoins en eau des espaces verts et l'intérêt de récupérer l'eau des toitures.",
+   "questions_en": [
+    "Could roof rainwater collection cover irrigation of planted areas?",
+    "Which plant species chosen for the project tolerate drier soils?"
+   ],
+   "questions_fr": [
+    "La récupération de l'eau des toitures pourrait-elle couvrir l'arrosage des espaces plantés ?",
+    "Quelles essences du projet tolèrent des sols plus secs ?"
+   ],
+   "needed_en": [
+    "Site water balance",
+    "Landscape architect advice"
+   ],
+   "needed_fr": [
+    "Bilan hydrique du site",
+    "Avis d'un paysagiste"
+   ]
+  },
+  {
+   "id": "RAIN_UP_PLAN",
+   "group": "rain",
+   "direction": "increasing",
+   "profile": "urban_planner",
+   "why_en": "More annual rain can matter for drainage, but annual totals do not tell us about storm intensity.",
+   "why_fr": "Plus de pluie annuelle peut compter pour le drainage, mais un cumul annuel ne dit rien de l'intensité des orages.",
+   "questions_en": [
+    "Have floods in valley bottoms become more frequent?",
+    "Are drains sized for heavy storms? (needs daily or hourly rain data)"
+   ],
+   "questions_fr": [
+    "Les inondations de bas-fonds sont-elles plus fréquentes ?",
+    "Les caniveaux sont-ils dimensionnés pour les fortes pluies ? (il faut des pluies journalières ou horaires)"
+   ],
+   "needed_en": [
+    "Daily rainfall (GPM IMERG)",
+    "Flood records",
+    "Drainage network map"
+   ],
+   "needed_fr": [
+    "Pluies journalières (GPM IMERG)",
+    "Historique des inondations",
+    "Plan du réseau de drainage"
+   ]
+  },
+  {
+   "id": "RAIN_UP_HEALTH",
+   "group": "rain",
+   "direction": "increasing",
+   "profile": "health",
+   "why_en": "Wetter conditions can matter for mosquito breeding sites.",
+   "why_fr": "Des conditions plus humides peuvent compter pour les gîtes larvaires de moustiques.",
+   "questions_en": [
+    "Do malaria cases follow the rainy seasons more closely than before?"
+   ],
+   "questions_fr": [
+    "Les cas de paludisme suivent-ils davantage les saisons des pluies qu'avant ?"
+   ],
+   "needed_en": [
+    "Malaria surveillance data",
+    "Local health authorities"
+   ],
+   "needed_fr": [
+    "Données de surveillance du paludisme",
+    "Autorités sanitaires locales"
+   ]
+  },
+  {
+   "id": "STUDENT_ANY",
+   "group": "*",
+   "direction": "*",
+   "profile": "student",
+   "why_en": "This is how scientists decide whether a change is real: a test, a threshold, and honest limits.",
+   "why_fr": "C'est ainsi que les scientifiques décident si un changement est réel : un test, un seuil et des limites honnêtes.",
+   "questions_en": [
+    "What could explain this trend? List 3 hypotheses and how you would test them.",
+    "Does the trend look the same in another place of the basin?"
+   ],
+   "questions_fr": [
+    "Qu'est-ce qui pourrait expliquer cette tendance ? Liste 3 hypothèses et comment les tester.",
+    "La tendance est-elle la même ailleurs dans le bassin ?"
+   ],
+   "needed_en": [
+    "Other datasets",
+    "A teacher or scientist"
+   ],
+   "needed_fr": [
+    "D'autres jeux de données",
+    "Un enseignant ou un scientifique"
+   ]
+  },
+  {
+   "id": "RESEARCH_ANY",
+   "group": "*",
+   "direction": "*",
+   "profile": "researcher",
+   "why_en": "Exploratory result from a reanalysis grid cell; useful to prioritise checks, not to conclude.",
+   "why_fr": "Résultat exploratoire sur une maille de réanalyse ; utile pour prioriser des vérifications, pas pour conclure.",
+   "questions_en": [
+    "Does the trend hold with MODIS LST, GPM IMERG or station data?",
+    "Is it sensitive to the period, to autocorrelation (see p_hr) and to multiple testing (see q_bh)?",
+    "Are there breakpoints linked to changes in the observing system?"
+   ],
+   "questions_fr": [
+    "La tendance tient-elle avec MODIS LST, GPM IMERG ou des stations ?",
+    "Est-elle sensible à la période, à l'autocorrélation (p_hr) et aux tests multiples (q_bh) ?",
+    "Y a-t-il des ruptures liées à des changements du système d'observation ?"
+   ],
+   "needed_en": [
+    "Independent datasets",
+    "Homogeneity tests (e.g. Pettitt)"
+   ],
+   "needed_fr": [
+    "Jeux de données indépendants",
+    "Tests d'homogénéité (ex. Pettitt)"
+   ]
+  },
+  {
+   "id": "NOT_ENOUGH",
+   "group": "*",
+   "direction": "*",
+   "profile": "*",
+   "when_not_significant": true,
+   "why_en": "Not enough evidence yet. This does NOT mean there is no change: the record may be too short or too variable.",
+   "why_fr": "Pas encore assez de preuves. Cela NE veut PAS dire qu'il n'y a pas de changement : la série est peut-être trop courte ou trop variable.",
+   "questions_en": [
+    "Does a longer period (1981–2025) or another dataset show a clearer signal?"
+   ],
+   "questions_fr": [
+    "Une période plus longue (1981–2025) ou un autre jeu de données montre-t-il un signal plus net ?"
+   ],
+   "needed_en": [
+    "Longer or independent records"
+   ],
+   "needed_fr": [
+    "Séries plus longues ou indépendantes"
+   ]
+  }
+ ],
+ "fallback_en": "No specific questions prepared for this combination yet. Read the observed result and its limits.",
+ "fallback_fr": "Pas encore de questions préparées pour cette combinaison. Lisez le résultat observé et ses limites.",
+ "disclaimer": {
+  "en": "These are questions to explore with local experts and more data, not recommendations proven by the statistics. A trend does not show its cause.",
+  "fr": "Ce sont des pistes à explorer avec des experts locaux et d'autres données, pas des recommandations prouvées par les statistiques. Une tendance n'indique pas sa cause."
+ }
+}

@@ -1,0 +1,13 @@
+/workspace/venv/lib/python3.13/site-packages/pymannkendall/pymannkendall.py:103: RuntimeWarning: invalid value encountered in sqrt
+  z = (s + 1)/np.sqrt(var_s)
+QA rain total vs POWER ANN, max relative diff: {'rain_annual_total_vs_power_ANN_max_rel_diff': np.float64(0.0021)}
+analyses: 198 | RM2 detected (2001-2025): 31 | FDR q<0.05 (2001-2025): 15
+t2m        +0.391 °C per decade                  CI[+0.217,+0.678] p_mk=0.000421 p_smk=0.0 p_hr=0.00875 q_bh=0.0139 HR:confirms RM2=True
+t2m_max    +0.782 °C per decade                  CI[+0.454,+1.298] p_mk=0.000141 p_smk=0.0 p_hr=0.00484 q_bh=0.00697 HR:confirms RM2=True
+t2m_min    +0.263 °C per decade                  CI[-0.029,+0.556] p_mk=0.0882 p_smk=0.00853 p_hr=0.0882 q_bh=0.218 HR:confirms RM2=False
+ts         +0.430 °C per decade                  CI[+0.183,+0.780] p_mk=0.00138 p_smk=9.64e-14 p_hr=0.0184 q_bh=0.0195 HR:confirms RM2=True
+precip     -118.638 mm per decade (annual total)   CI[-239.250,+14.126] p_mk=0.0973 p_smk=8.27e-06 p_hr=0.0973 q_bh=0.229 HR:confirms RM2=False
+rh2m       -1.627 percentage points per decade   CI[-2.596,-1.012] p_mk=7.91e-05 p_smk=0.0 p_hr=7.91e-05 q_bh=0.00697 HR:confirms RM2=True
+solar      -0.095 MJ/m²/day per decade           CI[-0.289,+0.073] p_mk=0.199 p_smk=0.041 p_hr=0.33 q_bh=0.308 HR:confirms RM2=False
+wind       -0.019 m/s per decade                 CI[-0.053,+0.018] p_mk=0.199 p_smk=0.192 p_hr=0.199 q_bh=0.308 HR:confirms RM2=False
+soil_root  -0.049 fraction per decade            CI[-0.077,-0.023] p_mk=0.00117 p_smk=0.0 p_hr=0.0145 q_bh=0.0193 HR:confirms RM2=True

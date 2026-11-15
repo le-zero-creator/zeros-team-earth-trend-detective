@@ -1,0 +1,249 @@
+{
+ "type": "FeatureCollection",
+ "name": "congo_basin_points",
+ "note": "Selected locations across the Congo Basin region (not a basin-wide average). Each point = one NASA POWER cell (~55x70 km). in_hydrobasins_congo is computed against the HydroSHEDS outline; points with false must be drawn with a hollow marker and labelled 'outside the hydrological basin'.",
+ "features": [
+  {
+   "type": "Feature",
+   "properties": {
+    "zone_id": "cmr_yaounde",
+    "name_en": "Yaoundé (Cameroon) – local case study",
+    "name_fr": "Yaoundé (Cameroun) – étude de cas locale",
+    "country": "CMR",
+    "profile": "city_forest_edge",
+    "note_en": "Outside the Congo hydrological basin (~63 km west of the HydroSHEDS outline); within the wider Congo Basin forest region (COMIFAC). Local case study.",
+    "scale": "regional_cell",
+    "level": "basin",
+    "in_hydrobasins_congo": false,
+    "distance_to_basin_km": 63.0
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     11.5167,
+     3.8667
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "zone_id": "cmr_yokadouma",
+    "name_en": "Yokadouma (East Cameroon)",
+    "name_fr": "Yokadouma (Est-Cameroun)",
+    "country": "CMR",
+    "profile": "forest_frontier",
+    "note_en": "Sangha sub-basin, logging frontier",
+    "scale": "regional_cell",
+    "level": "basin",
+    "in_hydrobasins_congo": true,
+    "distance_to_basin_km": 0
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     15.05,
+     3.516
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "zone_id": "cog_ouesso",
+    "name_en": "Ouesso (Rep. of Congo)",
+    "name_fr": "Ouesso (Rép. du Congo)",
+    "country": "COG",
+    "profile": "rainforest",
+    "note_en": "Sangha river, dense forest",
+    "scale": "regional_cell",
+    "level": "basin",
+    "in_hydrobasins_congo": true,
+    "distance_to_basin_km": 0
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     16.0517,
+     1.6136
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "zone_id": "caf_bangui",
+    "name_en": "Bangui (Central African Rep.)",
+    "name_fr": "Bangui (Centrafrique)",
+    "country": "CAF",
+    "profile": "city_savanna_edge",
+    "note_en": "Ubangi river, northern forest-savanna edge",
+    "scale": "regional_cell",
+    "level": "basin",
+    "in_hydrobasins_congo": true,
+    "distance_to_basin_km": 0
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     18.5582,
+     4.3947
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "zone_id": "cod_mbandaka",
+    "name_en": "Mbandaka (DRC) – Cuvette centrale",
+    "name_fr": "Mbandaka (RDC) – Cuvette centrale",
+    "country": "COD",
+    "profile": "wetland_peat",
+    "note_en": "Central Congo peatlands, on the Equator",
+    "scale": "regional_cell",
+    "level": "basin",
+    "in_hydrobasins_congo": true,
+    "distance_to_basin_km": 0
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     18.2603,
+     0.0487
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "zone_id": "cod_kinshasa",
+    "name_en": "Kinshasa (DRC) – megacity",
+    "name_fr": "Kinshasa (RDC) – mégapole",
+    "country": "COD",
+    "profile": "megacity",
+    "note_en": "~17 million inhabitants, urban heat case",
+    "scale": "regional_cell",
+    "level": "basin",
+    "in_hydrobasins_congo": true,
+    "distance_to_basin_km": 0
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     15.3222,
+     -4.325
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "zone_id": "cod_salonga_forest",
+    "name_en": "Salonga forest (DRC) – reference",
+    "name_fr": "Forêt de la Salonga (RDC) – témoin",
+    "country": "COD",
+    "profile": "forest_reference",
+    "note_en": "Salonga National Park area, low human pressure",
+    "scale": "regional_cell",
+    "level": "basin",
+    "in_hydrobasins_congo": true,
+    "distance_to_basin_km": 0
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     21.0,
+     -2.0
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "zone_id": "cod_kisangani",
+    "name_en": "Kisangani (DRC)",
+    "name_fr": "Kisangani (RDC)",
+    "country": "COD",
+    "profile": "city_rainforest",
+    "note_en": "Middle Congo river, rainforest city",
+    "scale": "regional_cell",
+    "level": "basin",
+    "in_hydrobasins_congo": true,
+    "distance_to_basin_km": 0
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     25.191,
+     0.5153
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "zone_id": "cod_kananga",
+    "name_en": "Kananga (DRC) – Kasai",
+    "name_fr": "Kananga (RDC) – Kasaï",
+    "country": "COD",
+    "profile": "savanna_mosaic",
+    "note_en": "Southern forest-savanna mosaic",
+    "scale": "regional_cell",
+    "level": "basin",
+    "in_hydrobasins_congo": true,
+    "distance_to_basin_km": 0
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     22.4166,
+     -5.8962
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "zone_id": "cod_bukavu",
+    "name_en": "Bukavu (DRC) – eastern highlands",
+    "name_fr": "Bukavu (RDC) – hauts plateaux de l'Est",
+    "country": "COD",
+    "profile": "highland",
+    "note_en": "Lake Kivu, ~1500 m altitude",
+    "scale": "regional_cell",
+    "level": "basin",
+    "in_hydrobasins_congo": true,
+    "distance_to_basin_km": 0
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     28.8608,
+     -2.5083
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "zone_id": "cod_lubumbashi",
+    "name_en": "Lubumbashi (DRC) – miombo",
+    "name_fr": "Lubumbashi (RDC) – miombo",
+    "country": "COD",
+    "profile": "miombo_savanna",
+    "note_en": "Southern rim, dry season, mining city",
+    "scale": "regional_cell",
+    "level": "basin",
+    "in_hydrobasins_congo": true,
+    "distance_to_basin_km": 0
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     27.4794,
+     -11.6647
+    ]
+   }
+  }
+ ]
+}

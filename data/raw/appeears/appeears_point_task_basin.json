@@ -1,0 +1,106 @@
+{
+ "task_type": "point",
+ "task_name": "congo_basin_points_lst_ndvi_2001_2025",
+ "params": {
+  "dates": [
+   {
+    "startDate": "01-01-2001",
+    "endDate": "12-31-2025"
+   }
+  ],
+  "layers": [
+   {
+    "product": "MOD11A2.061",
+    "layer": "LST_Day_1km"
+   },
+   {
+    "product": "MOD11A2.061",
+    "layer": "LST_Night_1km"
+   },
+   {
+    "product": "MOD11A2.061",
+    "layer": "QC_Day"
+   },
+   {
+    "product": "MYD11A2.061",
+    "layer": "LST_Day_1km"
+   },
+   {
+    "product": "MOD13Q1.061",
+    "layer": "_250m_16_days_NDVI"
+   },
+   {
+    "product": "MOD13Q1.061",
+    "layer": "_250m_16_days_pixel_reliability"
+   }
+  ],
+  "coordinates": [
+   {
+    "id": "cmr_yaounde",
+    "category": "congo_basin",
+    "latitude": 3.8667,
+    "longitude": 11.5167
+   },
+   {
+    "id": "cmr_yokadouma",
+    "category": "congo_basin",
+    "latitude": 3.516,
+    "longitude": 15.05
+   },
+   {
+    "id": "cog_ouesso",
+    "category": "congo_basin",
+    "latitude": 1.6136,
+    "longitude": 16.0517
+   },
+   {
+    "id": "caf_bangui",
+    "category": "congo_basin",
+    "latitude": 4.3947,
+    "longitude": 18.5582
+   },
+   {
+    "id": "cod_mbandaka",
+    "category": "congo_basin",
+    "latitude": 0.0487,
+    "longitude": 18.2603
+   },
+   {
+    "id": "cod_kinshasa",
+    "category": "congo_basin",
+    "latitude": -4.325,
+    "longitude": 15.3222
+   },
+   {
+    "id": "cod_salonga_forest",
+    "category": "congo_basin",
+    "latitude": -2.0,
+    "longitude": 21.0
+   },
+   {
+    "id": "cod_kisangani",
+    "category": "congo_basin",
+    "latitude": 0.5153,
+    "longitude": 25.191
+   },
+   {
+    "id": "cod_kananga",
+    "category": "congo_basin",
+    "latitude": -5.8962,
+    "longitude": 22.4166
+   },
+   {
+    "id": "cod_bukavu",
+    "category": "congo_basin",
+    "latitude": -2.5083,
+    "longitude": 28.8608
+   },
+   {
+    "id": "cod_lubumbashi",
+    "category": "congo_basin",
+    "latitude": -11.6647,
+    "longitude": 27.4794
+   }
+  ]
+ }
+}

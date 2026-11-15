@@ -1,0 +1,222 @@
+{
+ "type": "FeatureCollection",
+ "name": "detective_yaounde_zones",
+ "note": "APPROXIMATE 2x2 km boxes around centroids. VERIFY land cover on satellite imagery (Esri/OSM) before the AppEEARS request; adjust coordinates if needed.",
+ "features": [
+  {
+   "type": "Feature",
+   "properties": {
+    "zone_id": "yde_centre",
+    "name_en": "City centre (Mfoundi)",
+    "name_fr": "Centre-ville (Mfoundi)",
+    "profile": "dense_urban",
+    "centroid": [
+     3.8667,
+     11.5167
+    ],
+    "level": "local",
+    "parent_zone": "cmr_yaounde",
+    "scale": "neighbourhood_2x2km"
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       11.5077,
+       3.8577
+      ],
+      [
+       11.5257,
+       3.8577
+      ],
+      [
+       11.5257,
+       3.8756999999999997
+      ],
+      [
+       11.5077,
+       3.8756999999999997
+      ],
+      [
+       11.5077,
+       3.8577
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "zone_id": "yde_mont_febe",
+    "name_en": "Bastos / Mont Fébé",
+    "name_fr": "Bastos / Mont Fébé",
+    "profile": "green_hills",
+    "centroid": [
+     3.905,
+     11.493
+    ],
+    "level": "local",
+    "parent_zone": "cmr_yaounde",
+    "scale": "neighbourhood_2x2km"
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       11.484,
+       3.896
+      ],
+      [
+       11.502,
+       3.896
+      ],
+      [
+       11.502,
+       3.9139999999999997
+      ],
+      [
+       11.484,
+       3.9139999999999997
+      ],
+      [
+       11.484,
+       3.896
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "zone_id": "yde_nkolbisson",
+    "name_en": "Nkolbisson urban fringe",
+    "name_fr": "Front urbain de Nkolbisson",
+    "profile": "urban_fringe",
+    "centroid": [
+     3.875,
+     11.44
+    ],
+    "level": "local",
+    "parent_zone": "cmr_yaounde",
+    "scale": "neighbourhood_2x2km"
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       11.431,
+       3.866
+      ],
+      [
+       11.449,
+       3.866
+      ],
+      [
+       11.449,
+       3.884
+      ],
+      [
+       11.431,
+       3.884
+      ],
+      [
+       11.431,
+       3.866
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "zone_id": "yde_mefou",
+    "name_en": "Mefou valley (south)",
+    "name_fr": "Vallée de la Mefou (sud)",
+    "profile": "wetland_valley",
+    "centroid": [
+     3.8,
+     11.48
+    ],
+    "level": "local",
+    "parent_zone": "cmr_yaounde",
+    "scale": "neighbourhood_2x2km"
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       11.471,
+       3.791
+      ],
+      [
+       11.489,
+       3.791
+      ],
+      [
+       11.489,
+       3.8089999999999997
+      ],
+      [
+       11.471,
+       3.8089999999999997
+      ],
+      [
+       11.471,
+       3.791
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "zone_id": "yde_foret_ref",
+    "name_en": "Forest reference (outside city)",
+    "name_fr": "Zone témoin forestière (hors ville)",
+    "profile": "forest_reference",
+    "centroid": [
+     3.97,
+     11.35
+    ],
+    "level": "local",
+    "parent_zone": "cmr_yaounde",
+    "scale": "neighbourhood_2x2km"
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       11.341,
+       3.9610000000000003
+      ],
+      [
+       11.359,
+       3.9610000000000003
+      ],
+      [
+       11.359,
+       3.979
+      ],
+      [
+       11.341,
+       3.979
+      ],
+      [
+       11.341,
+       3.9610000000000003
+      ]
+     ]
+    ]
+   }
+  }
+ ]
+}
