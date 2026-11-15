@@ -8,25 +8,32 @@ export function Motion() {
     const media = (query: string) => typeof window.matchMedia === 'function' && window.matchMedia(query).matches
     const reduce = media('(prefers-reduced-motion: reduce)')
     const fine = media('(hover: hover) and (pointer: fine)')
-    const nodes = document.querySelectorAll('.reveal')
+    const seen = new WeakSet<Element>()
     let io: IntersectionObserver | null = null
-    if (reduce || typeof IntersectionObserver !== 'function') {
-      nodes.forEach((node) => node.classList.add('is-in'))
-    } else {
-      const watch = new IntersectionObserver(
+    if (!reduce && typeof IntersectionObserver === 'function') {
+      io = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
             if (!entry.isIntersecting) return
             entry.target.classList.add('is-in')
-            watch.unobserve(entry.target)
+            io?.unobserve(entry.target)
           })
         },
-        { threshold: 0.12 },
+        { threshold: 0.08 },
       )
-      io = watch
-      nodes.forEach((node) => watch.observe(node))
     }
-    if (reduce || !fine) return () => io?.disconnect()
+    const scan = () => {
+      document.querySelectorAll('.reveal').forEach((node) => {
+        if (seen.has(node)) return
+        seen.add(node)
+        if (io) io.observe(node)
+        else node.classList.add('is-in')
+      })
+    }
+    scan()
+    const changes = new MutationObserver(scan)
+    changes.observe(document.body, { childList: true, subtree: true })
+    if (reduce || !fine) return () => { io?.disconnect(); changes.disconnect() }
     const move = (event: PointerEvent) => {
       if (event.pointerType === 'touch') return
       const card = (event.target as Element | null)?.closest?.('[data-halo]')
@@ -38,6 +45,7 @@ export function Motion() {
     document.addEventListener('pointermove', move, { passive: true })
     return () => {
       io?.disconnect()
+      changes.disconnect()
       document.removeEventListener('pointermove', move)
     }
   }, [pathname])
