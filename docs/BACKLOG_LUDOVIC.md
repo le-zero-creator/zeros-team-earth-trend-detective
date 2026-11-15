@@ -34,7 +34,21 @@ Statuts : ✅ fait · 🟡 en cours · ⬜ à faire
 | C | Vue zones d'étude : image cassée à trouver ; chemin vers Yaoundé (hors bassin) à rendre visible ; un clic sans effet à corriger ; garder et polir l'affichage et la fenêtre | ✅ | Les étiquettes « Bientôt » de l'autre face du globe s'affichaient sur l'Afrique (CSS `display:grid` écrasait `hidden`) : corrigé. Image du panneau (radar à moitié noire, semblait cassée) remplacée par le fleuve Congo. Carte « Cas local : Yaoundé » en haut du panneau + boutons « Aller à Yaoundé » / « Yaoundé en détail » ; le panneau « Bassin du Congo » n'est plus un cul-de-sac (Aller à Yaoundé, Comparer les lieux) ; fiche d'un lieu : Enquêter, Yaoundé en détail, Retour au bassin. |
 | D | Enquêter : texte qui paraît en italique, titres/sous-titres peu distincts ; AVANT le graphique, diapos pas à pas (source, variables une par une, pluie non prouvée), puis graphique animé (points puis droite), puis seulement « +0,78 °C/décennie » et son explication | ✅ | `EvidenceSlides.tsx` : 7 diapos avant le graphique (source NASA POWER/MERRA-2/CERES, trace chaleur, trace air, trace pluie « pas prouvé », c'est quoi une tendance, graphique animé points puis droite de Sen, puis seulement le chiffre). Titres serif, sous-titres sans-serif droits (`font-synthesis: none`). Étapes renommées « 1 · Choisir un lieu… ». |
 | E | Page Yaoundé (preuves) : même design que le reste (en-tête, échelle typo, cartes, animations) | ✅ | `pages/Place.tsx` refait : même en-tête carte + image animée, 3 cartes de trace (chiffre qui compte, graphique animé, verdict, lien « Voir la preuve pas à pas »), Ask Terra intégré, lien « Ce que ça change pour toi ». |
-| 19 | Dynamique : connexion Google pour « Mon espace », panneau météo mondiale en direct (NASA POWER via `api/power.ts`) — en dernier, si sûr et gratuit | ⬜ | |
+| 19 | Dynamique : connexion Google pour « Mon espace », panneau météo mondiale en direct (NASA POWER via `api/power.ts`) — en dernier, si sûr et gratuit | 🟡 | **Panneau en direct : fait.** Sur le globe, un clic sur une région du monde (Sahel, Amazonie, Europe…) affiche le dernier mois NASA POWER disponible (température max. de l'air, humidité, pluie), lu par  : gratuit, sans clé, limité à 30 demandes par 10 min et par adresse, mis en cache 6 h. Composant  : affichage seul, aucun calcul, mention « Données NASA en direct, pas encore analysées par nos tests », « n/a » si une valeur manque, message clair si la lecture échoue. 3 tests ajoutés. **Connexion Google : non faite**, volontairement (voir « Prochaines étapes »). |
 
 ## Prochaines étapes (si non fait ce soir)
-_(rempli au fur et à mesure)_
+**Connexion Google pour « Mon espace » : non faite le 15/11, volontairement.** Audit en 7 points avant de brancher quoi que ce soit :
+
+1. *Clés* : il faut créer un « client OAuth » dans le compte Google de Ludovic (une inscription : son accord et son action sont nécessaires) et ranger le secret dans les variables Vercel, jamais dans le dépôt ni dans le navigateur. Rien de cela n'existe aujourd'hui.
+2. *Règles par utilisateur (RLS)* : aujourd'hui « Mon espace » reste dans le navigateur (stockage local), aucune base de données. Avec une connexion, il faut une base où chaque ligne n'est lisible que par son propriétaire.
+3. *Accès aux données d'un autre en changeant un identifiant* : sans objet aujourd'hui (rien n'est stocké sur un serveur) ; à tester dès qu'une base existe.
+4. *Routes admin* : aucune aujourd'hui ; ne pas en créer.
+5. *Limite de débit et validation* : déjà en place sur  et  ; à refaire sur les routes de connexion.
+6. *Webhooks signés* : aucun webhook aujourd'hui.
+7. *Dépendances, HTTPS, messages d'erreur* : HTTPS par Vercel, erreurs sans détail interne ; relancer found 0 vulnerabilities après l'ajout d'une librairie de connexion.
+
+Conséquences à prévoir : la page Mentions dit « Aucun cookie. Aucune donnée personnelle » ; une connexion pose un cookie de session et lit une adresse e-mail, donc il faut changer ce texte, ajouter « données utilisées uniquement pour la démo » et la case « 15 ans et plus ». Trop risqué à trois heures de la remise sans pouvoir tester le parcours complet.
+
+**Autres points :**
+- Globe : après un clic sur un lieu, la Terre reprend sa rotation lente et le lieu sort peu à peu du centre (comportement d'origine, non modifié).
+- Validation Python des calculs () non relancée le 15/11 au soir : Python n'est pas installé sur la machine utilisée. Aucun calcul n'a été modifié ce soir.

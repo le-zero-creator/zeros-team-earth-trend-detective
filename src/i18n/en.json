@@ -697,5 +697,11 @@
   "you.sketch.t": "Where to look on a building?",
   "you.sketch.alt": "Line drawing of a building with a tree, a water tank and the sun, with three numbered hot spots",
   "you.sketch.hint": "Tap a hot spot.",
-  "you.sketch.note": "Illustration only: not a plan and not building advice."
+  "you.sketch.note": "Illustration only: not a plan and not building advice.",
+  "live.wait": "Reading NASA data…",
+  "live.tmax": "Max. air temperature",
+  "live.rh": "Air humidity",
+  "live.rain": "Rain",
+  "live.perDay": "mm per day",
+  "live.month": "Latest month available: {month}."
 }

@@ -649,3 +649,23 @@ button.you-panel__who:hover { transform: translateY(-2px); background: rgb(10 25
   .globe-float .scene img { height: 72px; }
 }
 .globe-float .zone-btn { flex-wrap: wrap; column-gap: 4px; }
+
+/* ---------- Globe: latest NASA month for a region of the world (live, display only) ---------- */
+.soon-toast { border: 1px solid rgb(255 255 255 / 14%); max-height: calc(100% - 100px); overflow: auto; }
+.live-month { display: grid; gap: 8px; margin: 4px 0 12px; padding: 12px 14px; border-radius: 16px; background: rgb(255 255 255 / 7%); border: 1px solid rgb(255 255 255 / 14%); }
+.live-month__k { margin: 0; font: 700 var(--fs-small)/1.3 var(--font-text); letter-spacing: 0.08em; text-transform: uppercase; color: #ffb703; }
+.live-month__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 0; }
+.live-month__grid dt { font-size: var(--fs-small); line-height: 1.3; color: rgb(244 247 244 / 72%); }
+.live-month__grid dd { margin: 2px 0 0; font: 600 var(--fs-h3)/1.2 var(--font-text); font-variant-numeric: tabular-nums; }
+.live-month__grid dd small { display: block; font: 400 var(--fs-small)/1.3 var(--font-text); color: rgb(244 247 244 / 72%); }
+.live-month .note, .soon-toast .live-month p { margin: 0; color: rgb(244 247 244 / 72%); font-size: var(--fs-small); line-height: 1.4; }
+.soon-toast .live-month .live-month__k { color: #ffb703; }
+@media (max-width: 800px) {
+  .soon-toast { bottom: 76px; max-height: calc(100% - 34vh - 176px); }
+}
+.live-month__grid dt { min-height: 2.6em; }
+@media (max-width: 800px) and (max-height: 700px) {
+  .globe-float .scene { display: none; }
+  .soon-toast { bottom: 70px; max-height: calc(100% - 300px); }
+  .live-month { margin: 2px 0 10px; padding: 10px 12px; gap: 6px; }
+}

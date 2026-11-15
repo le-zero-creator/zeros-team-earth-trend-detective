@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { Link } from 'react-router-dom'
+import { LiveMonth } from '../components/LiveMonth'
 import { LivingEarth, type EarthHandle } from '../components/LivingEarth'
 import { Scene } from '../components/Scene'
 import { useI18n, type Key } from '../i18n'
@@ -32,7 +33,7 @@ export function Explore() {
   const earth = useRef<EarthHandle>(null)
   const [selected, setSelected] = useState<string | null>(null)
   const [inside, setInside] = useState(false)
-  const [toast, setToast] = useState<string | null>(null)
+  const [toast, setToast] = useState<(typeof COMING_REGIONS)[number] | null>(null)
   const [layer, setLayer] = useState<(typeof LAYERS)[number]>('t2m_max')
   const [query, setQuery] = useState('')
   const outline = useMemo(
@@ -112,7 +113,7 @@ export function Explore() {
                 data-pin=""
                 data-lat={region.lat}
                 data-lon={region.lon}
-                onClick={() => setToast(t(`region.${region.id}` as Key))}
+                onClick={() => setToast(region)}
               >
                 {t(`region.${region.id}` as Key)}
                 <small>{t('globe.soonTag')}</small>
@@ -175,7 +176,8 @@ export function Explore() {
       </aside>
       {toast && (
         <div className="soon-toast" role="status">
-          <p>{t('globe.soon', { name: toast })}</p>
+          <p>{t('globe.soon', { name: t(`region.${toast.id}` as Key) })}</p>
+          <LiveMonth lat={toast.lat} lon={toast.lon} />
           <button type="button" className="cta cta--sun" onClick={enterBasin}>{t('globe.toCongo')}</button>
         </div>
       )}
