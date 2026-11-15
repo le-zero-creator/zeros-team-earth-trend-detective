@@ -31,7 +31,8 @@ function cspMeta(): Plugin {
 
 export default defineConfig({
   plugins: [react(), cspMeta()],
-  base: '/zeros-team-earth-trend-detective/',
+  // Vercel sert le site à la racine, GitHub Pages dans un sous-dossier.
+  base: process.env.VERCEL ? '/' : '/zeros-team-earth-trend-detective/',
   // Chrome 80 (beaucoup de téléphones Android) comprend ce niveau. Pas plus récent.
   build: { target: 'chrome80' },
   test: {
