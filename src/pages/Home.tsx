@@ -34,37 +34,28 @@ function findAnalysis(data: AppData, zone: string, variable: string) {
 }
 
 export function Home() {
-  const { t } = useI18n()
-  const { state, retry } = useData()
+  const { state } = useData()
   return (
     <div className="home home--story">
-      {state.status === 'loading' && <p role="status">{t('state.loading')}</p>}
-      {state.status === 'error' && (
-        <div className="card error" role="alert">
-          <h2>{t('state.error.title')}</h2>
-          <p>{t('state.error.body')}</p>
-          <button type="button" className="cta" onClick={retry}>{t('state.error.retry')}</button>
-        </div>
-      )}
-      {state.status === 'ready' && <HomeStory data={state.data} />}
+      <HomeStory data={state.status === 'ready' ? state.data : null} />
     </div>
   )
 }
 
-export function HomeStory({ data }: { data: AppData }) {
+export function HomeStory({ data }: { data: AppData | null }) {
   const { t, lang, setLang } = useI18n()
   const { profile } = useProfile()
   const { name } = useSpace()
   const [welcome, setWelcome] = useState(0)
   const [step, setStep] = useState(0)
-  const hot = findAnalysis(data, 'cmr_yaounde', 't2m_max')!
-  const air = findAnalysis(data, 'cmr_yaounde', 'rh2m')!
-  const yaounde = data.zones.find((zone) => zone.zone_id === 'cmr_yaounde')!
-  const yes = hot.evidence_level === 'robust' && hot.significatif && hot.direction === 'increasing'
-  const airPlain = `${formatSigned(air.pente_decennie, SLOPE_DECIMALS.rh2m, lang)} ${plainUnit(air.slope_unit, lang)}`
+  const hot = data ? findAnalysis(data, 'cmr_yaounde', 't2m_max') : undefined
+  const air = data ? findAnalysis(data, 'cmr_yaounde', 'rh2m') : undefined
+  const yaounde = data?.zones.find((zone) => zone.zone_id === 'cmr_yaounde')
+  const yes = Boolean(hot && hot.evidence_level === 'robust' && hot.significatif && hot.direction === 'increasing')
+  const airPlain = air ? `${formatSigned(air.pente_decennie, SLOPE_DECIMALS.rh2m, lang)} ${plainUnit(air.slope_unit, lang)}` : ''
   const heatLink = investigateLink('cmr_yaounde', 't2m_max', 'p2001_2025')
   const mapAnalyses = new Map<string, Analysis>(
-    data.results.analyses.filter((item) => item.variable_id === 't2m_max' && item.period_id === 'p2001_2025').map((item) => [item.zone_id, item]),
+    (data?.results.analyses ?? []).filter((item) => item.variable_id === 't2m_max' && item.period_id === 'p2001_2025').map((item) => [item.zone_id, item]),
   )
   const frame = STEPS[step]
 
@@ -94,33 +85,40 @@ export function HomeStory({ data }: { data: AppData }) {
   return (
     <>
       {welcome < 5 && (
-        <section className="welcome" aria-label={t('welcome.lang')}>
-          {welcome === 0 ? (
-            <>
-              <h2>{t('welcome.lang')}</h2>
-              <p>{t('story.lead')}</p>
-              <button type="button" onClick={() => { setLang('en'); setWelcome(1) }}>English</button>
-              <button type="button" onClick={() => { setLang('fr'); setWelcome(1) }}>Français</button>
-            </>
-          ) : (
-            <>
-              <p className="welcome-emoji" aria-hidden="true">{['🌍', '🛰️', '📈', '❓'][welcome - 1]}</p>
-              <h2>{t(`welcome.${welcome}` as Key)}</h2>
-              <button
-                type="button"
-                onClick={() => {
-                  const next = welcome + 1
-                  setWelcome(next)
-                  if (next >= 5) {
-                    try { sessionStorage.setItem('td.welcome', '1') } catch { /* reste ouvert cette fois */ }
-                  }
-                }}
-              >
-                {welcome === 4 ? t('welcome.done') : t('welcome.next')}
-              </button>
-            </>
-          )}
-        </section>
+        <div className="welcome" role="dialog" aria-label={t('welcome.lang')}>
+          <div className="welcome-card">
+            {welcome === 0 ? (
+              <>
+                <p className="welcome-emoji" aria-hidden="true">🌍</p>
+                <h2>{t('welcome.lang')}</h2>
+                <p>{t('story.lead')}</p>
+                <div className="welcome-actions">
+                  <button type="button" onClick={() => { setLang('en'); setWelcome(1) }}>English</button>
+                  <button type="button" onClick={() => { setLang('fr'); setWelcome(1) }}>Français</button>
+                </div>
+              </>
+            ) : (
+              <>
+                <p className="welcome-emoji" aria-hidden="true">{['🌍', '🛰️', '📈', '❓'][welcome - 1]}</p>
+                <h2>{t(`welcome.${welcome}` as Key)}</h2>
+                <div className="welcome-actions">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const next = welcome + 1
+                      setWelcome(next)
+                      if (next >= 5) {
+                        try { sessionStorage.setItem('td.welcome', '1') } catch { /* reste ouvert cette fois */ }
+                      }
+                    }}
+                  >
+                    {welcome === 4 ? t('welcome.done') : t('welcome.next')}
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
       )}
 
       <section className="story-hero">
@@ -144,7 +142,7 @@ export function HomeStory({ data }: { data: AppData }) {
             <article key={item.id} className="scrolly__step" id={`step-${item.id}`}>
               <h2>{item.id === 'city' ? t('home.story.question') : t(item.title)}</h2>
               <p>{t(item.title)}</p>
-              {item.id === 'city' && (
+              {item.id === 'city' && hot && (
                 <>
                   <p className="story-num">
                     <CountUp value={hot.pente_decennie} decimals={SLOPE_DECIMALS.t2m_max} lang={lang} /> {plainUnit(hot.slope_unit, lang)}
@@ -156,6 +154,7 @@ export function HomeStory({ data }: { data: AppData }) {
                   <Link to={heatLink}>Open Yaoundé</Link>
                 </>
               )}
+              {item.id === 'city' && !hot && <p className="story-skeleton" role="status">{t('state.loading')}</p>}
             </article>
           ))}
         </div>
@@ -165,7 +164,7 @@ export function HomeStory({ data }: { data: AppData }) {
         </figure>
       </section>
 
-      <MeansForYou data={data} />
+      {data ? <MeansForYou data={data} /> : <p className="story-skeleton" role="status">{t('state.loading')}</p>}
 
       <section className="how" aria-labelledby="how-title">
         <h2 id="how-title">{t('how.h1')}</h2>
@@ -180,8 +179,9 @@ export function HomeStory({ data }: { data: AppData }) {
       <p>
         <Link to="/congo">{t('story.openCongo')}</Link>
       </p>
-      <p className="callout">{t('yaounde.short', { km: yaounde.distance_to_basin_km })}</p>
+      {yaounde && <p className="callout">{t('yaounde.short', { km: yaounde.distance_to_basin_km })}</p>}
 
+      {data && hot && yaounde && <>
       <section className="future" aria-labelledby="future-title">
         <h2 id="future-title">{t('future.title')}</h2>
         <ul className="future-row">
@@ -214,6 +214,7 @@ export function HomeStory({ data }: { data: AppData }) {
         />
         <SourceStrip sources={data.results.meta.sources as Source[]} />
       </details>
+      </>}
     </>
   )
 }
