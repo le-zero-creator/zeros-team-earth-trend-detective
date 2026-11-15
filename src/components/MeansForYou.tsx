@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Building2, Compass, FlaskConical, HeartPulse, Landmark, Sprout } from 'lucide-react'
 import { CountUp } from './CountUp'
+import { Picture } from './Picture'
 import { Sparkline } from './Sparkline'
 import { useI18n, type Key } from '../i18n'
 import { SLOPE_DECIMALS, formatSigned, plainUnit } from '../lib/format'
@@ -65,11 +66,12 @@ export function MeansForYou({ data, page = false }: { data: AppData; page?: bool
           variable === 't2m_max' && !unsure ? t('home.story.yes') : t('plain.notSure')
         }`
 
+  const photo = region === 'earth' ? 'earth-hero' : region === 'congo' ? 'congo-forest' : 'satellite'
   return (
-    <section className={page ? 'means means--page' : 'means'} aria-labelledby="means-title">
+    <section id="for-you" className={page ? 'means means-band means--page' : 'means means-band'} aria-labelledby="means-title">
       <p className="kicker">{t('means.kicker')}</p>
       {page ? <h1 id="means-title">{t('means.h1')}</h1> : <h2 id="means-title">{t('means.h1')}</h2>}
-      <p>{t('means.lead')}</p>
+      <p className="means-lead">{t('means.lead')}</p>
       <div className="means-regions" role="group" aria-label={t('means.region')}>
         {(['earth', 'congo', 'yaounde'] as const).map((id) => (
           <button key={id} type="button" aria-pressed={region === id} onClick={() => setRegion(id)}>
@@ -88,24 +90,27 @@ export function MeansForYou({ data, page = false }: { data: AppData; page?: bool
           )
         })}
       </div>
-      <div className="means-stage">
-        <div className="means-levels">
-          <article className="means-card" data-halo="true">
-            <h3>{t('means.see')}</h3>
-            {region === 'congo' && (
-              <p>
-                {t('means.basinNote')} {robustCount}
-              </p>
-            )}
-            <p data-observed="true">{observed}</p>
-            {showNumber && analysis && variable !== 'precip' && (
-              <p className="means-num">
-                <CountUp value={analysis.pente_decennie} decimals={SLOPE_DECIMALS[variable] ?? 2} lang={lang} /> {plainUnit(analysis.slope_unit, lang)}
-              </p>
-            )}
-            {analysis && region !== 'earth' && <Sparkline series={analysis.serie_annuelle} color="#C4512C" label={t('means.see')} />}
-            <p className="note">{t('means.source')}</p>
-          </article>
+      <div className="means-layout">
+        <Picture name={photo} alt={t(region === 'earth' ? 'story.caption.earth' : region === 'congo' ? 'story.caption.forest' : 'story.caption.sat')} />
+        <article className="means-result" data-halo="true">
+          <h3>{t('means.see')}</h3>
+          {region === 'congo' && (
+            <p className="means-secondary">
+              {t('means.basinNote')} {robustCount}
+            </p>
+          )}
+          <p className="means-secondary" data-observed="true">{observed}</p>
+          {showNumber && analysis && variable !== 'precip' && (
+            <p className="means-num">
+              <CountUp value={analysis.pente_decennie} decimals={SLOPE_DECIMALS[variable] ?? 2} lang={lang} />
+              <span>{plainUnit(analysis.slope_unit, lang)}</span>
+            </p>
+          )}
+          {analysis && region !== 'earth' && <Sparkline series={analysis.serie_annuelle} color="#C4512C" label={t('means.see')} />}
+          <p className="note">{t('means.source')}</p>
+        </article>
+      </div>
+      <div className="means-secondary-grid">
           <article className="means-card" data-halo="true">
             <h3>{t('means.why')}</h3>
             <ul className="means-impacts">
@@ -130,7 +135,6 @@ export function MeansForYou({ data, page = false }: { data: AppData; page?: bool
               ))}
             </div>
           </article>
-        </div>
       </div>
       <div className="means-vars" role="group" aria-label={t('home.control.variable')}>
         {['t2m_max', 'rh2m', 'precip'].map((id) => (

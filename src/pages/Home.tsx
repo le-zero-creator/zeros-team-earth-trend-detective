@@ -165,6 +165,7 @@ export function HomeStory({ data }: { data: AppData | null }) {
         <p className="glass-caption">{globe ? t('globe.credit') : `${t('story.caption.earth')} ${t('photo.credit')}`}</p>
       </section>
 
+      {data ? <MeansForYou data={data} /> : <p className="story-skeleton" role="status">{t('state.loading')}</p>}
       <Journey data={data} />
       <nav className="scale-nav" aria-label={t('story.kicker')}>
         <a href="#step-earth">{t('means.earth')}</a>
@@ -198,8 +199,6 @@ export function HomeStory({ data }: { data: AppData | null }) {
           <figcaption className="glass-caption">{frame.image ? t(frame.caption) : t('home.story.question')}</figcaption>
         </figure>
       </section>
-
-      {data ? <MeansForYou data={data} /> : <p className="story-skeleton" role="status">{t('state.loading')}</p>}
 
       <section className="how reveal" aria-labelledby="how-title">
         <h2 id="how-title">{t('how.h1')}</h2>
