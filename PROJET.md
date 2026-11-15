@@ -40,14 +40,14 @@ Voir DECISIONS.md (liste complète). Les règles détaillées sont dans CLAUDE.m
 - 14/11 : défi thème 2 confirmé. Angle Yaoundé + lecture métier d'architecte.
 - 15/11 : V1 = NASA POWER seulement, tout précalculé dans public/data/results.json ; aucun calcul statistique dans le navigateur.
 
-## État actuel (15/11, après la tâche « Home »)
-- Branche de travail : feature/v1-explorer (commits locaux, **rien n'est poussé sur GitHub**).
-- Socle en place : Vite 7 + React 18 + TypeScript, React Router 7 (HashRouter), react-leaflet, i18n EN/FR, polices auto-hébergées, CSP au build, workflow GitHub Pages (.github/workflows/pages.yml).
-- **Écran Home fait** (sert de maquette, en attente de validation par Ludovic) : hero, 3 questions, carte du bassin, tableau « All locations », bandeau exploratoire, bandeau des sources.
-- Investigate, Method, About : pas encore faits (écran provisoire « This screen is next »). 404 : fait.
-- Vérifié : npm run build OK · npm test 20/20 · npm audit 0 faille · captures docs/captures/home-375.png et home-1440.png · console sans erreur · seuls hôtes contactés : le site et tile.openstreetmap.org.
-- **Non vérifié** : python data/validate.py (Python n'est pas installé sur ce PC) ; Lighthouse.
-- L'ancien prototype du 14/11 est conservé sur la branche locale archive/prototype-2026-11-14.
+## État actuel (15/11, accueil grand public + preuves)
+- Branche : `feat/home-grand-public` (à partir de `feature/v1-explorer`). Pull request vers `main`. Pas de merge.
+- Accueil : question, chiffre géant (T2M_MAX Yaoundé), trois cartes, globe (le bassin en vert), recherche mondiale, indices bientôt / en attente, métiers, tableau des 11 lieux.
+- Enquête : Lieu → Indices → Preuves → Pour vous. Le lien direct ouvre les Preuves. Graphique annuel, droite de Sen, IC en chiffres, trois tests, q, niveau de preuve, 5 étapes Acker, comparaison des 11 lieux, deux périodes.
+- Méthode, À propos, Comparer (monde = bientôt), 404.
+- Vérifié ici : `npm test` 30/30 · `npm run build` OK · `npm audit` 0 · captures dans `docs/captures/` · console sans erreur · hôtes : le site et `tile.openstreetmap.org`.
+- Pages GitHub : le workflow est dans le dépôt et part de `main`. L'URL publique n'est pas encore en ligne tant que la PR n'est pas mergée et que Pages n'est pas réglé sur « GitHub Actions ». Les étapes sont dans le README.
+- **Non vérifié dans cette session** : `python data/validate.py` (le script relance tous les calculs et un Monte-Carlo ; il n'a pas été exécuté jusqu'au bout ici). Lighthouse.
 
 ## Questions ouvertes
 - Format des valeurs p : la règle écrite dit « < 0.001 » sous 0,001 et 3 chiffres significatifs ; les critères d'acceptation montrent « 0.00014 », « 0.0048 », « 0.097 » (2 chiffres). La règle écrite est appliquée pour l'instant.
@@ -59,4 +59,4 @@ Voir DECISIONS.md (liste complète). Les règles détaillées sont dans CLAUDE.m
 - Un ancien serveur du 14/11 occupe parfois le port 4173 : utiliser 4174.
 
 ## Prochaine étape
-- Après validation de Home : Investigate (Place → Clues → Evidence → Verdict & Act), puis Method, About, README (EN) pour les jurés, audit de sécurité, PR vers main.
+- Ludovic : relire les phrases, merger la PR, activer GitHub Pages (README, section GitHub Pages), puis partager l'URL.

@@ -4,6 +4,7 @@ import type { PathOptions } from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import { useI18n } from '../i18n'
 import { formatSlope } from '../lib/format'
+import { STORY_COLOR, storyWord } from '../lib/story'
 import type { Analysis, Zone } from '../lib/types'
 
 export const COLORS = { increasing: '#E85D04', decreasing: '#2B6CB0', nee: '#64748B' }
@@ -22,6 +23,21 @@ export function markerStyle(a: Analysis, hollow: boolean): PathOptions {
     fillColor: color,
     fillOpacity: exploratory ? 0.5 : 1,
     dashArray: exploratory ? '3 3' : undefined,
+  }
+}
+
+/** Carte grand public : mêmes règles de creux et de pointillé, couleurs en mots (chaud, sec, pas sûr). */
+export function publicMarkerStyle(a: Analysis, hollow: boolean, variableId: string): PathOptions {
+  const base = markerStyle(a, hollow)
+  const color = STORY_COLOR[storyWord(variableId, a)]
+  if (hollow) {
+    return { ...base, color, fillColor: '#fffef8', fillOpacity: 0, weight: 3.5, className: 'pin pin--yaounde' }
+  }
+  return {
+    ...base,
+    fillColor: color,
+    color: a.evidence_level === 'exploratory' ? color : '#ffffff',
+    className: 'pin',
   }
 }
 

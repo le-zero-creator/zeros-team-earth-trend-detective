@@ -20,7 +20,9 @@ const SIZES = [
   { width: 1440, height: 900, scale: 1, mobile: false },
 ]
 const pages = process.argv.slice(2).map((arg) => {
-  const [name, route = '/'] = arg.split('=')
+  const eq = arg.indexOf('=')
+  const name = eq === -1 ? arg : arg.slice(0, eq)
+  const route = eq === -1 ? '/' : arg.slice(eq + 1)
   return { name, route }
 })
 if (!CHROME || pages.length === 0) {

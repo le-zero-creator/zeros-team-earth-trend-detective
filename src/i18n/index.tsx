@@ -9,6 +9,8 @@ const STORAGE_KEY = 'td.lang'
 
 function readLang(): Lang {
   try {
+    const fromHash = new URLSearchParams(window.location.hash.split('?')[1] ?? '').get('lang')
+    if (fromHash === 'fr' || fromHash === 'en') return fromHash
     return localStorage.getItem(STORAGE_KEY) === 'fr' ? 'fr' : 'en'
   } catch {
     return 'en'

@@ -1,18 +1,21 @@
 /* Jetons de design (feuille de route v2.1, section D). Ne pas changer sans accord. */
 :root {
-  --night: #0f233c;
-  --orange: #e85d04;
-  --orange-text: #b54708;
-  --emerald: #2a9d8f;
-  --emerald-text: #1f7a6f;
-  --rain: #2b6cb0;
+  --night: #10281c;
+  --orange: #e36414;
+  --orange-text: #9a3412;
+  --emerald: #1f7a4d;
+  --emerald-text: #145c38;
+  --rain: #2c6e8a;
+  --clay: #8a4b2a;
   --grey: #64748b;
-  --grey-text: #475569;
-  --bg: #f4f7fa;
-  --surface: #ffffff;
-  --text: #0b1726;
-  --line: #d9e1ea;
+  --grey-text: #3e4c59;
+  --bg: #e7f2e4;
+  --surface: #fffdf8;
+  --text: #14261c;
+  --line: #d3e4d4;
   --error: #b42318;
+  --sun: #ffd56a;
+  --hero: #0c2418;
 
   --font-title: 'Space Grotesk', system-ui, sans-serif;
   --font-text: 'Inter', system-ui, sans-serif;

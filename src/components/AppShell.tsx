@@ -51,6 +51,9 @@ export function AppShell({ children }: { children: ReactNode }) {
           <NavLink to="/method" className="topnav__wide">
             {t('nav.method')}
           </NavLink>
+          <NavLink to="/compare" className="topnav__wide">
+            {t('nav.compare')}
+          </NavLink>
           <NavLink to="/about">{t('nav.about')}</NavLink>
           <LangToggle />
         </nav>

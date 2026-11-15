@@ -1,4 +1,13 @@
 import { readFileSync } from 'node:fs'
+
+class ResizeObserverStub {
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+}
+if (!('ResizeObserver' in globalThis)) {
+  globalThis.ResizeObserver = ResizeObserverStub as unknown as typeof ResizeObserver
+}
 import { resolve } from 'node:path'
 import type { AppData, Results, Zone, ZoneProps } from '../lib/types'
 

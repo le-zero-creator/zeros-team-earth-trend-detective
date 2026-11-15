@@ -38,3 +38,13 @@ export function formatSigned(value: number, decimals: number, lang: Lang): strin
 export function formatSlope(value: number, variableId: string, slopeUnit: string, lang: Lang): string {
   return `${formatSigned(value, SLOPE_DECIMALS[variableId] ?? 2, lang)} ${slopeUnit}`
 }
+
+/** Nombre déjà publié, sans signe forcé. Aucun calcul : seulement l'affichage. */
+export function formatNumber(value: number, decimals: number, lang: Lang): string {
+  return new Intl.NumberFormat(lang, {
+    minimumFractionDigits: decimals,
+    maximumFractionDigits: decimals,
+  })
+    .format(value)
+    .replace('-', MINUS)
+}

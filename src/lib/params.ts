@@ -32,6 +32,14 @@ export function safeParams(search: URLSearchParams) {
   }
 }
 
+export const STEP_IDS = ['place', 'clues', 'evidence', 'act'] as const
+export type StepId = (typeof STEP_IDS)[number]
+
+/** Étape d'écran seulement. Une valeur inconnue ouvre l'analyse (le cœur jugé). */
+export function safeStep(value: string | null): StepId {
+  return value !== null && (STEP_IDS as readonly string[]).includes(value) ? (value as StepId) : 'evidence'
+}
+
 export function investigateLink(zone: string, variable: string, period: string): string {
   const p = safeParams(new URLSearchParams({ zone, var: variable, period }))
   return `/investigate?zone=${p.zone}&var=${p.var}&period=${p.period}`
